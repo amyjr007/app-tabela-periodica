@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><title>Gerar Ícones</title>
+<style>body{font-family:sans-serif;padding:30px;background:#f2e4c4;color:#2d1e0e}
+button{margin:8px;padding:12px 20px;font-size:16px;background:#8b5e1a;color:#fff;border:none;border-radius:8px;cursor:pointer}
+button:hover{background:#a0701f}</style>
+</head>
+<body>
+<h2>Gerar ícones do PWA — Tabela Periódica</h2>
+<p>Clique nos botões para baixar os ícones e salve na pasta <code>icons/</code></p>
+<canvas id="c" style="display:none"></canvas>
+<br>
+<button onclick="gen(192)">⬇ Baixar icon-192.png</button>
+<button onclick="gen(512)">⬇ Baixar icon-512.png</button>
+<canvas id="preview" width="192" height="192" style="display:block;margin-top:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.3)"></canvas>
+<script>
+function draw(ctx, size) {
+  var cx = size / 2, cy = size / 2, r = size / 2;
+  // Background gradient
+  var g = ctx.createRadialGradient(cx, cy*0.7, 0, cx, cy, r);
+  g.addColorStop(0, '#d48d2a'); g.addColorStop(1, '#7a3e0e');
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.fill();
+  // Outer ring
+  ctx.strokeStyle = 'rgba(255,220,120,.55)';
+  ctx.lineWidth = size * 0.025;
+  ctx.beginPath(); ctx.arc(cx, cy, r * 0.9, 0, Math.PI*2); ctx.stroke();
+  // "TP" text
+  ctx.fillStyle = '#fff8e7';
+  ctx.font = 'bold ' + Math.round(size * 0.38) + 'px Georgia,serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.shadowColor = 'rgba(0,0,0,.4)'; ctx.shadowBlur = size * 0.04;
+  ctx.fillText('TP', cx, cy * 0.88);
+  ctx.shadowBlur = 0;
+  // Subtitle
+  ctx.font = Math.round(size * 0.085) + 'px sans-serif';
+  ctx.fillStyle = 'rgba(255,240,200,.85)';
+  ctx.fillText('PERIÓDICA', cx, cy * 1.38);
+  // Small dots (atom style)
+  ctx.fillStyle = 'rgba(255,220,120,.4)';
+  [[0.28,0.25],[0.72,0.25],[0.18,0.62],[0.82,0.62],[0.5,0.15],[0.5,0.88]].forEach(function(p){
+    ctx.beginPath(); ctx.arc(p[0]*size, p[1]*size, size*0.025, 0, Math.PI*2); ctx.fill();
+  });
+}
+function gen(size) {
+  var c = document.getElementById('c');
+  c.width = size; c.height = size;
+  var ctx = c.getContext('2d');
+  draw(ctx, size);
+  var a = document.createElement('a');
+  a.href = c.toDataURL('image/png');
+  a.download = 'icon-' + size + '.png';
+  a.click();
+}
+// Preview
+var pv = document.getElementById('preview');
+var ctx2 = pv.getContext('2d');
+draw(ctx2, 192);
+</script>
+</body>
+</html>
