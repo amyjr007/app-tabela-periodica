@@ -10493,7 +10493,11 @@ function s9PlayCurrent(){
   ad.play().catch(function(){});
   if(s9DialogIdx===1){
     s9SepTimer=setTimeout(function(){s9SepTimer=null;s9AnimateExtremities(true);},1000);
-    s9BlockLblTimer=setTimeout(function(){s9BlockLblTimer=null;s9ShowBlockLabels(false);},3800);
+    s9BlockLblTimer=setTimeout(function(){
+      s9BlockLblTimer=null;
+      s9ShowBlockLabels(false);
+      if(s9Audio!==ad||ad.ended){s9AnimateLabelsToFinal();}
+    },3800);
   }
   if(s9DialogIdx===2){s9StartD2Seq(ad);}
   if(s9DialogIdx===3){s9StartD3Seq(ad);}
