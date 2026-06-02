@@ -6083,12 +6083,12 @@ function showQuizResult(){
 var L7n=null,s7nAudio=null,s7nDialogIdx=-1,s7nMainBtn=null,s7nBackBtn=null,s7nIsLongForm=false;
 var S7N_DIALOGS=['audio/dialogo7.mp3','audio/dialogo7.1.mp3','audio/dialogo7.2.mp3','audio/dialogo7.3.mp3','audio/dialogo7.3.1.mp3','audio/dialogo7.4.mp3','audio/dialogo7.5.mp3','audio/dialogo7.5.1.mp3','audio/dialogo7.5.2.mp3','audio/dialogo7.5.3.mp3','audio/dialogo7.5.4.mp3','audio/dialogo7.5.5.mp3','audio/dialogo7.5.6.mp3'];
 var S7N_QUIZ={
-  6:{promptTime:2,prompt:'Toque em qualquer elemento natural',predicate:function(z){return z>=1&&z<=92&&z!==43&&z!==61;},errorMsg:'Os naturais são do 1 ao 92, exceto o 43 e o 61'},
-  7:{promptTime:0,prompt:'Toque num elemento cujo isótopo mais comum é radioativo',predicate:function(z){return z>=83||z===43||z===61;},errorMsg:'Os elementos com isótopos mais comuns radioativos são do 83 em diante, mais o Tc e o Pm'},
-  8:{promptTime:0,prompt:'Toque num elemento transurânico',predicate:function(z){return z>92;},errorMsg:''},
-  9:{promptTime:0,prompt:'Toque num elemento cisurânico',predicate:function(z){return z<=92;},errorMsg:'Os elementos cisurânicos são todos antes do urânio'},
-  10:{promptTime:0,prompt:'Toque no último elemento natural da tabela',predicate:function(z){return z===92;},errorMsg:'O último elemento natural é o urânio'},
-  11:{promptTime:0,prompt:'Toque no último elemento com isótopo mais comum estável',predicate:function(z){return z===82;},errorMsg:'O último elemento com isótopo mais comum estável é o chumbo, 82'}
+  6:{promptTime:2,prompt:'Toque no elemento C',predicate:function(z){return z===6;},errorMsg:'O carbono tem símbolo C e número atômico 6'},
+  7:{promptTime:0,prompt:'Toque num elemento cujo isótopo mais comum é radioativo',predicate:function(z){return z>=83||z===43||z===61;},errorMsg:'Os elementos radioativos são do 83 em diante, mais o Tc (43) e o Pm (61)'},
+  8:{promptTime:0,prompt:'Toque num elemento transurânico',predicate:function(z){return z>92;},errorMsg:'Os elementos transurânicos são aqueles depois do urânio (Z > 92)'},
+  9:{promptTime:0,prompt:'Toque num elemento cisurânico',predicate:function(z){return z<=92&&z!==43&&z!==61;},errorMsg:'Os cisurânicos são do 1 ao 92, exceto o 43 e o 61'},
+  10:{promptTime:0,prompt:'Toque no último elemento natural da tabela',predicate:function(z){return z===92;},errorMsg:'O último elemento natural é o urânio (U, Z=92)'},
+  11:{promptTime:0,prompt:'Toque no último elemento com isótopo mais comum estável',predicate:function(z){return z===82;},errorMsg:'O último elemento com isótopo estável é o chumbo (Pb, Z=82)'}
 };
 var s7nQuizActive=false,s7nQuizClickHandlers=[];
 function s7nArrangeLongForm(){
