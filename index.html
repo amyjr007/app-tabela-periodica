@@ -4241,6 +4241,7 @@ function s5StartWheelQuiz(ex){
       if(elFound)s5HighlightCorrect(elFound);
       s5SpawnConfetti();
       s5ShowParabens();
+      if(s5PromptEl){s5PromptEl.style.transition='none';s5PromptEl.style.opacity='0';}
       var advancedFromWheel=false;
       var doAdvance=function(){
         if(advancedFromWheel)return;advancedFromWheel=true;
