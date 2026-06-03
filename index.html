@@ -17,8 +17,8 @@
 html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-image:radial-gradient(ellipse 80% 60% at 20% 10%,rgba(200,150,80,.08),transparent 60%),radial-gradient(ellipse 70% 50% at 85% 90%,rgba(180,120,60,.05),transparent 60%);color:#2d1e0e;font-family:'Fredoka',sans-serif;touch-action:none;overscroll-behavior:none}
 .app{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden}
 .swrap{flex:1;overflow:hidden;min-height:0}
-.strack{display:flex;width:1000%;height:100%;transition:transform .44s cubic-bezier(.4,0,.2,1)}
-.slide{width:10%;height:100%;display:flex;flex-direction:column;padding:1.3vh 1.4vw 0;overflow:hidden;position:relative}
+.strack{display:flex;width:1100%;height:100%;transition:transform .44s cubic-bezier(.4,0,.2,1)}
+.slide{width:9.0909%;height:100%;display:flex;flex-direction:column;padding:1.3vh 1.4vw 0;overflow:hidden;position:relative}
 .el{position:absolute;display:flex;flex-direction:column;justify-content:space-between;padding:3px 5px 4px;border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,.24);box-shadow:inset 0 1px 0 rgba(255,255,255,.20),0 2px 6px rgba(80,40,0,.22);touch-action:none}
 .el::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.13),transparent 40%);pointer-events:none;z-index:1}
 .en,.es,.em{position:relative;z-index:3}
@@ -531,7 +531,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
     <button class="tcard" data-i="6"><span class="tnum">7</span><span class="ttxt">A natureza dos elementos</span></button>
     <button class="tcard" data-i="7"><span class="tnum">8</span><span class="ttxt">A tabela e os elétrons de valência</span></button>
     <button class="tcard" data-i="8"><span class="tnum">9</span><span class="ttxt">A tabela e o diagrama de Pauling</span></button>
-    <button class="tcard" data-i="9"><span class="tnum">10</span><span class="ttxt">Quiz Interativo</span></button>
+    <button class="tcard" data-i="9"><span class="tnum">10</span><span class="ttxt">A tabela e a distribuição eletrônica</span></button>
+    <button class="tcard" data-i="10"><span class="tnum">11</span><span class="ttxt">Quiz Interativo</span></button>
   </nav>
   <div class="swrap">
     <div class="strack" id="strack">
@@ -594,6 +595,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
       </div>
       <div class="slide">
         <div class="s5body"><div class="s5area" id="a9"></div></div>
+      </div>
+      <div class="slide">
+        <div class="s5body"><div class="s5area" id="a10"></div></div>
       </div>
       <div class="slide">
         <div class="qzbody">
@@ -935,7 +939,8 @@ var tcardEls=document.querySelectorAll('#topnav .tcard');
 var cur=0;
 
 /* NAV */
-function goTo(i){if(cur===0&&i!==0&&typeof s1QuizPhase!=='undefined'&&s1QuizPhase>=0)return;var prev=cur;if(cur!==i){document.querySelectorAll('.tcard.s2-pulse').forEach(function(c){c.classList.remove('s2-pulse');});if(typeof stopIntroAudio==='function')stopIntroAudio();if(typeof s1StopCritLoop==='function')s1StopCritLoop();if(typeof stopS2Audio==='function')stopS2Audio();if(typeof stopS3Audio==='function')stopS3Audio();if(typeof s3ClearTypeLabels==='function')s3ClearTypeLabels();if(typeof stopS4Audio==='function')stopS4Audio();if(typeof stopS5Audio==='function')stopS5Audio();if(typeof stopS6Audio==='function')stopS6Audio();if(typeof stopS7nAudio==='function')stopS7nAudio();if(typeof stopS8Audio==='function')stopS8Audio();if(typeof stopS9Audio==='function')stopS9Audio();if(typeof qzStopResultAudios==='function')qzStopResultAudios();if(navigator.vibrate)navigator.vibrate(20);}cur=i;strack.style.transform='translateX(-'+(i*100/10).toFixed(4)+'%)';tcardEls.forEach(function(d,j){d.classList.toggle('active',j===i);});rbtn.style.visibility='hidden';var actTc=tcardEls[i];if(actTc&&actTc.scrollIntoView){try{actTc.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}catch(_){actTc.scrollIntoView();}}if(i===5&&prev!==5&&typeof startS6Sequence==='function')startS6Sequence();if(i===6&&typeof s7nStartRandomHighlights==='function'){setTimeout(function(){if(cur===6&&!s7nHlInterval)s7nStartRandomHighlights();},1000);}if(i===9&&typeof startP7Quiz==='function'){var a7el=document.getElementById('a7');if(!qzState||(a7el&&!a7el.children.length))startP7Quiz();}if(i===8&&typeof s9StartDemo==='function')setTimeout(s9StartDemo,300);var _s1b=document.getElementById('section1Back');if(_s1b)_s1b.style.display=(i===7)?'none':'';if(typeof updateBackBtnVis==='function')updateBackBtnVis();}
+function goTo(i){if(cur===0&&i!==0&&typeof s1QuizPhase!=='undefined'&&s1QuizPhase>=0)return;var prev=cur;if(cur!==i){document.querySelectorAll('.tcard.s2-pulse').forEach(function(c){c.classList.remove('s2-pulse');});if(typeof stopIntroAudio==='function')stopIntroAudio();if(typeof s1StopCritLoop==='function')s1StopCritLoop();if(typeof stopS2Audio==='function')stopS2Audio();if(typeof stopS3Audio==='function')stopS3Audio();if(typeof s3ClearTypeLabels==='function')s3ClearTypeLabels();if(typeof stopS4Audio==='function')stopS4Audio();if(typeof stopS5Audio==='function')stopS5Audio();if(typeof stopS6Audio==='function')stopS6Audio();if(typeof stopS7nAudio==='function')stopS7nAudio();if(typeof stopS8Audio==='function')stopS8Audio();if(typeof stopS9Audio==='function')stopS9Audio();if(typeof qzStopResultAudios==='function')qzStopResultAudios();if(navigator.vibrate)navigator.vibrate(20);}cur=i;strack.style.transform='translateX(-'+(i*100/11).toFixed(4)+'%)';tcardEls.forEach(function(d,j){d.classList.toggle('active',j===i);});rbtn.style.visibility='hidden';var actTc=tcardEls[i];if(actTc&&actTc.scrollIntoView){try{actTc.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}catch(_){actTc.scrollIntoView();}}if(i===5&&prev!==5&&typeof startS6Sequence==='function')startS6Sequence();if(i===6&&typeof s7nStartRandomHighlights==='function'){setTimeout(function(){if(cur===6&&!s7nHlInterval)s7nStartRandomHighlights();},1000);}if(i===9&&typeof buildPage10==='function')buildPage10();
+if(i===10&&typeof startP7Quiz==='function'){var a7el=document.getElementById('a7');if(!qzState||(a7el&&!a7el.children.length))startP7Quiz();}if(i===8&&typeof s9StartDemo==='function')setTimeout(s9StartDemo,300);var _s1b=document.getElementById('section1Back');if(_s1b)_s1b.style.display=(i===7)?'none':'';if(typeof updateBackBtnVis==='function')updateBackBtnVis();}
 tcardEls.forEach(function(d){d.addEventListener('click',function(){goTo(+d.dataset.i);});});
 
 /* SEÇÃO 2 — navegação */
@@ -10619,8 +10624,63 @@ function s9StopDemo(){
   s9ClearDemoHighlights();
 }
 
+/* ══ P10 — A tabela e a distribuição eletrônica ══ */
+var L10=null;
+function buildPage10(){
+  var a10=document.getElementById('a10');if(!a10)return;
+  a10.innerHTML='';
+  L10=cLay(a10);
+  // header
+  var hdr=document.createElement('div');
+  hdr.style.cssText='position:absolute;top:0;left:0;right:0;text-align:center;font-family:Fredoka,sans-serif;font-weight:700;font-size:clamp(16px,2.6vh,26px);color:#2d1e0e;padding:.5vh 0;z-index:10;pointer-events:none;';
+  hdr.textContent='A tabela periódica e a distribuição eletrônica';
+  a10.appendChild(hdr);
+  // tabela igual ao slide 6 (usando o mesmo cLay e posicionamento)
+  var L=L10;
+  L.pY+=1.5*L.cH;
+  var w=L.cW*.92,h=L.cH*.92,ox=(L.cW-w)/2,oy=(L.cH-h)/2,fs=txtSizes(L);
+  function colorClass10(grp){return(grp===1||grp===2)?'grp-ab-1':(grp>=13?'grp-ab-3':'grp-ab-2');}
+  MAIN.forEach(function(d){
+    var n=document.createElement('div');
+    n.className='el '+colorClass10(d[3]);
+    n.setAttribute('data-g',d[3]);
+    n.innerHTML='<div class="en" style="font-size:'+fs.en+'">'+d[0]+'</div><div class="es" style="font-size:'+fs.es+'">'+d[1]+'</div><div class="em" style="font-size:'+fs.em+'">'+d[2]+'</div>';
+    var tp=tPos(d[3],d[4],L);
+    n.style.left=(tp.x+ox)+'px';n.style.top=(tp.y+oy)+'px';n.style.width=w+'px';n.style.height=h+'px';n.style.pointerEvents='none';
+    a10.appendChild(n);
+  });
+  // placeholders lantanídeos/actinídeos
+  function mkPH10(label,tp){
+    var ph=document.createElement('div');ph.className='el block-f';
+    ph.setAttribute('data-g',3);
+    ph.style.cssText='left:'+(tp.x+ox)+'px;top:'+(tp.y+oy)+'px;width:'+w+'px;height:'+h+'px;pointer-events:none;';
+    ph.innerHTML='<div class="en"></div><div class="es" style="font-size:clamp(7px,1.15vh,13px)">'+label+'</div><div class="em"></div>';
+    return ph;
+  }
+  a10.appendChild(mkPH10('57–71',tPos(3,6,L)));
+  a10.appendChild(mkPH10('89–103',tPos(3,7,L)));
+  // lantanídeos
+  LANTH.forEach(function(d){
+    var n=document.createElement('div');n.className='el block-f';
+    n.setAttribute('data-g',d[3]);
+    n.innerHTML='<div class="en" style="font-size:'+fs.en+'">'+d[0]+'</div><div class="es" style="font-size:'+fs.es+'">'+d[1]+'</div><div class="em" style="font-size:'+fs.em+'">'+d[2]+'</div>';
+    var tp=tPos(d[3],d[4],L);
+    n.style.left=(tp.x+ox)+'px';n.style.top=(tp.y+oy)+'px';n.style.width=w+'px';n.style.height=h+'px';n.style.pointerEvents='none';
+    a10.appendChild(n);
+  });
+  // actinídeos
+  ACT.forEach(function(d){
+    var n=document.createElement('div');n.className='el block-f';
+    n.setAttribute('data-g',d[3]);
+    n.innerHTML='<div class="en" style="font-size:'+fs.en+'">'+d[0]+'</div><div class="es" style="font-size:'+fs.es+'">'+d[1]+'</div><div class="em" style="font-size:'+fs.em+'">'+d[2]+'</div>';
+    var tp=tPos(d[3],d[4],L);
+    n.style.left=(tp.x+ox)+'px';n.style.top=(tp.y+oy)+'px';n.style.width=w+'px';n.style.height=h+'px';n.style.pointerEvents='none';
+    a10.appendChild(n);
+  });
+}
+
 /* INIT */
-function init(){buildGame();buildTable();buildPage3();buildPage4();buildPage5();buildPage6();buildPage7n();buildPage8();buildPage9();setupSpreadGesture();goTo(cur);}
+function init(){buildGame();buildTable();buildPage3();buildPage4();buildPage5();buildPage6();buildPage7n();buildPage8();buildPage9();buildPage10();setupSpreadGesture();goTo(cur);}
 var rt=null,appBuilt=false;
 
 /* ═══════ SCREEN NAV ═══════ */
@@ -10669,7 +10729,8 @@ document.getElementById('section1Restart').addEventListener('click',function(){
   else if(cur===6){buildPage7n();}
   else if(cur===7){buildPage8();}
   else if(cur===8){buildPage9();}
-  else if(cur===9){qzState=null;startP7Quiz();}
+  else if(cur===9){buildPage10();}
+  else if(cur===10){qzState=null;startP7Quiz();}
 });
 document.getElementById('section2Back').addEventListener('click',function(){showScreen('smenu');});
 document.getElementById('section2Home').addEventListener('click',function(){showScreen('scover');});
