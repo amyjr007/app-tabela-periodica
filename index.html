@@ -12221,9 +12221,10 @@ if('serviceWorker' in navigator){
 var qnavOpen=false,qnavCurMode='s1';
 var QNAV_S1=[
   {n:1,label:'Início',                fn:'s1JumpToInicio'},
-  {n:2,label:'Apresentação da tabela',fn:'s1JumpToApresentacao'},
-  {n:3,label:'Organizando a tabela',  fn:'s1JumpToOrganizing'},
-  {n:4,label:'Quiz',                  fn:'s1JumpToQuiz'}
+  {n:2,label:'Tutorial do app',       fn:'s1JumpToTutorial'},
+  {n:3,label:'Apresentação da tabela',fn:'s1JumpToApresentacao'},
+  {n:4,label:'Organizando a tabela',  fn:'s1JumpToOrganizing'},
+  {n:5,label:'Quiz',                  fn:'s1JumpToQuiz'}
 ];
 var QNAV_S2=[
   {n:1,label:'Começo',  fn:'s2JumpToStart'},
@@ -12341,6 +12342,23 @@ function s1JumpToInicio(){
     setTimeout(function(){
       if(typeof s0Init==='function')s0Init();
       // inicia automaticamente (como se desse play)
+      if(typeof s0HandlePlay==='function')s0HandlePlay();
+    },150);
+  },300);
+}
+function s1JumpToTutorial(){
+  var s1=document.getElementById('ssection1');
+  if(s1&&s1.classList.contains('hidden')){if(typeof gotoSection1==='function')gotoSection1();else showScreen('ssection1');}
+  setTimeout(function(){
+    s1JumpReset();
+    var orig=document.getElementById('startbtn');if(orig){orig.style.display='';orig.classList.remove('show');}
+    setTimeout(function(){
+      if(typeof s0Init==='function')s0Init();
+      s0Phase=1; // dialogo0.1
+      // estado do dialogo0.1: tabela visível (overlay transparente, sem bloquear) com destaques rodando
+      if(typeof s0Ov!=='undefined'&&s0Ov){s0Ov.style.background='rgba(0,0,0,0)';s0Ov.style.pointerEvents='none';}
+      if(typeof s0StartHl==='function')s0StartHl();
+      // inicia automaticamente o dialogo0.1 (como se desse play)
       if(typeof s0HandlePlay==='function')s0HandlePlay();
     },150);
   },300);
