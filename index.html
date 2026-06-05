@@ -11980,7 +11980,16 @@ function s0HandlePlay(){
   ad.addEventListener('ended',function(){
     if(s0Audio!==ad)return;
     s0ClearTimers();s0Paused=false;
-    s0Phase++;s0BtnState('ready');
+    s0Phase++;
+    if(s0Phase>=4){
+      // fim da abertura: encerra o overlay e devolve o botao 'comecar' do proprio slide
+      // (sem deixar o botao do overlay s0 em 1o plano)
+      s0StopHl();
+      s0Teardown(true);
+      var sb=s0GetBtn();if(sb)sb.classList.add('show');
+      return;
+    }
+    s0BtnState('ready');
     if(s0Phase===1){s0Ov.style.background='rgba(0,0,0,0)';s0Ov.style.pointerEvents='none';setTimeout(s0StartHl,300);}
   });
   ad.play().catch(function(){});
