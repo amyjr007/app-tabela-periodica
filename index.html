@@ -12046,6 +12046,9 @@ function s0StopAbertura(){
   });
   s0Paused=false;
   if(typeof s0Teardown==='function')s0Teardown();
+  // reexibe o botao 'comecar' do slide para nao ficar sem play ao voltar
+  var sb=(typeof s0GetBtn==='function')?s0GetBtn():null;
+  if(sb){sb.style.display='';sb.classList.add('show');}
 }
 function s0Init(){
   if(s0Ov)return;
