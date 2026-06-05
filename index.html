@@ -3274,7 +3274,22 @@ function s3LaunchGameDirect(){
   setTimeout(function(){s3StartGame();},500);
 }
 function s3JumpToStart(){stopS3Audio();s3CurStep=-1;if(s3StartBtn)s3StartBtn.classList.add('show');if(s3NextBtn)s3NextBtn.classList.remove('show');}
-function s3JumpToJogo(){stopS3Audio();s3CurStep=2;if(s3StartBtn)s3StartBtn.classList.remove('show');if(s3NextBtn)s3NextBtn.classList.remove('show');s3ShowGameButton();}
+function s3JumpToJogo(){
+  stopS3Audio();s3CurStep=2;
+  if(s3StartBtn)s3StartBtn.classList.remove('show');
+  if(s3NextBtn)s3NextBtn.classList.remove('show');
+  // separa a tabela em blocos (estado final do passo 2, como se tivesse passado por todos os eventos)
+  s3ClearTypeLabels();
+  var ET='transform .45s cubic-bezier(.4,0,.2,1)';
+  p3Els.forEach(function(it){
+    it.el.classList.remove('tp-dim','tp-bright');
+    var dx=it.type==='metal'?-1.5*L3.cW:it.type==='ametal'?0.5*L3.cW:it.type==='noble'?1.5*L3.cW:0;
+    it.el.style.transition=ET;it.el.style.transform='translateX('+dx+'px)';
+  });
+  p3Els.forEach(function(it){var en=it.el.querySelector('.en');if(en&&en.textContent==='1')it.el.classList.add('tp-dim');});
+  p3Fph.forEach(function(ph){ph.classList.remove('tp-dim','tp-bright');ph.style.transition=ET;ph.style.transform='translateX('+(-1.5*L3.cW)+'px)';});
+  s3ShowGameButton();
+}
 function openCards(type){
   if(!s3cards)return;
   var ti=TINFO[type],data=CARDS[type];
