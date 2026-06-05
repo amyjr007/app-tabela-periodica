@@ -1854,6 +1854,7 @@ function s1QuizShowResultCard(){
   var msgs=high?['Você está aprendendo bem!','Ótimo resultado!','Muito bem! Continue assim!']:['Continue praticando!','Quase lá, não desista!','Pratique mais um pouco!'];
   var msg=msgs[Math.floor(Math.random()*msgs.length)];
   var errs=total-correct;
+  recordQuizResult(1,pts,correct,errs);
   var cx=Math.round(L1.pX+9*L1.cW),cy=Math.round(L1.pY+3*L1.cH);
   var rc=buildQuizResultCard(a1,{score:pts,correct:correct,errors:errs,msg:msg,high:high,cx:cx,cy:cy,zIndex:62});
   requestAnimationFrame(function(){requestAnimationFrame(function(){rc.style.opacity='1';rc.style.transform='translate(-50%,-50%) scale(1)';});});
@@ -2386,6 +2387,7 @@ function s2FinalSequence(){
   var msgs=high?['Você está aprendendo bem!','Ótimo resultado!','Muito bem! Continue assim!']:['Continue praticando!','Quase lá, não desista!','Pratique mais um pouco!'];
   var msg=msgs[Math.floor(Math.random()*msgs.length)];
   var errs=S2_QUIZ_TOTAL-s2QuizCorrectCount;
+  recordQuizResult(2,pts,s2QuizCorrectCount,errs);
   var rc=buildQuizResultCard(a2,{score:pts,correct:s2QuizCorrectCount,errors:errs,msg:msg,high:high,cx:L2.pX+7*L2.cW,cy:L2.pY+3.5*L2.cH,zIndex:55});
   rc.className=(rc.className?rc.className+' ':'')+'s2-quiz-fb';
   s2QuizResultCard=rc;
@@ -3986,6 +3988,7 @@ function s4QuizEnd(){
   var msgs=high?hiMsgs:loMsgs;
   var msg=msgs[Math.floor(Math.random()*msgs.length)];
   var s4Correct=S4_QUIZ.length-s4QuizErrors;
+  recordQuizResult(4,s4QuizScore,Math.max(0,s4Correct),s4QuizErrors);
   var card=buildQuizResultCard(a4,{score:s4QuizScore,correct:Math.max(0,s4Correct),errors:s4QuizErrors,msg:msg,high:high,cx:Math.round(a4.offsetWidth/2),cy:Math.round(a4.offsetHeight/2),zIndex:150});
   s4QuizScoreCard=card;
   vib([50,30,50,30,50]);
@@ -4043,6 +4046,13 @@ function spawnA4ConfettiAt(px,py){
     setTimeout(function(){if(c.parentNode)c.remove();},1500);
   })(i);}
 }
+/* ══ REGISTRO GLOBAL DE PONTUAÇÃO DOS QUIZZES ══ */
+var QUIZ_SLIDES=[1,2,4,5,7,8,9];
+var QUIZ_LABELS={1:'Os critérios de organização',2:'As coordenadas periódicas',4:'As principais famílias',5:'Os grupos A e B',7:'A natureza dos elementos',8:'Os elétrons de valência',9:'O diagrama de Pauling'};
+var QUIZ_RESULTS={};
+function recordQuizResult(slide,score,correct,errors){
+  QUIZ_RESULTS[slide]={score:score,correct:correct,errors:errors,done:true};
+}
 function buildQuizResultCard(container,opts){
   // opts: {score,correct,errors,msg,high,cx,cy,zIndex}
   var circ=2*Math.PI*38,fill=Math.min(1,Math.max(0,(opts.score||0)/10));
@@ -4090,6 +4100,87 @@ function buildQuizResultCard(container,opts){
   var msg=document.createElement('div');msg.textContent=opts.msg||'';
   msg.style.cssText='font-size:clamp(10px,1.6vh,14px);color:rgba(80,45,10,.65);text-align:center;max-width:clamp(155px,20vw,215px);line-height:1.4;font-weight:500;';
   card.appendChild(trophy);card.appendChild(ttl);card.appendChild(rw);card.appendChild(pills);card.appendChild(msg);
+  container.appendChild(card);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){
+    card.style.opacity='1';card.style.transform='translate(-50%,-50%) scale(1)';
+    fgC.setAttribute('stroke-dashoffset',dashOff.toFixed(1));
+  });});
+  return card;
+}
+function buildBigSummaryCard(container,cx,cy,zIndex){
+  // agrega QUIZ_RESULTS dos slides com quiz (exceto slide 3)
+  var doneSlides=[],totScore=0,nDone=0;
+  QUIZ_SLIDES.forEach(function(s){if(QUIZ_RESULTS[s]&&QUIZ_RESULTS[s].done){doneSlides.push(s);totScore+=QUIZ_RESULTS[s].score;nDone++;}});
+  var avg=nDone?Math.round(totScore/nDone*10)/10:0;
+  // slide mais fraco (menor pontuação entre os feitos)
+  var weakest=null;
+  doneSlides.forEach(function(s){if(weakest===null||QUIZ_RESULTS[s].score<QUIZ_RESULTS[weakest].score)weakest=s;});
+  var ringColor=avg>=5?'#22c55e':'#f59e0b';
+  var circ=2*Math.PI*38,fill=Math.min(1,Math.max(0,avg/10)),dashOff=circ*(1-fill);
+  var card=document.createElement('div');
+  card.style.cssText='position:absolute;left:'+cx+'px;top:'+cy+'px;'
+    +'transform:translate(-50%,-50%) scale(.5);opacity:0;'
+    +'transition:opacity .5s,transform .55s cubic-bezier(.3,1.4,.5,1);'
+    +'display:flex;flex-direction:column;align-items:center;gap:.9vh;'
+    +'padding:2vh 2.4vw 1.7vh;background:rgba(255,252,245,.98);'
+    +'border:1.5px solid rgba(200,140,50,.34);border-radius:20px;'
+    +'box-shadow:0 16px 50px rgba(80,40,0,.34),inset 0 1px 0 rgba(255,255,255,.7);'
+    +'z-index:'+(zIndex||200)+';font-family:Fredoka,sans-serif;'
+    +'pointer-events:auto;min-width:clamp(260px,40vw,420px);max-height:94%;overflow-y:auto;';
+  var trophy=document.createElement('div');trophy.textContent='🏆';
+  trophy.style.cssText='font-size:clamp(30px,5vh,52px);line-height:1;filter:drop-shadow(0 3px 8px rgba(255,160,0,.55));';
+  var ttl=document.createElement('div');ttl.textContent='RESULTADO FINAL';
+  ttl.style.cssText='font-size:clamp(11px,1.6vh,16px);font-weight:700;color:rgba(80,45,10,.6);letter-spacing:.12em;';
+  // anel com média
+  var rw=document.createElement('div');rw.style.cssText='position:relative;width:clamp(80px,11vh,104px);height:clamp(80px,11vh,104px);flex-shrink:0;';
+  var ns='http://www.w3.org/2000/svg';
+  var svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 100 100');svg.style.cssText='width:100%;height:100%;transform:rotate(-90deg);';
+  var bgC=document.createElementNS(ns,'circle');bgC.setAttribute('cx','50');bgC.setAttribute('cy','50');bgC.setAttribute('r','38');bgC.setAttribute('fill','none');bgC.setAttribute('stroke','rgba(180,130,50,.18)');bgC.setAttribute('stroke-width','9');
+  var fgC=document.createElementNS(ns,'circle');fgC.setAttribute('cx','50');fgC.setAttribute('cy','50');fgC.setAttribute('r','38');fgC.setAttribute('fill','none');fgC.setAttribute('stroke',ringColor);fgC.setAttribute('stroke-width','9');fgC.setAttribute('stroke-linecap','round');fgC.setAttribute('stroke-dasharray',circ.toFixed(1));fgC.setAttribute('stroke-dashoffset',circ.toFixed(1));fgC.style.transition='stroke-dashoffset .9s cubic-bezier(.4,0,.2,1) .4s';
+  svg.appendChild(bgC);svg.appendChild(fgC);
+  var inner=document.createElement('div');inner.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;';
+  var slbl=document.createElement('div');slbl.textContent='Média';slbl.style.cssText='font-size:clamp(7px,1.05vh,10px);color:rgba(80,45,10,.5);font-weight:500;';
+  var sval=document.createElement('div');sval.textContent=avg+'/10';sval.style.cssText='font-size:clamp(17px,2.6vh,26px);font-weight:700;color:'+ringColor+';line-height:1;';
+  inner.appendChild(slbl);inner.appendChild(sval);rw.appendChild(svg);rw.appendChild(inner);
+  // tabela por slide
+  var tbl=document.createElement('div');tbl.style.cssText='display:flex;flex-direction:column;gap:.35vh;width:100%;margin-top:.3vh;';
+  QUIZ_SLIDES.forEach(function(s){
+    var r=QUIZ_RESULTS[s];
+    var row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:.6vw;padding:.4vh .8vw;border-radius:8px;background:rgba(120,70,20,.06);font-size:clamp(10px,1.5vh,14px);';
+    var name=document.createElement('div');name.textContent=QUIZ_LABELS[s];
+    name.style.cssText='flex:1;color:#2d1e0e;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
+    var stat=document.createElement('div');stat.style.cssText='font-family:Share Tech Mono,monospace;font-weight:700;white-space:nowrap;flex-shrink:0;';
+    if(r&&r.done){
+      var sc=r.score>=5?'#16a34a':'#d97706';
+      var c1=document.createElement('span');c1.style.color='#16a34a';c1.textContent='✔'+r.correct;
+      var c2=document.createElement('span');c2.style.color='#dc2626';c2.style.marginLeft='.5vw';c2.textContent='✗'+r.errors;
+      var c3=document.createElement('span');c3.style.color=sc;c3.style.marginLeft='.5vw';c3.textContent=r.score+'/10';
+      stat.appendChild(c1);stat.appendChild(c2);stat.appendChild(c3);
+    }else{
+      stat.innerHTML='<span style="color:rgba(120,70,20,.55);font-style:italic">não fez</span>';
+      name.style.color='rgba(80,45,10,.5)';
+    }
+    row.appendChild(name);row.appendChild(stat);tbl.appendChild(row);
+  });
+  // recomendação
+  var rec=document.createElement('div');
+  rec.style.cssText='font-size:clamp(10px,1.55vh,14px);color:#7c4010;text-align:center;max-width:96%;line-height:1.4;font-weight:600;background:rgba(253,224,71,.22);border:1px solid rgba(200,140,30,.35);border-radius:10px;padding:.6vh 1.2vw;margin-top:.3vh;';
+  var notDone=QUIZ_SLIDES.filter(function(s){return!(QUIZ_RESULTS[s]&&QUIZ_RESULTS[s].done);});
+  if(weakest!==null&&QUIZ_RESULTS[weakest].score<10){
+    rec.innerHTML='📚 Estude mais: <strong>'+QUIZ_LABELS[weakest]+'</strong>';
+  }else if(nDone>0){
+    rec.innerHTML='🎉 Parabéns! Você foi muito bem em todos os tópicos!';
+  }else{
+    rec.textContent='Faça os quizzes para ver suas recomendações!';
+  }
+  if(notDone.length){
+    var miss=document.createElement('div');
+    miss.style.cssText='font-size:clamp(9px,1.35vh,12px);color:rgba(120,70,20,.7);text-align:center;margin-top:.4vh;line-height:1.35;';
+    miss.innerHTML='⚠️ Quiz não feito: '+notDone.map(function(s){return QUIZ_LABELS[s];}).join(' · ');
+    rec.appendChild(miss);
+  }
+  card.appendChild(trophy);card.appendChild(ttl);card.appendChild(rw);card.appendChild(tbl);card.appendChild(rec);
   container.appendChild(card);
   requestAnimationFrame(function(){requestAnimationFrame(function(){
     card.style.opacity='1';card.style.transform='translate(-50%,-50%) scale(1)';
@@ -4932,6 +5023,7 @@ function s5MemEnd(){
   var score10=Math.min(10,Math.round(s5MemScore/10));
   var msgs=['Você conhece bem os elementos!','Memória afiada! Muito bem!','Excelente! Continue assim!'];
   var msg5=msgs[Math.floor(Math.random()*msgs.length)];
+  recordQuizResult(5,score10,s5MemPairs,s5MemErrors);
   var card=buildQuizResultCard(a5,{score:score10,correct:s5MemPairs,errors:s5MemErrors,msg:msg5,high:score10>=5,cx:Math.round(a5.offsetWidth/2),cy:Math.round(a5.offsetHeight/2),zIndex:200});
   card.className=(card.className?card.className+' ':'')+'s5-mem-scorecard';
   var retryBtn=document.createElement('button');retryBtn.className='startbtn show';retryBtn.textContent='Tentar de novo';
@@ -6666,6 +6758,7 @@ var S7N_QUIZ={
   11:{promptTime:0,prompt:'Toque no último elemento com isótopo mais comum estável',predicate:function(z){return z===82;},errorMsg:'O último elemento com isótopo estável é o chumbo (Pb, Z=82)'}
 };
 var s7nQuizActive=false,s7nQuizClickHandlers=[];
+var s7nQuizCorrectTotal=0,s7nQuizErrorsTotal=0;
 function s7nArrangeLongForm(){
   var a=document.getElementById('a7n');if(!a)return;
   var r=a.getBoundingClientRect();
@@ -6995,6 +7088,7 @@ function s7nQuizSetup(predicate,onCorrect,onWrong){
 }
 function s7nScheduleQuiz(ad,idx){
   var cfg=S7N_QUIZ[idx];if(!cfg)return;
+  if(idx===6){s7nQuizCorrectTotal=0;s7nQuizErrorsTotal=0;}
   function at(time,fn){
     var done=false;
     var handler=function(){
@@ -7008,6 +7102,8 @@ function s7nScheduleQuiz(ad,idx){
     if(s7nAudio!==ad)return;
     if(s7nMainBtn)s7nMainBtn.classList.remove('show');
     s7nQuizSetup(cfg.predicate,function onCorrect(el){
+      s7nQuizCorrectTotal++;
+      if(idx===11){var sc7=Math.max(0,Math.round((10-0.5*s7nQuizErrorsTotal)*10)/10);recordQuizResult(7,sc7,s7nQuizCorrectTotal,s7nQuizErrorsTotal);}
       s7nHideQuizPrompt();
       s7nShowParabens();
       s7nSpawnConfetti();
@@ -7018,6 +7114,7 @@ function s7nScheduleQuiz(ad,idx){
       setTimeout(function(){el.style.transform='';el.style.boxShadow='';el.style.zIndex='';},2200);
       setTimeout(function(){if(idx<=11)s7nAdvance();},2200);
     },function onWrong(el){
+      s7nQuizErrorsTotal++;
       try{new Audio('audio/error.mp3').play().catch(function(){});}catch(_){}
       s7nFlashRedEl(el);
       if(cfg.errorMsg)s7nShowQuizError(cfg.errorMsg);
@@ -8221,6 +8318,7 @@ function s8ResetAllFamilies(){
   });
   s8Raised=null;
 }
+var s8QuizCorrectTotal=0,s8QuizErrorsTotal=0;
 function s8StartQuiz(){
   s8StopFamHint();
   s8HideCelebHand();
@@ -8231,6 +8329,7 @@ function s8StartQuiz(){
   s8HidePlayBtn=true;
   s8UpdateBtns();
   s8QuizIdx=-1;
+  s8QuizCorrectTotal=0;s8QuizErrorsTotal=0;
   s8NextQuiz();
 }
 function s8PickRandomAtoms(){
@@ -8263,6 +8362,8 @@ function s8NextQuiz(){
   if(s8QuizIdx>=S8_QUIZ.length){
     s8QuizDone=true;
     s8QuizActive=false;
+    var sc8=Math.max(0,Math.round((10-0.5*s8QuizErrorsTotal)*10)/10);
+    recordQuizResult(8,sc8,s8QuizCorrectTotal,s8QuizErrorsTotal);
     s8QuizCleanupClicks();
     setTimeout(function(){s8HidePlayBtn=false;s8UpdateBtns();},600);
     if(s8Audio){try{s8Audio.pause();}catch(_){}s8Audio=null;}
@@ -8329,6 +8430,7 @@ function s8QuizActivate(idx){
     s8ShowAtomCard(cfg);
   }else{
     s8QuizSetup(cfg.predicate,function onCorrect(el,d){
+      s8QuizCorrectTotal++;
       s8HideQuizPrompt();
       s8ShowQuizParabens();
       s8SpawnQuizConfetti();
@@ -8342,6 +8444,7 @@ function s8QuizActivate(idx){
       setTimeout(function(){cells.forEach(function(c){c.style.transform='';c.style.boxShadow='';c.style.zIndex='';});},2200);
       setTimeout(function(){s8NextQuiz();},2400);
     },function onWrong(el,d){
+      s8QuizErrorsTotal++;
       try{new Audio('audio/error.mp3').play().catch(function(){});}catch(_){}
       var cells=(cfg.type==='family')?s8GetFamilyCells(d[3]):[el];
       cells.forEach(s8FlashRedEl);
@@ -8512,6 +8615,7 @@ function s8ShowAtomCard(cfg){
     if(!typed)return;
     var v=parseInt(typed,10);
     if(v===valence){
+      if(s8QuizTypedIdx===0)s8QuizCorrectTotal++; // conta a questão typed uma vez
       card.style.opacity='0';
       if(card._keyHandler)try{document.removeEventListener('keydown',card._keyHandler);}catch(_){}
       setTimeout(function(){if(card.parentNode)card.parentNode.removeChild(card);},350);
@@ -8524,6 +8628,7 @@ function s8ShowAtomCard(cfg){
         setTimeout(function(){s8ShowAtomCard(cfg);},2600);
       }
     }else{
+      s8QuizErrorsTotal++;
       try{new Audio('audio/error.mp3').play().catch(function(){});}catch(_){}
       display.style.animation='none';void display.offsetWidth;display.style.animation='s8QuizShake .4s';
       display.style.borderColor='rgba(220,40,30,.8)';
@@ -8721,6 +8826,7 @@ var s9D15Timers=[],s9D15TimerDefs=[];
 var s9WasPaused=false;
 var s9FLblOrigTop=null;
 var s9ExPhase=-1,s9ExErrors=0,s9ExClickHandler=null,s9ExTimers=[],s9ExSet=0,s9ExPendingNext=-1;
+var s9ExCorrectTotal=0,s9ExErrorsTotal=0;
 var s9FreeMode=false,s9FreeModeCurrentEl=null,s9FreeModeClickHandler=null;
 var s9JumpingSilent=false;
 var S9_DIALOG_LABELS=['Início','Organização','Bloco s','Bloco p','Bloco d','Bloco f',
@@ -8912,6 +9018,7 @@ function s9ExEnableClicks(answerZ,answerPeriod,answerGroup){
     var el=e.target.closest('.el');if(!el)return;
     var z=parseInt(el.getAttribute('data-z')||'0');if(!z)return;
     if(z===answerZ){
+      s9ExCorrectTotal++;
       s9ExDisableClicks();
       // Highlight correct element briefly
       el.style.transition='transform .3s ease,box-shadow .3s ease';
@@ -8932,7 +9039,7 @@ function s9ExEnableClicks(answerZ,answerPeriod,answerGroup){
       });
     }else{
       try{new Audio('audio/error.mp3').play().catch(function(){});}catch(_){}
-      s9ExErrors++;
+      s9ExErrors++;s9ExErrorsTotal++;
       el.style.transition='box-shadow .15s ease';
       el.style.boxShadow='0 0 0 3px rgba(239,68,68,1),0 0 10px rgba(239,68,68,.8)';
       el.style.zIndex='80';
@@ -8966,6 +9073,10 @@ function s9StartFreeMode(){
     a9.querySelectorAll(sel).forEach(function(el){if(el.parentNode)el.parentNode.removeChild(el);});
   });
   if(s9MainBtn)s9MainBtn.style.display='none';
+  // grava resultado do slide 9 e mostra o card-resumo final (slide 9 é o último)
+  var sc9=Math.max(0,Math.round((10-0.5*s9ExErrorsTotal)*10)/10);
+  recordQuizResult(9,sc9,s9ExCorrectTotal,s9ExErrorsTotal);
+  setTimeout(function(){s9ShowFinalSummary();},800);
   s9FreeModeClickHandler=function(e){
     var el=e.target.closest('.el');if(!el)return;
     var z=parseInt(el.getAttribute('data-z')||'0');if(!z)return;
@@ -8974,6 +9085,29 @@ function s9StartFreeMode(){
   };
   a9.addEventListener('click',s9FreeModeClickHandler);
   a9.querySelectorAll('.el').forEach(function(el){el.style.pointerEvents='auto';el.style.cursor='pointer';});
+}
+function s9ShowFinalSummary(){
+  var a9=document.getElementById('a9');if(!a9)return;
+  if(a9.querySelector('.s9-final-summary'))return;
+  // escurece o fundo
+  var ov=document.createElement('div');ov.className='s9-final-summary';
+  ov.style.cssText='position:absolute;inset:0;z-index:120;background:rgba(0,0,0,0);transition:background .5s ease;display:flex;align-items:center;justify-content:center;pointer-events:auto;';
+  a9.appendChild(ov);
+  var cx=Math.round(a9.offsetWidth/2),cy=Math.round(a9.offsetHeight/2);
+  var card=buildBigSummaryCard(ov,cx,cy,130);
+  try{new Audio('audio/statistics.mp3').play().catch(function(){});}catch(_){}
+  try{new Audio('audio/funfare.mp3').play().catch(function(){});}catch(_){}
+  vibrate([50,30,50,30,50,30,80]);
+  // botão fechar (libera o modo livre)
+  var closeBtn=document.createElement('button');closeBtn.className='startbtn show';closeBtn.textContent='OK';
+  closeBtn.style.cssText='position:absolute;left:auto;right:1.4vw;bottom:0.6vh;top:auto;transform:none;z-index:135;';
+  ov.appendChild(closeBtn);
+  applyBtnSystem(closeBtn,function(){
+    ov.style.background='rgba(0,0,0,0)';
+    card.style.opacity='0';card.style.transform='translate(-50%,-50%) scale(.85)';
+    setTimeout(function(){if(ov.parentNode)ov.parentNode.removeChild(ov);},450);
+  });
+  requestAnimationFrame(function(){requestAnimationFrame(function(){ov.style.background='rgba(0,0,0,.55)';});});
 }
 function s9StopFreeMode(){
   if(!s9FreeMode)return;
@@ -9083,6 +9217,7 @@ function s9RunExPhase(phase){
 }
 function s9StartExercise(){
   s9ExPhase=0;s9ExErrors=0;
+  s9ExCorrectTotal=0;s9ExErrorsTotal=0;
   s9ExDisableClicks();s9ExClearTimers();
   var a9=document.getElementById('a9');if(!a9)return;
   ['.s9-ex-q','.s9-ex-row-hl','.s9-ex-col-hl','.s9-ex-parabens','.s9-confetti'].forEach(function(sel){
@@ -9166,6 +9301,7 @@ function s9JumpToQuiz2(){
   if(s9FreeMode)return;
   stopS9Audio();
   s9ExReset();
+  s9ExCorrectTotal=0;s9ExErrorsTotal=0;
   var _a9=document.getElementById('a9');if(_a9){['.s9-lanth-card','.s9-act-card'].forEach(function(sel){_a9.querySelectorAll(sel).forEach(function(el){if(el.parentNode)el.parentNode.removeChild(el);});});}
   s9ApplyStatesBefore(15);
   // limpa artefatos visuais do exemplo D14 (Fe) que ficaram na tela
