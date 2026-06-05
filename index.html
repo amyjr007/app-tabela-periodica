@@ -11710,17 +11710,15 @@ function s0StopHl(){
 }
 function s0BtnState(state){
   var btn=s0Ov&&s0Ov._btn?s0Ov._btn:null;if(!btn)return;
+  // botão usa o mesmo visual do play padrão do slide — sem realce/destaque.
   btn.classList.remove('s0-btn-green','s0-btn-pulse','s0-btn-playing');
+  btn.style.animation='none';
   var pau=btn.querySelector('.s0-pause-icon');
   if(state==='playing'){
-    btn.style.animation='none';
     btn.classList.add('s0-btn-playing');
     if(pau)pau.style.display='flex';
   } else {
     if(pau)pau.style.display='none';
-    if(state==='ready'){btn.style.animation='s0BtnProminent 1.2s ease-in-out infinite';}
-    else if(state==='green'){btn.classList.add('s0-btn-green','s0-btn-pulse');btn.style.animation='none';}
-    else{btn.style.animation='none';}
   }
 }
 function s0ShowText(txt,css){
