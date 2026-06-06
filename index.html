@@ -11747,17 +11747,21 @@ function s0BtnState(state){
   var btn=s0Ov&&s0Ov._btn?s0Ov._btn:null;if(!btn)return;
   btn.classList.remove('s0-btn-green','s0-btn-pulse','s0-btn-playing','s0-btn-glow');
   var pau=btn.querySelector('.s0-pause-icon');
+  if(pau)pau.style.display='none';
   if(state==='playing'){
     btn.style.animation='none';
-    btn.classList.add('s0-btn-playing');
-    if(pau)pau.style.display='flex';
+    btn.classList.remove('show');
   } else if(state==='ready'){
     btn.style.animation='';
+    btn.classList.add('show');
     btn.classList.add('s0-btn-glow');
-    if(pau)pau.style.display='none';
+  } else if(state==='green'){
+    btn.style.animation='none';
+    btn.classList.add('show');
+    btn.classList.add('s0-btn-green');
   } else {
     btn.style.animation='none';
-    if(pau)pau.style.display='none';
+    btn.classList.remove('show');
   }
 }
 function s0ShowText(txt,css){
