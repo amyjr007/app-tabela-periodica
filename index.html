@@ -4272,6 +4272,10 @@ function s5Emphasize(el){
   if(!el)return;
   try{el.animate([{transform:'scale(1)'},{transform:'scale(1.25)'},{transform:'scale(1)'}],{duration:650,easing:'cubic-bezier(.34,1.56,.64,1)'});}catch(_){}
 }
+function s5TriplePulse(el){
+  if(!el)return;
+  try{el.animate([{transform:'scale(1)'},{transform:'scale(1.2)'},{transform:'scale(1)'}],{duration:300,easing:'cubic-bezier(.34,1.56,.64,1)',iterations:3});}catch(_){}
+}
 function s5EmphasizeQuery(selector){
   var a5=document.getElementById('a5');if(!a5)return;
   a5.querySelectorAll(selector).forEach(function(el){
@@ -5094,6 +5098,7 @@ function s5MemCleanup(){
 var S5_LIGHT_OPTS={html:true,background:'rgba(255,250,240,.96)',border:'1px solid rgba(140,80,20,.30)',color:'#2d1e0e',textShadow:'none',boxShadow:'0 3px 12px rgba(80,40,0,.20),inset 0 1px 0 rgba(255,255,255,.6)'};
 var S5_CHIP_LIGHT_OPTS={background:'rgba(255,250,240,.96)',border:'1px solid rgba(140,80,20,.30)',color:'#2d1e0e',textShadow:'none',boxShadow:'0 2px 8px rgba(80,40,0,.18),inset 0 1px 0 rgba(255,255,255,.6)',padding:'.35vh 1.0vw',fontSize:'clamp(12px,2vh,18px)'};
 var S5_CHIP_RED_OPTS={padding:'.35vh 1.0vw',fontSize:'clamp(12px,2vh,18px)'};
+var S5_NOTE_OPTS={background:'rgba(255,255,255,.15)',border:'1px solid rgba(255,255,255,.3)',color:'#f0f9ff',textShadow:'0 1px 3px rgba(0,0,0,.55)',boxShadow:'0 2px 8px rgba(0,0,0,.22)',padding:'.3vh .9vw',fontSize:'clamp(11px,1.9vh,16px)'};
 function s5FinalizeStep1(){
   if(!L5)return;
   if(!s5Pills.repr){
@@ -5203,30 +5208,35 @@ function playS5Step(idx){
   s5UpdateBtns();
   var ad=s5Audio=new Audio(S5_AUDIOS[idx]);
   s5EventDefs=[];
+  if(idx===0&&L5){
+    s5EventDefs.push({t:15700,fn:function(){
+      var r=s5ShowOverlay('<span style="color:#a16207">Elementos</span>&nbsp;<span style="color:#1e40af">representativos</span>',false,S5_LIGHT_OPTS,'top');
+      if(r){s5Row1=r.row;s5Pills.repr=r.pill;}
+    }});
+    s5EventDefs.push({t:17800,fn:function(){
+      var r=s5ShowOverlay('Elementos de Transição',false,undefined,'mid');
+      if(r){s5Row2=r.row;s5Pills.trans=r.pill;}
+    }});
+    s5EventDefs.push({t:20500,fn:function(){
+      if(s5Row1)s5Pills.grupoA=s5AddToRow(s5Row1,'Grupo A',false,S5_CHIP_LIGHT_OPTS);
+    }});
+    s5EventDefs.push({t:21300,fn:function(){
+      if(s5Row2)s5Pills.grupoB=s5AddToRow(s5Row2,'Grupo B',false,S5_CHIP_RED_OPTS);
+    }});
+  }
   if(idx===1&&L5){
+    s5FinalizeStep1();
     ad.addEventListener('ended',function(){
       if(s5Audio!==ad)return;
       s5Overlays.forEach(function(el){if(el&&el.style){el.style.transition='opacity .4s ease';el.style.opacity='0';}});
       setTimeout(function(){if(s5Audio===ad)s5ClearOverlays();},450);
     });
-    s5EventDefs.push({t:3000,fn:function(){
-      var r=s5ShowOverlay('<span style="color:#a16207">Elementos</span>&nbsp;<span style="color:#1e40af">representativos</span>',false,S5_LIGHT_OPTS,'top');
-      s5Row1=r.row;s5Pills.repr=r.pill;
-    }});
-    s5EventDefs.push({t:5000,fn:function(){
-      var r=s5ShowOverlay('Elementos de Transição',false,undefined,'mid');
-      s5Row2=r.row;s5Pills.trans=r.pill;
-    }});
-    s5EventDefs.push({t:7000,fn:function(){
-      s5Pills.grupoA=s5AddToRow(s5Row1,'Grupo A',false,S5_CHIP_LIGHT_OPTS);
-    }});
-    s5EventDefs.push({t:9000,fn:function(){
-      s5Pills.grupoB=s5AddToRow(s5Row2,'Grupo B',false,S5_CHIP_RED_OPTS);
-    }});
-    s5EventDefs.push({t:11000,fn:function(){s5Emphasize(s5Pills.repr);}});
-    s5EventDefs.push({t:12000,fn:function(){s5Emphasize(s5Pills.grupoA);}});
-    s5EventDefs.push({t:22500,fn:function(){s5Emphasize(s5Pills.trans);}});
-    s5EventDefs.push({t:24000,fn:function(){s5Emphasize(s5Pills.grupoB);}});
+    s5EventDefs.push({t:800,fn:function(){s5TriplePulse(s5Pills.repr);}});
+    s5EventDefs.push({t:1800,fn:function(){s5TriplePulse(s5Pills.grupoA);}});
+    s5EventDefs.push({t:6500,fn:function(){if(s5Row1)s5AddToRow(s5Row1,'São previsíveis',false,S5_NOTE_OPTS);}});
+    s5EventDefs.push({t:11300,fn:function(){s5TriplePulse(s5Pills.trans);}});
+    s5EventDefs.push({t:12000,fn:function(){s5TriplePulse(s5Pills.grupoB);}});
+    s5EventDefs.push({t:13000,fn:function(){if(s5Row2)s5AddToRow(s5Row2,'São mais complexos',false,S5_NOTE_OPTS);}});
   }
   if(idx===2&&L5){
     s5EventDefs.push({t:8000,fn:function(){
