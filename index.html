@@ -289,6 +289,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 @keyframes s0BtnPulse{0%,100%{transform:scale(1.3);box-shadow:0 0 16px 4px rgba(34,197,94,.5)}50%{transform:scale(1.42);box-shadow:0 0 30px 12px rgba(34,197,94,.85)}}
 #startbtn.s0-btn-green{background:#16a34a!important;border-color:rgba(134,239,172,.6)!important;transform:scale(1.3);box-shadow:0 0 22px 6px rgba(34,197,94,.6)!important}
 #startbtn.s0-btn-pulse{animation:s0BtnPulse 1s ease-in-out infinite!important}
+@keyframes s0BtnGlow{0%,100%{box-shadow:0 4px 14px rgba(0,0,0,.40),0 0 0 0 rgba(255,210,0,0)}50%{box-shadow:0 3px 14px rgba(0,0,0,.30),0 0 26px 12px rgba(255,210,0,.65)}}
+#startbtn.s0-btn-glow{animation:s0BtnGlow 1.5s ease-in-out infinite!important}
 #s0Overlay .startbtn.s0-btn-playing{background:rgba(80,80,80,.7)!important;border-color:rgba(160,160,160,.4)!important;box-shadow:0 2px 8px rgba(0,0,0,.4)!important;animation:none!important}
 .cv-t1{font-family:'Fredoka',sans-serif;font-weight:500;font-size:clamp(26px,5.4vh,52px);letter-spacing:.16em;color:#2d1e0e;text-transform:uppercase;text-align:center;line-height:1.05}
 .cv-t1 b{color:#7c4010;font-weight:600}
@@ -11742,14 +11744,18 @@ function s0StopHl(){
 }
 function s0BtnState(state){
   var btn=s0Ov&&s0Ov._btn?s0Ov._btn:null;if(!btn)return;
-  // botão usa o mesmo visual do play padrão do slide — sem realce/destaque.
-  btn.classList.remove('s0-btn-green','s0-btn-pulse','s0-btn-playing');
-  btn.style.animation='none';
+  btn.classList.remove('s0-btn-green','s0-btn-pulse','s0-btn-playing','s0-btn-glow');
   var pau=btn.querySelector('.s0-pause-icon');
   if(state==='playing'){
+    btn.style.animation='none';
     btn.classList.add('s0-btn-playing');
     if(pau)pau.style.display='flex';
+  } else if(state==='ready'){
+    btn.style.animation='';
+    btn.classList.add('s0-btn-glow');
+    if(pau)pau.style.display='none';
   } else {
+    btn.style.animation='none';
     if(pau)pau.style.display='none';
   }
 }
@@ -12038,7 +12044,7 @@ function s0Teardown(fade){
     var par=btn._s0OrigParent,next=btn._s0OrigNextSibling;
     btn._s0OrigParent=null;btn._s0OrigNextSibling=null;
     btn.style.zIndex='';
-    btn.classList.remove('s0-btn-green','s0-btn-pulse','s0-btn-playing');
+    btn.classList.remove('s0-btn-green','s0-btn-pulse','s0-btn-playing','s0-btn-glow');
     btn.style.animation='';
     var pau=btn.querySelector('.s0-pause-icon');if(pau&&pau.parentNode)pau.parentNode.removeChild(pau);
     if(next){par.insertBefore(btn,next);}else{par.appendChild(btn);}
@@ -12071,7 +12077,7 @@ function s0Init(){
   if(s0Ov)return;
   s0Phase=0;s0HlActive=false;
   var ov=document.createElement('div');ov.id='s0Overlay';
-  ov.style.cssText='position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0);pointer-events:auto;transition:background .9s ease;';
+  ov.style.cssText='position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0);pointer-events:none;transition:background .9s ease;';
   document.body.appendChild(ov);
   s0Ov=ov;
   var origBtn=s0GetBtn();
