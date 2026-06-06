@@ -223,6 +223,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 .el.grp-ab-1{background:linear-gradient(145deg,#fde047,#ca8a04)}
 .el.grp-ab-2{background:linear-gradient(145deg,#f87171,#dc2626)}
 .el.grp-ab-3{background:linear-gradient(145deg,#60a5fa,#1d4ed8)}
+#a5 .el.grp-ab-1{background:linear-gradient(145deg,#60a5fa,#1d4ed8)}
 /* Footer */
 .foot{display:flex;align-items:center;justify-content:space-between;padding:.5vh 1.8vw .8vh;flex-shrink:0;border-top:1px solid rgba(120,70,20,.14)}
 .topnav{display:flex;justify-content:flex-start;align-items:center;gap:.7vw;padding:.8vh 1.4vw .4vh;flex-shrink:0;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;touch-action:pan-x;mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%)}
@@ -4425,7 +4426,8 @@ function s5SnapGroupUp(g,silent){
         s5ShowParabens();
         if(s5Raised===18)s5SnapGroupDown(18);
         s5FreeMode=true;s5Expected=null;
-        s5UpdateBtns();
+        // dialogo5.5 inicia automaticamente — não exibe botão "Treinar"
+        setTimeout(function(){s5PlayExercise(0);},3100);
       });
       ad8.play().catch(function(){});
     }catch(_){}
@@ -5103,14 +5105,14 @@ function s5MemCleanup(){
   var a5=document.getElementById('a5');
   if(a5)a5.querySelectorAll('.s5-mem-scorecard,.s5-mem-bonus').forEach(function(e){if(e.parentNode)e.parentNode.removeChild(e);});
 }
-var S5_LIGHT_OPTS={html:true,background:'rgba(255,250,240,.96)',border:'1px solid rgba(140,80,20,.30)',color:'#2d1e0e',textShadow:'none',boxShadow:'0 3px 12px rgba(80,40,0,.20),inset 0 1px 0 rgba(255,255,255,.6)'};
-var S5_CHIP_LIGHT_OPTS={background:'rgba(255,250,240,.96)',border:'1px solid rgba(140,80,20,.30)',color:'#2d1e0e',textShadow:'none',boxShadow:'0 2px 8px rgba(80,40,0,.18),inset 0 1px 0 rgba(255,255,255,.6)',padding:'.35vh 1.0vw',fontSize:'clamp(12px,2vh,18px)'};
+var S5_LIGHT_OPTS={html:true,background:'rgba(239,246,255,.96)',border:'1px solid rgba(30,64,175,.30)',color:'#1e40af',textShadow:'none',boxShadow:'0 3px 12px rgba(30,64,175,.20),inset 0 1px 0 rgba(255,255,255,.6)'};
+var S5_CHIP_LIGHT_OPTS={background:'rgba(239,246,255,.96)',border:'1px solid rgba(30,64,175,.30)',color:'#1e40af',textShadow:'none',boxShadow:'0 2px 8px rgba(30,64,175,.18),inset 0 1px 0 rgba(255,255,255,.6)',padding:'.35vh 1.0vw',fontSize:'clamp(12px,2vh,18px)'};
 var S5_CHIP_RED_OPTS={padding:'.35vh 1.0vw',fontSize:'clamp(12px,2vh,18px)'};
-var S5_NOTE_OPTS={background:'rgba(255,255,255,.15)',border:'1px solid rgba(255,255,255,.3)',color:'#f0f9ff',textShadow:'0 1px 3px rgba(0,0,0,.55)',boxShadow:'0 2px 8px rgba(0,0,0,.22)',padding:'.3vh .9vw',fontSize:'clamp(11px,1.9vh,16px)'};
+var S5_NOTE_OPTS={background:'rgba(255,251,235,.92)',border:'1px solid rgba(180,130,0,.35)',color:'#78350f',textShadow:'none',boxShadow:'0 2px 8px rgba(0,0,0,.22)',padding:'.3vh .9vw',fontSize:'clamp(11px,1.9vh,16px)'};
 function s5FinalizeStep1(){
   if(!L5)return;
   if(!s5Pills.repr){
-    var r=s5ShowOverlay('<span style="color:#a16207">Elementos</span>&nbsp;<span style="color:#1e40af">representativos</span>',false,S5_LIGHT_OPTS,'top');
+    var r=s5ShowOverlay('<span style="color:#1e40af">Elementos representativos</span>',false,S5_LIGHT_OPTS,'top');
     if(r){s5Row1=r.row;s5Pills.repr=r.pill;}
   }
   if(!s5Pills.trans){
@@ -5218,7 +5220,7 @@ function playS5Step(idx){
   s5EventDefs=[];
   if(idx===0&&L5){
     s5EventDefs.push({t:15700,fn:function(){
-      var r=s5ShowOverlay('<span style="color:#a16207">Elementos</span>&nbsp;<span style="color:#1e40af">representativos</span>',false,S5_LIGHT_OPTS,'top');
+      var r=s5ShowOverlay('<span style="color:#1e40af">Elementos representativos</span>',false,S5_LIGHT_OPTS,'top');
       if(r){s5Row1=r.row;s5Pills.repr=r.pill;}
     }});
     s5EventDefs.push({t:17800,fn:function(){
@@ -5302,7 +5304,7 @@ function playS5Step(idx){
       if(r){s5Row1=r.row;s5Pills.grupoA=r.pill;}
     }});
     s5EventDefs.push({t:5000,fn:function(){
-      if(s5Row1)s5Pills.repr=s5AddToRow(s5Row1,'<span style="color:#a16207">Elementos</span>&nbsp;<span style="color:#1e40af">representativos</span>',true,S5_LIGHT_OPTS);
+      if(s5Row1)s5Pills.repr=s5AddToRow(s5Row1,'<span style="color:#1e40af">Elementos representativos</span>',true,S5_LIGHT_OPTS);
     }});
   }
   s5BindPausable(ad);
@@ -5313,7 +5315,22 @@ function s5JumpToStart(){stopS5Audio();s5Step=-1;if(s5StartBtn)s5StartBtn.classL
 function s5JumpToGrupoB(){playS5Step(1);}
 function s5JumpToGrupoA(){playS5Step(2);}
 function s5JumpToFamilias(){playS5Step(3);}
-function s5JumpToQuiz(){stopS5Audio();s5FreeMode=true;s5Expected=null;s5Step=4;if(s5NextBtn)s5NextBtn.classList.remove('show');s5PlayExercise(0);}
+function s5JumpToQuiz(){
+  stopS5Audio();
+  s5ClearOverlays();
+  s5CollapseSides();
+  s5CleanupDrag(true);
+  s5SetupDrag();
+  // mostra todos os rótulos (1A, 2A…) imediatamente — estado pós-jogo completo
+  for(var g=1;g<=18;g++){
+    s5LabelShown[g]=true;
+    var lbl=s5GroupLabels[g];
+    if(lbl){lbl.style.transition='none';lbl.style.transform='';lbl.style.opacity='1';}
+  }
+  s5FreeMode=true;s5Expected=null;s5Step=4;
+  if(s5NextBtn)s5NextBtn.classList.remove('show');
+  s5PlayExercise(0);
+}
 function buildPage5(){
   stopS5Audio();
   s5ExploreMode=false;s5ExploreHooked=false;s5FreeMode=false;
