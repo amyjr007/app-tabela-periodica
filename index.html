@@ -4545,6 +4545,10 @@ var S5_ROMAN_LABELS={1:'IA',2:'IIA',3:'IIIB',4:'IVB',5:'VB',6:'VIB',7:'VIIB',8:'
 function s5ShowRomanLabels(){
   var a5=document.getElementById('a5');if(!a5||!L5)return;
   s5ClearRomanLabels();
+  Object.keys(s5GroupLabels).forEach(function(g){
+    var lbl=s5GroupLabels[g];
+    if(lbl&&s5LabelShown[g]){lbl.style.transition='opacity .3s ease';lbl.style.opacity='0';}
+  });
   var L=L5,lH=Math.max(12,L.cH*.62),lW=Math.max(18,L.cW*.9);
   var fs=Math.round(Math.min(L.cH*.38,13));
   for(var g=1;g<=18;g++){(function(grp){
@@ -4566,6 +4570,10 @@ function s5ClearRomanLabels(){
   a5.querySelectorAll('.s5-roman-lbl').forEach(function(el){
     el.style.opacity='0';
     setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},420);
+  });
+  Object.keys(s5GroupLabels).forEach(function(g){
+    var lbl=s5GroupLabels[g];
+    if(lbl&&s5LabelShown[g]){lbl.style.transition='opacity .35s ease';lbl.style.opacity='1';}
   });
 }
 /* ═══════ S5 QUIZ / EXERCÍCIOS ═══════ */
@@ -5083,14 +5091,14 @@ function s5MemCheckPair(){
     s5MemErrors++;s5MemScore=Math.max(0,s5MemScore-2);s5MemLastG=null;
     if(s5MemScoreEl)s5MemScoreEl.textContent=s5MemScore;
     if(s5MemErrEl)s5MemErrEl.textContent=s5MemErrors;
-    try{new Audio('audio/error.mp3').play().catch(function(){});}catch(_){}
     vib([30,20,30]);
     s5MemCards[ai].el.classList.add('s5mc-wrong');s5MemCards[bi].el.classList.add('s5mc-wrong');
     setTimeout(function(){
+      try{new Audio('audio/error.mp3').play().catch(function(){});}catch(_){}
       s5MemCards[ai].el.classList.remove('s5mc-flipped','s5mc-wrong');
       s5MemCards[bi].el.classList.remove('s5mc-flipped','s5mc-wrong');
       s5MemFlipped=[];s5MemChecking=false;
-    },800);
+    },1800);
   }
 }
 function s5MemShowBonus(el,text){
