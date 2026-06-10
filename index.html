@@ -195,7 +195,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 .s5body{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .s5area{flex:1;position:relative;min-height:0;overflow:hidden}
 /* S5 Memory Game */
-.s5-mem-overlay{position:absolute;inset:0;z-index:100;background:rgba(255,252,245,1);overflow:hidden;display:flex;flex-direction:column;}
+.s5-mem-overlay{position:absolute;inset:0;z-index:100;background:rgba(255,252,245,1);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:scale(.92);transition:opacity .35s ease,transform .35s cubic-bezier(.34,1.56,.64,1);}
+.s5-mem-overlay.s5mem-in{opacity:1;transform:scale(1);}
 .s5-mem-bar{position:sticky;top:0;z-index:5;background:rgba(255,250,240,.97);border-bottom:1px solid rgba(140,80,20,.15);padding:.4vh 2.5vw;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 8px rgba(80,40,0,.07);}
 .s5-mem-grid{display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,1fr);gap:clamp(5px,1.1vh,12px);padding:clamp(6px,1.2vh,14px);flex:none;margin:auto;box-sizing:border-box;}
 .s5-mem-card{cursor:pointer;perspective:700px;user-select:none;-webkit-tap-highlight-color:transparent;min-height:0;min-width:0;}
@@ -481,7 +482,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v61</div>
+<div id="app-version">v62</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -5027,7 +5028,7 @@ function s5ShowMemGameBtn(){
   if(s5MemGameBtn&&s5MemGameBtn.parentNode)s5MemGameBtn.parentNode.removeChild(s5MemGameBtn);
   var btn=document.createElement('button');btn.className='startbtn show';btn.textContent='Jogar';
   btn.style.cssText='left:auto;right:1.4vw;bottom:0.6vh;top:auto;transform:none;';
-  applyBtnSystem(btn,s5StartMemGame);
+  btn.addEventListener('click',s5StartMemGame);
   a5.appendChild(btn);s5MemGameBtn=btn;
 }
 function s5StartMemGame(){
@@ -5078,6 +5079,7 @@ function s5StartMemGame(){
   });
   ov.appendChild(grid);a5.appendChild(ov);
   s5MemSizeGrid(ov,bar,grid);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){ov.classList.add('s5mem-in');});});
 }
 function s5MemSizeGrid(ov,bar,grid){
   requestAnimationFrame(function(){
