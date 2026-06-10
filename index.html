@@ -494,7 +494,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v71</div>
+<div id="app-version">v72</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -1318,7 +1318,7 @@ function advanceP0ToA5(){
   a5.play().catch(function(){});
   var ov2=document.getElementById('introtxt2');if(ov2)ov2.classList.add('show');
 }
-function s1IntroWaveSweep(){
+function s1IntroWaveSweep(total){
   if(!gItems)return;
   var list=[];
   // Sort ALL by Z → percorre a tabela em ordem natural
@@ -1337,7 +1337,8 @@ function s1IntroWaveSweep(){
     }
     var it=gItems[z];if(it&&it.el)list.push(it.el);
   });
-  var total=2000,per=Math.floor(total/list.length);
+  total=total||2000;
+  var per=Math.floor(total/list.length);
   list.forEach(function(el,i){
     setTimeout(function(){
       try{el.animate([
@@ -1347,6 +1348,38 @@ function s1IntroWaveSweep(){
       ],{duration:260,easing:'cubic-bezier(.4,0,.3,1)'});}catch(_){}
     },i*per);
   });
+}
+// brilho sequencial coluna a coluna (todos os elementos de cada coluna juntos), varrendo as 18 colunas
+function s1ColumnWaveSweep(total){
+  if(!gItems)return;
+  total=total||3600;
+  var per=total/18;
+  for(var g=1;g<=18;g++){
+    var list=[];
+    ALL.forEach(function(d){
+      if(d[3]!==g)return;
+      var z=d[0];
+      if(z>=57&&z<=71||z>=89&&z<=103){
+        if(g===3){
+          if(coverLanth&&list.indexOf(coverLanth)<0)list.push(coverLanth);
+          if(coverAct&&list.indexOf(coverAct)<0)list.push(coverAct);
+        }
+        return;
+      }
+      var it=gItems[z];if(it&&it.el)list.push(it.el);
+    });
+    (function(list,delay){
+      setTimeout(function(){
+        list.forEach(function(el){
+          try{el.animate([
+            {transform:'scale(1)',boxShadow:'none',offset:0},
+            {transform:'scale(1.48)',boxShadow:'0 0 12px 4px rgba(255,200,60,.88),0 0 26px 10px rgba(255,130,20,.52)',offset:.38},
+            {transform:'scale(1)',boxShadow:'none',offset:1}
+          ],{duration:260,easing:'cubic-bezier(.4,0,.3,1)'});}catch(_){}
+        });
+      },Math.round(delay));
+    })(list,(g-1)*per);
+  }
 }
 function s1ClRestoreCl(){
   var it=gItems[17];if(!it||!it.el)return;
@@ -1831,6 +1864,11 @@ function autoDemo(){
     showSpreadCaption('São 7 linhas.');
     spreadActive=true;
   },4800);
+  // t=6s: linhas separadas — brilho sequencial em todos os elementos (até 8.2s)
+  setTimeout(function(){
+    if(introAudio!==ad)return;
+    s1IntroWaveSweep(2200);
+  },6000);
   setTimeout(function(){
     if(introAudio!==ad)return;
     unspread();hideSpreadCaption();
@@ -1841,6 +1879,11 @@ function autoDemo(){
       spreadActive=true;
     },420);
   },9000);
+  // t=12.4s: colunas separadas — brilho varrendo coluna a coluna, nas 18 colunas (até 16s)
+  setTimeout(function(){
+    if(introAudio!==ad)return;
+    s1ColumnWaveSweep(3600);
+  },12400);
 }
 function updateInstr(txt){instr1.textContent=txt;}
 
