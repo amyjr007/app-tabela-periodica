@@ -476,7 +476,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v57</div>
+<div id="app-version">v58</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -3119,6 +3119,7 @@ function p3SetupDrag(el,type){}
 var s3GameActive=false,s3GameCorrect=0,s3GameErrors=0,s3GameStartTime=0;
 var s3GameGlobalTimer=null,s3GameEl=null,s3GameUsedZ=[],s3GameBtn=null,s3GameScoreCard=null;
 var S3_GAME_HINT_SEQ=['metal','metal','metal','ametal','noble'];
+var S3_TYPE_LABELS={metal:'Metal',ametal:'Ametal',noble:'Gases Nobres'};
 var S3_GAME_SECS=15;
 var s3GameHoverType=null;
 function vib(p){try{if(navigator.vibrate)navigator.vibrate(p);}catch(_){}}
@@ -3172,6 +3173,11 @@ function s3SpawnGameCard(d,hintType,tutorial){
   var zEl=document.createElement('div');zEl.textContent=d[0];zEl.style.cssText='font-family:Share Tech Mono,monospace;font-size:'+Math.round((L3.cH*.22*.72+4)*1.2)+'px;color:'+(ti?'#fff':'#dc2626')+';line-height:1;'+shadow;
   var sEl=document.createElement('div');sEl.textContent=d[1];sEl.style.cssText='font-family:Fredoka,sans-serif;font-weight:700;font-size:'+Math.round(L3.cH*.56*.72)+'px;color:'+(ti?'#fff':'#111')+';line-height:1;'+shadow;
   var nEl=document.createElement('div');nEl.textContent=ELEM_NAMES[d[0]]||'';nEl.style.cssText='font-family:Fredoka,sans-serif;font-size:'+Math.round(L3.cH*.18*.72*1.728)+'px;color:'+(ti?'rgba(255,255,255,.92)':'#555')+';line-height:1;text-align:center;'+shadow;
+  if(ti){
+    var lblEl=document.createElement('div');lblEl.textContent=S3_TYPE_LABELS[hintType];
+    lblEl.style.cssText='font-family:Fredoka,sans-serif;font-weight:700;font-size:'+Math.round(L3.cH*.14*.72*1.728)+'px;color:#fff;line-height:1;letter-spacing:.06em;text-transform:uppercase;'+shadow;
+    card.appendChild(lblEl);
+  }
   card.appendChild(zEl);card.appendChild(sEl);card.appendChild(nEl);card._d=d;card._tutorial=!!tutorial;
   a3.appendChild(card);s3GameEl=card;
   setTimeout(function(){card.style.transition='top .7s cubic-bezier(.15,1.15,.35,1)';card.style.top='36%';},16);
