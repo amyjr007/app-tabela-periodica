@@ -4708,6 +4708,9 @@ function s5StartWheelQuiz(ex){
       };
       s5Timers.push(setTimeout(function(){
         if(s5Audio){try{s5Audio.pause();}catch(_){}s5Audio.onended=null;s5Audio=null;}
+        if(s5StartBtn)s5StartBtn.classList.remove('show');
+        if(s5NextBtn)s5NextBtn.classList.remove('show');
+        if(s5TrainBtn)s5TrainBtn.classList.remove('show');
         var ad58=s5Audio=new Audio('audio/dialogo5.8.mp3');
         ad58.addEventListener('ended',function(){if(s5Audio===ad58)doAdvance();});
         ad58.addEventListener('error',function(){if(s5Audio===ad58)doAdvance();});
@@ -5050,6 +5053,7 @@ function s5MemFlip(idx){
   if(s5MemFlipped.indexOf(idx)>=0)return;
   if(s5MemFlipped.length>=2)return;
   c.el.classList.add('s5mc-flipped');vib(18);
+  try{new Audio('audio/flipcard.mp3').play().catch(function(){});}catch(_){}
   s5MemFlipped.push(idx);
   if(s5MemFlipped.length===2)s5MemCheckPair();
 }
