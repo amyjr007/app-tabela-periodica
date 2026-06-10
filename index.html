@@ -476,7 +476,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v54</div>
+<div id="app-version">v55</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -11946,6 +11946,13 @@ function s0StartTnScroll(){
     if(s0TnScroll>180)s0TnDir=-1;if(s0TnScroll<0)s0TnDir=1;
   },30);
 }
+// alterna o gesto da mãozinha-guia: 'swipe' (arrastar, vai e volta) ou 'point' (clicar)
+function s0SetGuideHandAnim(mode){
+  var hand=document.getElementById('s0GuideHand');if(!hand)return;
+  hand.style.animation=(mode==='swipe')
+    ?'s0HandSwipe 1.4s ease-in-out infinite'
+    :'s0HandPoint .9s ease-in-out infinite';
+}
 // move a mãozinha-guia até o topnav e simula o gesto de arrastar os tópicos
 function s0GuideHandToTopnavDemo(){
   var hand=document.getElementById('s0GuideHand');if(!hand)return;
@@ -11954,7 +11961,7 @@ function s0GuideHandToTopnavDemo(){
   hand.style.left=Math.round(r.left+r.width*.5-16)+'px';
   hand.style.top=Math.round(r.top+r.height*.18)+'px';
   // wobble de arrastar começa já durante o deslize até o topnav (sem espera)
-  hand.style.animation='s0HandSwipe 1.4s ease-in-out infinite';
+  s0SetGuideHandAnim('swipe');
   s0TnScroll=tn.scrollLeft;s0TnDir=1;s0TnDemo=true;
   s0StartTnScroll();
 }
@@ -11962,8 +11969,8 @@ function s0GuideHandToTopnavDemo(){
 function s0GuideHandFromTopnavDemo(targetId){
   s0TnDemo=false;
   if(s0ScrollIv){clearInterval(s0ScrollIv);s0ScrollIv=null;}
+  s0SetGuideHandAnim('point');
   var hand=document.getElementById('s0GuideHand');if(!hand)return;
-  hand.style.animation='s0HandPoint .9s ease-in-out infinite';
   var btn=document.getElementById(targetId);if(!btn)return;
   var r=btn.getBoundingClientRect();
   hand.style.left=Math.round(r.left+r.width/2-16)+'px';
@@ -12027,20 +12034,26 @@ function s0Dialogo02(ad){
   s0BtnState('playing');
   s0EventDefs=[
     {t:100,  fn:function(){
-      var b=document.getElementById('topnavBar');if(b)b.classList.add('open');
+      // mãozinha aparece já fazendo o gesto de "se aproximar" (frente/trás/frente)
       s0ShowGuideHand('topnavToggle');
+      s0SetGuideHandAnim('swipe');
     }},
-    {t:3800, fn:function(){
+    {t:1500, fn:function(){
+      // clica na barra: ela abre e os tópicos aparecem
+      s0SetGuideHandAnim('point');
+      var b=document.getElementById('topnavBar');if(b)b.classList.add('open');
+    }},
+    {t:2100, fn:function(){
       s0GuideHandToTopnavDemo();
     }},
     {t:4000, fn:function(){s0StopHl();}},
-    {t:4700, fn:function(){
+    {t:4900, fn:function(){
       s0GuideHandFromTopnavDemo('topnavToggle');
     }},
-    {t:5300, fn:function(){
+    {t:5500, fn:function(){
       var b=document.getElementById('topnavBar');if(b)b.classList.remove('open');
     }},
-    {t:5900, fn:function(){s0HideGuideHand();}},
+    {t:6100, fn:function(){s0HideGuideHand();}},
     {t:7000, fn:function(){s0ShowQuizPromo();try{new Audio('audio/funfare.mp3').play().catch(function(){});}catch(_){}}},
     {t:12000,fn:function(){s0ShowSampleCard();try{new Audio('audio/statistics.mp3').play().catch(function(){});}catch(_){}}},
     {t:20000,fn:function(){s0ClearPromo();}}
