@@ -488,13 +488,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 @keyframes s4HintPulse{0%,100%{transform:translateX(-50%) scale(1);box-shadow:0 2px 10px rgba(180,100,10,.25)}50%{transform:translateX(-50%) scale(1.12);box-shadow:0 0 20px 7px rgba(230,150,20,.65),0 2px 10px rgba(180,100,10,.18)}}
 @keyframes s4AnswerGlow{0%,100%{box-shadow:0 0 0 3px #fde047,0 0 14px 5px rgba(253,224,71,.7)}50%{box-shadow:0 0 0 4px #fde047,0 0 28px 12px rgba(253,224,71,.95)}}
 .s1-quiz-playbtn.show{display:flex;animation:s1QuizBtnPulse 1s ease-in-out infinite}
+.s1-topic2-btn{position:absolute;bottom:0.6vh;right:1.4vw;left:auto;display:none;align-items:center;justify-content:center;border-radius:999px;border:2px solid rgba(60,140,20,.55);background:rgba(220,255,200,.94);color:#1a5c00;font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(13px,2.1vh,19px);cursor:pointer;padding:.7em 1.6em;box-shadow:0 3px 10px rgba(30,110,0,.25),inset 0 1px 0 rgba(255,255,255,.55);pointer-events:auto;z-index:50;letter-spacing:.03em;white-space:nowrap}
+.s1-topic2-btn.show{display:flex;animation:s1QuizBtnPulse 1s ease-in-out infinite}
+.s1-topic2-btn:active{transform:scale(.92)}
 .s1-confetti{position:absolute;pointer-events:none}
 #app-version{position:fixed;left:6px;bottom:4px;z-index:10001;font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(0,0,0,.35);pointer-events:none;user-select:none;-webkit-user-select:none;}
 </style>
 </head>
 <body>
 
-<div id="app-version">v75</div>
+<div id="app-version">v76</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -1891,7 +1894,7 @@ function updateInstr(txt){instr1.textContent=txt;}
 /* ══ S1 QUIZ ══ */
 var s1QuizPhase=-1,s1QuizErrors=0,s1QuizAudio=null;
 var s1QuizCorrectCount=0,S1_QUIZ_TOTAL=5;
-var s1QuizClickHandler=null,s1QuizPlayBtn=null,s1QuizTimers=[],s1QuizHandInterval=null;
+var s1QuizClickHandler=null,s1QuizPlayBtn=null,s1Topic2Btn=null,s1QuizTimers=[],s1QuizHandInterval=null;
 var S1_QUIZ=[
   {src:'audio/dialogo2.11.mp3',q:'Toque no elemento cujo número atômico é 17',z:17,hint:'O número atômico é o número que fica em cima do símbolo. Lembre-se que os elementos estão em ordem crescente de número atômico, da esquerda pra direita',delay:3000,leftGrp:3},
   {src:'audio/dialogo2.1.2.mp3',q:'Toque no elemento imediatamente posterior ao número atômico 10',z:11,hint:'O elemento posterior ao 10 é o 11. É o primeiro elemento da terceira linha.',hintEl:11,hintElDelay:5000},
@@ -2118,7 +2121,10 @@ function s1QuizShowResultCard(){
 }
 function s1QuizRun(phase){
   s1QuizPhase=phase;s1QuizErrors=0;s1QuizDisableClicks();s1QuizClearTimers();s1QuizRemoveHand();
+  if(s1Topic2Btn)s1Topic2Btn.classList.remove('show');
   if(s1Hdr)s1Hdr.style.opacity='0';
+  var _tb=document.getElementById('slideTitlebar');
+  if(_tb&&!_tb.classList.contains('stb-fadein')){_tb.classList.remove('stb-hidden');void _tb.offsetWidth;_tb.classList.add('stb-fadein');}
   if(phase===0)s1QuizCorrectCount=0;
   var qd=S1_QUIZ[phase];if(!qd)return;
   s1QuizShowAxisLabels(true);
@@ -2127,7 +2133,7 @@ function s1QuizRun(phase){
   ad.addEventListener('ended',function(){
     if(s1QuizAudio!==ad)return;
     if(qd.z!==null){s1QuizEnableClicks(qd.z);}
-    else{autoDemoActive=false;s1QuizPhase=-1;s1QuizShowAxisLabels(false);var t2=document.querySelector('#topnav .tcard[data-i="1"]');if(t2)t2.classList.add('s2-pulse');}
+    else{autoDemoActive=false;s1QuizPhase=-1;s1QuizShowAxisLabels(false);s1ShowTopic2Btn();}
   });
   ad.play().catch(function(){});
   if(qd.q){var qDelay=qd.delay!==undefined?qd.delay:500;s1QuizTimers.push(setTimeout(function(){if(s1QuizAudio===ad)s1QuizShowQuestion((phase+1)+'. '+qd.q);},qDelay));}
@@ -2144,6 +2150,20 @@ function s1ShowPlayBtn(){
     s1QuizRun(0);
   });
   a1.appendChild(btn);s1QuizPlayBtn=btn;
+}
+function s1ShowTopic2Btn(){
+  if(s1Topic2Btn){s1Topic2Btn.classList.add('show');return;}
+  var btn=document.createElement('button');btn.className='s1-topic2-btn show';
+  btn.textContent='Tópico 2';
+  btn.addEventListener('pointerdown',function(e){e.stopPropagation();});
+  btn.addEventListener('click',function(){
+    btn.style.animation='none';btn.classList.remove('show');
+    var i=1,da=areaForSlide(i),wasSc=navIsScattered(da);
+    goTo(i);
+    var b=document.getElementById('topnavBar');if(b)b.classList.remove('open');
+    if(!wasSc)navEntrance(da);
+  });
+  a1.appendChild(btn);s1Topic2Btn=btn;
 }
 
 /* SPREAD */
