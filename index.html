@@ -494,7 +494,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v70</div>
+<div id="app-version">v71</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -1527,7 +1527,7 @@ function buildGame(){
   instr1.style.display='none';
   document.getElementById('postnextbtn').classList.remove('show');postStage=0;
   instr1.textContent='Toque nos elementos em ordem crescente de número atômico';
-  L1=cLay(a1);
+  L1=cLay(a1,1.1);
   L1.pY+=1.5*L1.cH;
   var sp=scatter(L1.aW,L1.aH,ALL,L1.cW*.92,L1.cH*.92);
   stashedScatter=sp;
