@@ -19,7 +19,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 .swrap{flex:1;overflow:hidden;min-height:0}
 .strack{display:flex;width:1100%;height:100%}
 /* barra de título de cada slide (número + nome do tópico) */
-.slide-titlebar{flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:.55em;padding:.5vh 4vw .55vh;z-index:6;pointer-events:none}
+.slide-titlebar{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:.55em;padding:.4vh 4vw .6vh;z-index:55;pointer-events:none}
 /* nunca mostra o título do slide junto com o menu de navegação aberto */
 .topnav-bar.open + .slide-titlebar{opacity:0;visibility:hidden}
 .slide-titlebar.stb-hidden{opacity:0}
@@ -492,7 +492,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v65</div>
+<div id="app-version">v66</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -1677,6 +1677,7 @@ function onGClick(it){
     return;
   }
   scheduleHint();
+  try{new Audio('audio/flipcard.mp3').play().catch(function(){});}catch(_){}
   placeIt(it,460);
 }
 function placeIt(it,dur){
@@ -1776,6 +1777,7 @@ function autoDemo(){
   var ad=introAudio=new Audio('audio/dialogo2.1.mp3');
   ad.addEventListener('ended',function(){
     if(introAudio!==ad)return;
+    if(s1Hdr)s1Hdr.style.opacity='0'; // título "Tabela periódica dos elementos" some em fade ao fim do dialogo2.1
     unspread();hideSpreadCaption();
     spreadActive=false;touchState='periods';
     autoDemoActive=false;
