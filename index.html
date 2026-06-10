@@ -4784,6 +4784,7 @@ function s5CompleteTable(){
   }
   s5FreeMode=true;s5Expected=null;
   s5UpdateBtns();
+  s5PlayExercise(0);
 }
 function s5StartTreinar(){
   if(!s5FreeMode)return;
@@ -5246,7 +5247,7 @@ function s5UpdateBtns(){
   var atLast=s5Step===S5_AUDIOS.length-1;
   if(s5StartBtn&&s5Step>=0)s5StartBtn.classList.remove('show');
   if(s5NextBtn)s5NextBtn.classList.toggle('show', s5Step>=0 && (s5Step<S5_AUDIOS.length-1 || (atLast && !s5FreeMode)));
-  if(s5TrainBtn)s5TrainBtn.classList.toggle('show', atLast && s5FreeMode && !s5QuizActive);
+  if(s5TrainBtn)s5TrainBtn.classList.remove('show');
 }
 function playS5Step(idx){
   var prevStep=s5Step;
