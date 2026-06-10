@@ -5023,11 +5023,11 @@ function s5StartMemGame(){
     var back=document.createElement('div');back.className='s5-mem-back';back.textContent='⚛';
     var front=document.createElement('div');front.className='s5-mem-front '+(cd.type==='sym'?'s5mf-sym':'s5mf-name');
     var frame=document.createElement('div');frame.className='s5mf-frame';
-    var hdr=document.createElement('div');hdr.className='s5mf-hdr';hdr.textContent=cd.type==='sym'?'SÍMBOLO QUÍMICO':'NOME DO ELEMENTO';
+    var hdr=document.createElement('div');hdr.className='s5mf-hdr';hdr.textContent=cd.type==='sym'?'SÍMBOLO':'NOME DO ELEMENTO';
     var bdy=document.createElement('div');bdy.className='s5mf-body';
     if(cd.type==='sym'){
       var sv=document.createElement('div');sv.className='s5mf-sym-val';sv.textContent=cd.val;
-      var i1=document.createElement('div');i1.className='s5mf-info';i1.textContent='Nº atômico: '+cd.z;
+      var i1=document.createElement('div');i1.className='s5mf-info';i1.textContent=cd.z;
       var i2=document.createElement('div');i2.className='s5mf-info';i2.textContent='Massa: '+cd.mass+' g/mol';
       bdy.appendChild(sv);bdy.appendChild(i1);bdy.appendChild(i2);
     }else{
