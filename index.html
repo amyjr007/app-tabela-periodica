@@ -226,8 +226,13 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 #a5 .el.grp-ab-1{background:linear-gradient(145deg,#60a5fa,#1d4ed8)}
 /* Footer */
 .foot{display:flex;align-items:center;justify-content:space-between;padding:.5vh 1.8vw .8vh;flex-shrink:0;border-top:1px solid rgba(120,70,20,.14)}
-.topnav{display:flex;justify-content:flex-start;align-items:center;gap:.7vw;padding:.8vh 1.4vw .4vh;flex-shrink:0;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;touch-action:pan-x;mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%)}
-#topnav{position:relative;z-index:210}
+.topnav-bar{position:relative;flex-shrink:0;z-index:210}
+.topnav-toggle{display:flex;align-items:center;justify-content:center;gap:.4em;width:100%;padding:.4vh 0;background:rgba(120,70,20,.045);border:none;border-bottom:1px solid rgba(120,70,20,.10);color:rgba(92,42,0,.50);font-family:'Fredoka',sans-serif;font-weight:500;font-size:clamp(9px,1.25vh,12px);letter-spacing:.05em;cursor:pointer}
+.topnav-toggle:active{background:rgba(120,70,20,.12)}
+.topnav-toggle .tnav-arr{display:inline-block;font-size:.9em;transition:transform .25s ease}
+.topnav-bar.open .topnav-toggle .tnav-arr{transform:rotate(180deg)}
+.topnav{display:flex;justify-content:flex-start;align-items:center;gap:.7vw;padding:0 1.4vw;box-sizing:border-box;flex-shrink:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-behavior:smooth;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;touch-action:pan-x;mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);position:absolute;left:0;right:0;top:100%;background:rgba(255,250,240,.97);border-bottom:1px solid rgba(140,80,20,.18);box-shadow:0 6px 18px rgba(80,40,0,.18);max-height:0;opacity:0;pointer-events:none;transition:max-height .32s cubic-bezier(.4,0,.2,1),opacity .22s ease,padding .32s ease}
+.topnav-bar.open .topnav{max-height:10vh;padding:.8vh 1.4vw .4vh;opacity:1;pointer-events:auto}
 .topnav>.tcard{scroll-snap-align:center;flex-shrink:0}
 .topnav::-webkit-scrollbar{display:none}
 .s2-picker::-webkit-scrollbar{display:none}
@@ -471,7 +476,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v47</div>
+<div id="app-version">v49</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -566,19 +571,22 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 <button class="home-btn-mini" id="section1Home" aria-label="início">⌂</button>
 <button class="restart-btn-mini" id="section1Restart" aria-label="recomeçar">↺</button>
 <div class="app">
-  <nav class="topnav" id="topnav">
-    <button class="tcard active" data-i="0"><span class="tnum">1</span><span class="ttxt">Os critérios de organização</span></button>
-    <button class="tcard" data-i="1"><span class="tnum">2</span><span class="ttxt">As coordenadas Periódicas</span></button>
-    <button class="tcard" data-i="2"><span class="tnum">3</span><span class="ttxt">Os tipos de elementos</span></button>
-    <button class="tcard" data-i="3"><span class="tnum">4</span><span class="ttxt">As principais famílias</span></button>
-    <button class="tcard" data-i="4"><span class="tnum">5</span><span class="ttxt">Os grupos A e B</span></button>
-    <button class="tcard" data-i="5"><span class="tnum">6</span><span class="ttxt">Os Lantanídeos e Actnídeos</span></button>
-    <button class="tcard" data-i="6"><span class="tnum">7</span><span class="ttxt">A natureza dos elementos</span></button>
-    <button class="tcard" data-i="7"><span class="tnum">8</span><span class="ttxt">A tabela e os elétrons de valência</span></button>
-    <button class="tcard" data-i="8"><span class="tnum">9</span><span class="ttxt">A tabela e o diagrama de Pauling</span></button>
-    <button class="tcard" data-i="9"><span class="tnum">10</span><span class="ttxt">A tabela e a distribuição eletrônica</span></button>
-    <button class="tcard" data-i="10"><span class="tnum">11</span><span class="ttxt">Quiz Interativo</span></button>
-  </nav>
+  <div class="topnav-bar" id="topnavBar">
+    <button class="topnav-toggle" id="topnavToggle"><span>Navegue nos tópicos</span><span class="tnav-arr">▾</span></button>
+    <nav class="topnav" id="topnav">
+      <button class="tcard active" data-i="0"><span class="tnum">1</span><span class="ttxt">Os critérios de organização</span></button>
+      <button class="tcard" data-i="1"><span class="tnum">2</span><span class="ttxt">As coordenadas Periódicas</span></button>
+      <button class="tcard" data-i="2"><span class="tnum">3</span><span class="ttxt">Os tipos de elementos</span></button>
+      <button class="tcard" data-i="3"><span class="tnum">4</span><span class="ttxt">As principais famílias</span></button>
+      <button class="tcard" data-i="4"><span class="tnum">5</span><span class="ttxt">Os grupos A e B</span></button>
+      <button class="tcard" data-i="5"><span class="tnum">6</span><span class="ttxt">Os Lantanídeos e Actnídeos</span></button>
+      <button class="tcard" data-i="6"><span class="tnum">7</span><span class="ttxt">A natureza dos elementos</span></button>
+      <button class="tcard" data-i="7"><span class="tnum">8</span><span class="ttxt">A tabela e os elétrons de valência</span></button>
+      <button class="tcard" data-i="8"><span class="tnum">9</span><span class="ttxt">A tabela e o diagrama de Pauling</span></button>
+      <button class="tcard" data-i="9"><span class="tnum">10</span><span class="ttxt">A tabela e a distribuição eletrônica</span></button>
+      <button class="tcard" data-i="10"><span class="tnum">11</span><span class="ttxt">Quiz Interativo</span></button>
+    </nav>
+  </div>
   <div class="swrap">
     <div class="strack" id="strack">
       <div class="slide">
@@ -674,12 +682,15 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 <button class="home-btn-mini" id="section2Home" aria-label="início">⌂</button>
 <button class="restart-btn-mini" id="section2Restart" aria-label="recomeçar">↺</button>
 <div class="app">
-  <nav class="topnav" id="topnav2">
-    <button class="tcard active" data-i="0"><span class="tnum">1</span><span class="ttxt">Raio Atômico</span></button>
-    <button class="tcard" data-i="1"><span class="tnum">2</span><span class="ttxt">Energia de Ionização</span></button>
-    <button class="tcard" data-i="2"><span class="tnum">3</span><span class="ttxt">Eletroafinidade / Eletropositividade</span></button>
-    <button class="tcard" data-i="3"><span class="tnum">4</span><span class="ttxt">Eletronegatividade</span></button>
-  </nav>
+  <div class="topnav-bar" id="topnavBar2">
+    <button class="topnav-toggle" id="topnavToggle2"><span>Navegue nos tópicos</span><span class="tnav-arr">▾</span></button>
+    <nav class="topnav" id="topnav2">
+      <button class="tcard active" data-i="0"><span class="tnum">1</span><span class="ttxt">Raio Atômico</span></button>
+      <button class="tcard" data-i="1"><span class="tnum">2</span><span class="ttxt">Energia de Ionização</span></button>
+      <button class="tcard" data-i="2"><span class="tnum">3</span><span class="ttxt">Eletroafinidade / Eletropositividade</span></button>
+      <button class="tcard" data-i="3"><span class="tnum">4</span><span class="ttxt">Eletronegatividade</span></button>
+    </nav>
+  </div>
   <div class="swrap">
     <div class="strack" id="strack2">
       <div class="slide">
@@ -986,7 +997,14 @@ var cur=0;
 /* NAV */
 function goTo(i){if(cur===0&&i!==0&&typeof s1QuizPhase!=='undefined'&&s1QuizPhase>=0)return;var prev=cur;if(cur!==i){document.querySelectorAll('.tcard.s2-pulse').forEach(function(c){c.classList.remove('s2-pulse');});if(cur===0&&typeof s1SaveResume==='function')s1SaveResume();if(cur===0&&typeof s0StopAbertura==='function')s0StopAbertura();if(typeof stopIntroAudio==='function')stopIntroAudio();if(typeof s1StopCritLoop==='function')s1StopCritLoop();if(typeof stopS2Audio==='function')stopS2Audio();if(typeof stopS3Audio==='function')stopS3Audio();if(typeof s3ClearTypeLabels==='function')s3ClearTypeLabels();if(typeof stopS4Audio==='function')stopS4Audio();if(typeof stopS5Audio==='function')stopS5Audio();if(typeof stopS6Audio==='function')stopS6Audio();if(typeof stopS7nAudio==='function')stopS7nAudio();if(typeof stopS8Audio==='function')stopS8Audio();if(typeof stopS9Audio==='function')stopS9Audio();if(typeof qzStopResultAudios==='function')qzStopResultAudios();if(navigator.vibrate)navigator.vibrate(20);}cur=i;if(typeof s0Ov!=='undefined'&&s0Ov){s0Ov.style.display=(i===0?'':'none');}var _s0Hr=(i===0&&prev!==0)?(typeof s1PendingResume!=='undefined'&&!!s1PendingResume):false;if(i===0&&prev!==0&&typeof s1TryResume==='function')s1TryResume();if(i===0&&prev!==0&&!_s0Hr&&(typeof s0Ov==='undefined'||!s0Ov)&&typeof s0Init==='function')setTimeout(s0Init,200);strack.style.transform='translateX(-'+(i*100/11).toFixed(4)+'%)';tcardEls.forEach(function(d,j){d.classList.toggle('active',j===i);});rbtn.style.visibility='hidden';var actTc=tcardEls[i];if(actTc&&actTc.scrollIntoView){try{actTc.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}catch(_){actTc.scrollIntoView();}}if(i===5&&prev!==5&&typeof startS6Sequence==='function')startS6Sequence();if(i===6&&typeof s7nStartRandomHighlights==='function'){setTimeout(function(){if(cur===6&&!s7nHlInterval)s7nStartRandomHighlights();},1000);}if(i===9&&typeof buildPage10==='function')buildPage10();
 if(i===10&&typeof startP7Quiz==='function'){var a7el=document.getElementById('a7');if(!qzState||(a7el&&!a7el.children.length))startP7Quiz();}if(i===8&&typeof s9StartDemo==='function')setTimeout(s9StartDemo,300);if(typeof qnavSetMode==='function')qnavSetMode(i===0?'s1':i===1?'s2':i===2?'s3':i===3?'s4':i===4?'s5':i===5?'s6':i===6?'s7':i===7?'s8':i===8?'s9':'none');var _s1b=document.getElementById('section1Back');if(_s1b)_s1b.style.display=(i===7)?'none':'';if(typeof updateBackBtnVis==='function')updateBackBtnVis();}
-tcardEls.forEach(function(d){d.addEventListener('click',function(){goTo(+d.dataset.i);});});
+tcardEls.forEach(function(d){d.addEventListener('click',function(){goTo(+d.dataset.i);var b=document.getElementById('topnavBar');if(b)b.classList.remove('open');});});
+(function(){var b=document.getElementById('topnavBar'),t=document.getElementById('topnavToggle'),nav=document.getElementById('topnav');if(t)t.addEventListener('click',function(){b.classList.toggle('open');});
+  if(b&&nav&&typeof MutationObserver!=='undefined'){
+    new MutationObserver(function(muts){
+      muts.forEach(function(m){if(m.target.classList.contains('s2-pulse'))b.classList.add('open');});
+    }).observe(nav,{attributes:true,attributeFilter:['class'],subtree:true});
+  }
+})();
 
 /* SEÇÃO 2 — navegação */
 var strack2=document.getElementById('strack2');
@@ -999,7 +1017,8 @@ function goTo2(i){
   tcardEls2.forEach(function(d,j){d.classList.toggle('active',j===i);});
   if(navigator.vibrate)try{navigator.vibrate(20);}catch(_){}
 }
-tcardEls2.forEach(function(d){d.addEventListener('click',function(){goTo2(+d.dataset.i);});});
+tcardEls2.forEach(function(d){d.addEventListener('click',function(){goTo2(+d.dataset.i);var b=document.getElementById('topnavBar2');if(b)b.classList.remove('open');});});
+(function(){var b=document.getElementById('topnavBar2'),t=document.getElementById('topnavToggle2');if(t)t.addEventListener('click',function(){b.classList.toggle('open');});})();
 
 /* LAYOUT */
 var COLS=18,MR=7,FR=2,FG=.45;
@@ -12372,8 +12391,17 @@ document.querySelectorAll('.mn-card').forEach(function(c){
 if('serviceWorker' in navigator){
   window.addEventListener('load',function(){
     navigator.serviceWorker.register('./sw.js')
-      .then(function(){console.log('PWA: service worker registrado');})
+      .then(function(reg){
+        console.log('PWA: service worker registrado');
+        reg.update();
+      })
       .catch(function(e){console.warn('PWA: erro no service worker',e);});
+  });
+  var swRefreshing=false;
+  navigator.serviceWorker.addEventListener('controllerchange',function(){
+    if(swRefreshing)return;
+    swRefreshing=true;
+    window.location.reload();
   });
 }
 </script>
