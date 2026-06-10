@@ -476,7 +476,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v59</div>
+<div id="app-version">v60</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -5401,6 +5401,24 @@ function s5JumpToQuiz(){
   s5FreeMode=true;s5Expected=null;s5Step=4;
   if(s5NextBtn)s5NextBtn.classList.remove('show');
   s5PlayExercise(0);
+}
+function s5JumpToJogo(){
+  stopS5Audio();
+  s5ClearOverlays();
+  s5CollapseSides();
+  s5CleanupDrag(true);
+  s5SetupDrag();
+  // mostra todos os rótulos (1A, 2A…) imediatamente — estado pós-jogo completo
+  for(var g=1;g<=18;g++){
+    s5LabelShown[g]=true;
+    var lbl=s5GroupLabels[g];
+    if(lbl){lbl.style.transition='none';lbl.style.transform='';lbl.style.opacity='1';}
+  }
+  s5FreeMode=true;s5Expected=null;s5Step=4;
+  s5QuizActive=false;
+  s5QuizCleanupHandlers();
+  Object.keys(s5GroupStrips).forEach(function(g){var s=s5GroupStrips[g];if(s)s.style.display='';});
+  s5ShowMemGameBtn();
 }
 function buildPage5(){
   stopS5Audio();
@@ -12495,7 +12513,8 @@ var QNAV_S5=[
   {n:2,label:'O grupo B',        fn:'s5JumpToGrupoB'},
   {n:3,label:'O grupo A',        fn:'s5JumpToGrupoA'},
   {n:4,label:'As famílias A e B',fn:'s5JumpToFamilias'},
-  {n:5,label:'Quiz',             fn:'s5JumpToQuiz'}
+  {n:5,label:'Quiz',             fn:'s5JumpToQuiz'},
+  {n:6,label:'Jogo',             fn:'s5JumpToJogo'}
 ];
 var QNAV_S6=[
   {n:1,label:'Começo',                   fn:'s6JumpToStart'},
