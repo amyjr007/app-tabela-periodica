@@ -22,6 +22,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 .slide-titlebar{flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:.55em;padding:.5vh 4vw .55vh;z-index:6;pointer-events:none}
 /* nunca mostra o título do slide junto com o menu de navegação aberto */
 .topnav-bar.open + .slide-titlebar{opacity:0;visibility:hidden}
+.slide-titlebar.stb-hidden{opacity:0}
+.slide-titlebar.stb-fadein{animation:stbFadeIn .5s ease both}
+@keyframes stbFadeIn{from{opacity:0}to{opacity:1}}
 .stb-num{display:flex;align-items:center;justify-content:center;width:clamp(22px,3.5vh,31px);height:clamp(22px,3.5vh,31px);border-radius:50%;background:linear-gradient(145deg,#b07a32,#7a5018);color:#fff;font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(12px,1.9vh,17px);line-height:1;box-shadow:0 2px 6px rgba(80,40,0,.32),inset 0 1px 0 rgba(255,255,255,.35);flex-shrink:0}
 .stb-name{font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(13px,2.05vh,19px);color:#3a2410;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:82vw}
 .slide{width:9.0909%;height:100%;display:flex;flex-direction:column;padding:1.3vh 1.4vw 0;overflow:hidden;position:relative}
@@ -489,7 +492,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v64</div>
+<div id="app-version">v65</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -1074,7 +1077,14 @@ function navTitlebarSet(numEl,nameEl,tc){
   if(numEl&&tn)numEl.textContent=tn.textContent;
   if(nameEl&&tt)nameEl.textContent=tt.textContent;
 }
-function navTitlebarUpdate(i){navTitlebarSet(document.getElementById('stbNum'),document.getElementById('stbName'),tcardEls[i]);}
+function navTitlebarUpdate(i){
+  navTitlebarSet(document.getElementById('stbNum'),document.getElementById('stbName'),tcardEls[i]);
+  var tb=document.getElementById('slideTitlebar');if(!tb)return;
+  // no slide 1, o título só aparece (fade in) quando o dialogo1 começa
+  var introWaiting=(i===0&&typeof introMode!=='undefined'&&introMode&&typeof introIdx!=='undefined'&&introIdx===0);
+  if(introWaiting){tb.classList.remove('stb-fadein');tb.classList.add('stb-hidden');}
+  else{tb.classList.remove('stb-hidden');}
+}
 function navTitlebarUpdate2(i){navTitlebarSet(document.getElementById('stbNum2'),document.getElementById('stbName2'),tcardEls2[i]);}
 
 /* SEÇÃO 2 — navegação */
@@ -1556,6 +1566,9 @@ function playIntroAudio(){
   if(capturedIdx===0){
     // título "Tabela periódica dos elementos" some em fade ao começar o dialogo1
     if(s1Hdr)s1Hdr.style.opacity='0';
+    // o título do slide ("1 · Os critérios de organização") aparece em fade in agora
+    var _tb=document.getElementById('slideTitlebar');
+    if(_tb){_tb.classList.remove('stb-hidden','stb-fadein');void _tb.offsetWidth;_tb.classList.add('stb-fadein');}
     // t=12s: escurece e mostra texto; ao fim do áudio fica parado esperando play
     at(12,function(){s1ShowD1Pause();});
     // NÃO avança automaticamente — usuário clica play para ir ao dialogo1.1
