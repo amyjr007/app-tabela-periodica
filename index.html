@@ -476,7 +476,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v58</div>
+<div id="app-version">v59</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -12320,7 +12320,15 @@ function gotoConstruction(num,title,cardEl){
   if(cardEl)cardFlipToScreen(cardEl,'scons');
   else dramaticShowScreen('scons');
 }
-document.getElementById('cvStart').addEventListener('click',function(){showScreen('smenu');});
+document.getElementById('cvStart').addEventListener('click',function(){
+  showScreen('smenu');
+  // em celulares, pede tela cheia pra remover a barra de status (funciona mesmo sem reinstalar o app)
+  if(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches){
+    var el=document.documentElement;
+    var req=el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen;
+    if(req){try{var p=req.call(el);if(p&&p.catch)p.catch(function(){});}catch(_){}}
+  }
+});
 
 (function(){
   var btn=document.getElementById('cvInstall');
