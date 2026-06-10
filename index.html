@@ -494,7 +494,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v69</div>
+<div id="app-version">v70</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -1026,18 +1026,42 @@ tcardEls.forEach(function(d){d.addEventListener('click',function(){var i=+d.data
   }
 })();
 
-/* ═══ DESMONTA/MONTA A TABELA AO NAVEGAR + TÍTULO DO SLIDE ═══ */
+/* ═══ DESMONTA/MONTA A TABELA E OS TEXTOS AO NAVEGAR + TÍTULO DO SLIDE ═══ */
 var NAV_AREA_IDS=['a1','a2','a3','a4','a5','a6','a7n','a8','a9','a10','a7'];
 function areaForSlide(i){return document.getElementById(NAV_AREA_IDS[i]);}
 function areaForSlide2(i){return strack2?strack2.children[i]:null;}
-// espalha os .el da área pras 8 direções; animate=false posiciona sem transição
-function navScatterCore(area,animate){
+function navIsVisible(el){
+  if(!el||el.nodeType!==1)return false;
+  var st=getComputedStyle(el);
+  if(st.display==='none'||st.visibility==='hidden'||parseFloat(st.opacity)===0)return false;
+  var r=el.getBoundingClientRect();
+  return r.width>0&&r.height>0;
+}
+// blocos de texto/overlay visíveis a desmontar junto com os .el (filhos da área e, se !skipParent, irmãos da área)
+function navTextBlocks(area,skipParent){
+  var out=[];
+  Array.prototype.forEach.call(area.children,function(c){
+    if(!c.classList||!c.classList.contains('el')){if(navIsVisible(c))out.push(c);}
+  });
+  if(!skipParent&&area.parentNode){
+    Array.prototype.forEach.call(area.parentNode.children,function(c){
+      if(c===area)return;
+      if(navIsVisible(c))out.push(c);
+    });
+  }
+  return out;
+}
+// espalha os .el e os blocos de texto da área pras 8 direções; animate=false posiciona sem transição
+function navScatterCore(area,animate,skipParent){
   if(!area)return;
-  var els=area.querySelectorAll('.el');if(!els.length)return;
   var r=area.getBoundingClientRect();if(!r.width||!r.height)return;
   var cx=r.width/2,cy=r.height/2;
   var dist=Math.round(Math.hypot(r.width,r.height)+Math.max(r.width,r.height)*0.45);
-  els.forEach(function(el){
+  var els=Array.prototype.slice.call(area.querySelectorAll('.el'));
+  var texts=navTextBlocks(area,skipParent);
+  var all=els.concat(texts);
+  if(!all.length)return;
+  all.forEach(function(el,idx){
     var er=el.getBoundingClientRect();
     var ex=er.left-r.left+er.width/2-cx;
     var ey=er.top-r.top+er.height/2-cy;
@@ -1045,34 +1069,48 @@ function navScatterCore(area,animate){
     var oct=Math.round(ang/(Math.PI/4))*(Math.PI/4); // trava em 8 direções
     var dx=Math.round(Math.cos(oct)*dist),dy=Math.round(Math.sin(oct)*dist);
     if(!el.hasAttribute('data-navtf'))el.setAttribute('data-navtf',el.style.transform||'');
-    el.style.transition=animate?'transform .28s cubic-bezier(.55,0,.85,.2)':'none';
+    var isText=idx>=els.length;
+    el.style.transition=animate?('transform .28s cubic-bezier(.55,0,.85,.2)'+(isText?',opacity .22s ease':'')):'none';
     el.style.transform=(el.getAttribute('data-navtf')||'')+' translate('+dx+'px,'+dy+'px)';
+    if(isText){
+      if(!el.hasAttribute('data-navop'))el.setAttribute('data-navop',el.style.opacity);
+      el.style.opacity='0';
+    }
   });
 }
-function navScatter(area){navScatterCore(area,true);}
-function navIsScattered(area){if(!area)return false;var el=area.querySelector('.el');return !!(el&&el.hasAttribute('data-navtf'));}
-// monta de volta (se estiver desmontada) restaurando a transformação original
-function navRestore(area){
+function navScatter(area,skipParent){navScatterCore(area,true,skipParent);}
+function navIsScattered(area,skipParent){
+  if(!area)return false;
+  var scope=skipParent?area:(area.parentNode||area);
+  return !!scope.querySelector('[data-navtf]');
+}
+// monta de volta (se estiver desmontada) restaurando a transformação/opacidade originais
+function navRestore(area,skipParent){
   if(!area)return;
-  var els=area.querySelectorAll('.el');if(!els.length)return;
-  if(!els[0].hasAttribute('data-navtf'))return; // já montada
+  var scope=skipParent?area:(area.parentNode||area);
+  var els=Array.prototype.slice.call(scope.querySelectorAll('[data-navtf]'));
+  if(!els.length)return;
   requestAnimationFrame(function(){
     els.forEach(function(el){
       var base=el.getAttribute('data-navtf')||'';
-      el.style.transition='transform .4s cubic-bezier(.18,.7,.3,1)';
+      var isText=!el.classList.contains('el');
+      el.style.transition='transform .4s cubic-bezier(.18,.7,.3,1)'+(isText?',opacity .3s ease':'');
       el.style.transform=base;
+      if(isText){
+        el.style.opacity=el.getAttribute('data-navop')||'';
+        el.removeAttribute('data-navop');
+      }
       el.removeAttribute('data-navtf');
     });
   });
   setTimeout(function(){els.forEach(function(el){if(!el.hasAttribute('data-navtf'))el.style.transition='';});},470);
 }
 // entrada de um slide novo: posiciona espalhado na hora e monta com animação
-function navEntrance(area){
+function navEntrance(area,skipParent){
   if(!area)return;
-  var els=area.querySelectorAll('.el');if(!els.length)return;
-  navScatterCore(area,false);
+  navScatterCore(area,false,skipParent);
   void area.offsetWidth; // força reflow pra animação seguinte valer
-  navRestore(area);
+  navRestore(area,skipParent);
 }
 function navTitlebarSet(numEl,nameEl,tc){
   if(!tc)return;var tn=tc.querySelector('.tnum'),tt=tc.querySelector('.ttxt');
@@ -1099,10 +1137,10 @@ function goTo2(i){
   if(strack2)strack2.style.transform='translateX(-'+(i*100/4).toFixed(4)+'%)';
   tcardEls2.forEach(function(d,j){d.classList.toggle('active',j===i);});
   if(navigator.vibrate)try{navigator.vibrate(20);}catch(_){}
-  navTitlebarUpdate2(i);navRestore(areaForSlide2(i));
+  navTitlebarUpdate2(i);navRestore(areaForSlide2(i),true);
 }
-tcardEls2.forEach(function(d){d.addEventListener('click',function(){var i=+d.dataset.i,da=areaForSlide2(i),wasSc=navIsScattered(da);goTo2(i);var b=document.getElementById('topnavBar2');if(b)b.classList.remove('open');if(!wasSc)navEntrance(da);});});
-(function(){var b=document.getElementById('topnavBar2'),t=document.getElementById('topnavToggle2');if(t)t.addEventListener('click',function(){var wasOpen=b.classList.contains('open');b.classList.toggle('open');if(!wasOpen)navScatter(areaForSlide2(cur2));else navRestore(areaForSlide2(cur2));});})();
+tcardEls2.forEach(function(d){d.addEventListener('click',function(){var i=+d.dataset.i,da=areaForSlide2(i),wasSc=navIsScattered(da,true);goTo2(i);var b=document.getElementById('topnavBar2');if(b)b.classList.remove('open');if(!wasSc)navEntrance(da,true);});});
+(function(){var b=document.getElementById('topnavBar2'),t=document.getElementById('topnavToggle2');if(t)t.addEventListener('click',function(){var wasOpen=b.classList.contains('open');b.classList.toggle('open');if(!wasOpen)navScatter(areaForSlide2(cur2),true);else navRestore(areaForSlide2(cur2),true);});})();
 
 /* LAYOUT */
 var COLS=18,MR=7,FR=2,FG=.45;
