@@ -311,6 +311,19 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 .cv-by{font-family:'Share Tech Mono',monospace;font-size:clamp(10px,1.32vh,13px);color:rgba(70,40,10,.55);letter-spacing:.32em;text-transform:uppercase}
 .cv-name{font-family:'Fredoka',sans-serif;font-weight:500;font-size:clamp(14px,2.09vh,19px);color:#5c2d00;letter-spacing:.05em}
 
+.cv-install{margin-top:3vh;display:none;align-items:center;gap:.6vw;font-family:'Fredoka',sans-serif;font-weight:500;font-size:clamp(11px,1.6vh,14px);padding:.9vh 3vw;background:rgba(124,64,16,.10);color:#5c2d00;border:1px solid rgba(168,95,16,.28);border-radius:999px;cursor:pointer;transition:transform .15s ease,background .2s ease;animation:fadeUp .7s ease .7s backwards}
+.cv-install.show{display:inline-flex}
+.cv-install:hover{background:rgba(168,95,16,.18);transform:translateY(-1px)}
+.cv-install:active{transform:translateY(0)}
+
+/* ── Dica de instalação (modal) ── */
+.install-tip{position:fixed;inset:0;z-index:600;display:none;align-items:center;justify-content:center;background:rgba(45,30,14,.55);padding:4vw}
+.install-tip.show{display:flex}
+.install-tip-box{background:#f2e4c4;border-radius:14px;padding:3vh 4vw;max-width:420px;text-align:center;font-family:'Fredoka',sans-serif;color:#2d1e0e;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.install-tip-box h3{margin:0 0 1.2vh;font-size:clamp(15px,2.4vh,20px);color:#7c4010}
+.install-tip-box p{margin:0 0 2.2vh;font-size:clamp(12px,1.9vh,16px);line-height:1.6}
+.install-tip-close{font-family:'Fredoka',sans-serif;font-weight:500;padding:1vh 4vw;background:linear-gradient(145deg,#a85f10,#5c2d00);color:#f5ead8;border:none;border-radius:999px;cursor:pointer;font-size:clamp(12px,1.9vh,16px)}
+
 /* ── Menu ── */
 .smenu{padding:4vh 5vw;align-items:center;justify-content:center;background:#f2e4c4;background-image:radial-gradient(ellipse 70% 50% at 30% 5%,rgba(200,150,80,.12),transparent 60%),radial-gradient(ellipse 60% 40% at 80% 95%,rgba(180,120,60,.08),transparent 60%)}
 .mn-title{font-family:'Fredoka',sans-serif;font-weight:500;font-size:clamp(15px,2.5vh,22px);letter-spacing:.20em;color:#2d1e0e;text-transform:uppercase;margin-bottom:3.5vh;text-align:center}
@@ -501,6 +514,15 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
       <span class="cv-by">Designed by</span>
       <span class="cv-name">Prof. Amauri Junior</span>
     </div>
+    <button class="cv-install" id="cvInstall"><span>⬇</span><span>Instalar app</span></button>
+  </div>
+</div>
+
+<div class="install-tip" id="installTip">
+  <div class="install-tip-box">
+    <h3>Instalar o app</h3>
+    <p id="installTipMsg"></p>
+    <button class="install-tip-close" id="installTipClose">Entendi</button>
   </div>
 </div>
 
@@ -12227,6 +12249,44 @@ function gotoConstruction(num,title,cardEl){
   else dramaticShowScreen('scons');
 }
 document.getElementById('cvStart').addEventListener('click',function(){showScreen('smenu');});
+
+(function(){
+  var btn=document.getElementById('cvInstall');
+  var tip=document.getElementById('installTip');
+  var tipMsg=document.getElementById('installTipMsg');
+  var tipClose=document.getElementById('installTipClose');
+  var deferredPrompt=null;
+  var isStandalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+  if(isStandalone)return;
+  var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+
+  window.addEventListener('beforeinstallprompt',function(e){
+    e.preventDefault();
+    deferredPrompt=e;
+    btn.classList.add('show');
+  });
+  window.addEventListener('appinstalled',function(){
+    deferredPrompt=null;
+    btn.classList.remove('show');
+  });
+  if(isIOS)btn.classList.add('show');
+
+  btn.addEventListener('click',function(){
+    if(deferredPrompt){
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.finally(function(){
+        deferredPrompt=null;
+        btn.classList.remove('show');
+      });
+      return;
+    }
+    tipMsg.textContent=isIOS
+      ?'No Safari, toque no ícone de compartilhar e depois em "Adicionar à Tela de Início".'
+      :'Abra o menu do navegador (⋮) e escolha "Instalar app" ou "Adicionar à tela inicial".';
+    tip.classList.add('show');
+  });
+  tipClose.addEventListener('click',function(){tip.classList.remove('show');});
+})();
 document.getElementById('menuBack').addEventListener('click',function(){showScreen('scover');});
 document.getElementById('section1Back').addEventListener('click',function(){stopIntroAudio();showScreen('smenu');});
 document.getElementById('section1Home').addEventListener('click',function(){stopIntroAudio();showScreen('scover');});

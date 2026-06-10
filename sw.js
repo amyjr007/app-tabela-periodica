@@ -1,4 +1,4 @@
-const CACHE = 'tabela-periodica-v38';
+const CACHE = 'tabela-periodica-v39';
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -17,6 +17,13 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  // Requisições com Range (ex.: áudio em celulares) precisam ir direto à
+  // rede: o cache guarda respostas 200 inteiras, mas o player espera 206
+  // Partial Content. Servir do cache aqui quebra o áudio no mobile.
+  if (e.request.headers.has('range')) {
+    e.respondWith(fetch(e.request));
+    return;
+  }
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
