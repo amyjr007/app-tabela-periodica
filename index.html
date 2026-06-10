@@ -218,6 +218,11 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 .s5-mem-card.s5mc-matched .s5-mem-front{border-color:#22c55e;box-shadow:0 0 10px rgba(34,197,94,.45);}
 .s5-mem-card.s5mc-wrong .s5-mem-inner{animation:s5memWrong .42s ease;}
 @keyframes s5memWrong{0%,100%{transform:rotateY(180deg) translateX(0)}25%{transform:rotateY(180deg) translateX(-7px)}75%{transform:rotateY(180deg) translateX(7px)}}
+.s5-mem-overlay.s5mem-shake{animation:s5memScreenShake .4s ease;}
+@keyframes s5memScreenShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+.s5-mem-flash{position:absolute;inset:0;z-index:150;background:rgba(239,68,68,.35);pointer-events:none;opacity:0;}
+.s5-mem-flash.show{animation:s5memFlash .4s ease;}
+@keyframes s5memFlash{0%{opacity:.65}100%{opacity:0}}
 .s5-mem-scorecard{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.5);opacity:0;background:rgba(255,250,240,.97);border:2px solid rgba(140,80,20,.28);border-radius:14px;padding:2.5vh 3vw;display:flex;flex-direction:column;align-items:center;gap:1.4vh;z-index:200;font-family:Fredoka,sans-serif;box-shadow:0 8px 32px rgba(80,40,0,.25);min-width:clamp(180px,30vw,270px);pointer-events:auto;transition:opacity .5s,transform .5s cubic-bezier(.3,1.4,.5,1);}
 .s5-mem-bonus{position:absolute;font-family:Fredoka,sans-serif;font-weight:700;font-size:clamp(12px,2vh,18px);color:#15803d;pointer-events:none;z-index:110;text-shadow:0 1px 4px rgba(255,255,255,.8);white-space:nowrap;}
 .el.grp-ab-1{background:linear-gradient(145deg,#fde047,#ca8a04)}
@@ -476,7 +481,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v60</div>
+<div id="app-version">v61</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -5130,6 +5135,7 @@ function s5MemCheckPair(){
     if(s5MemErrEl)s5MemErrEl.textContent=s5MemErrors;
     vib([30,20,30]);
     s5MemCards[ai].el.classList.add('s5mc-wrong');s5MemCards[bi].el.classList.add('s5mc-wrong');
+    s5MemScreenShake();
     setTimeout(function(){
       try{new Audio('audio/error.mp3').play().catch(function(){});}catch(_){}
       s5MemCards[ai].el.classList.remove('s5mc-flipped','s5mc-wrong');
@@ -5137,6 +5143,15 @@ function s5MemCheckPair(){
       s5MemFlipped=[];s5MemChecking=false;
     },1800);
   }
+}
+function s5MemScreenShake(){
+  if(!s5MemOverlay)return;
+  s5MemOverlay.classList.remove('s5mem-shake');void s5MemOverlay.offsetWidth;s5MemOverlay.classList.add('s5mem-shake');
+  var fl=document.createElement('div');fl.className='s5-mem-flash';
+  s5MemOverlay.appendChild(fl);
+  void fl.offsetWidth;fl.classList.add('show');
+  setTimeout(function(){if(fl.parentNode)fl.parentNode.removeChild(fl);},450);
+  setTimeout(function(){if(s5MemOverlay)s5MemOverlay.classList.remove('s5mem-shake');},420);
 }
 function s5MemShowBonus(el,text){
   var a5=document.getElementById('a5');if(!a5||!el)return;
