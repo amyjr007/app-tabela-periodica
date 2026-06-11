@@ -498,7 +498,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v83</div>
+<div id="app-version">v84</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -3642,7 +3642,7 @@ var FAM_INFO={
 var L4,p4Els=[],p4FamEls={},p4Labels={},p4Raised=null,P4_MAX=0,p4Strips={};
 var s4Audio=null,s4Timer=null,s4StartBtn=null,s4DialogAudio=null,s4ManualEnabled=true,s4SuppressLabels=false,s4Dialog46Played=false,s4Dialog412Played=false,s4PostAudio=false,s4MainMsg=null,s4RaisedSet={},s4BrownRaisedSet={};
 var s4RevealMode=false,s4RevealedGroups={},s4ManualRaise=false;
-var s4QuizActive=false,s4QuizStep=0,s4QuizBtn=null,s4QuizQuestionEl=null,s4QuizFeedbackEl=null,s4QuizShaking=false,s4QuizScore=10,s4QuizErrors=0,s4QuizConsecErrors=0,s4QuizScoreCard=null,s4QuizHintBtn=null,s4QuizQWrongs=0,s4QuizHintShown=false,s4QuizAnswerEl=null;
+var s4QuizActive=false,s4QuizStep=0,s4QuizBtn=null,s4QuizQuestionEl=null,s4QuizFeedbackEl=null,s4QuizShaking=false,s4QuizScore=10,s4QuizErrors=0,s4QuizConsecErrors=0,s4QuizScoreCard=null,s4QuizHintBtn=null,s4QuizQWrongs=0,s4QuizHintShown=false,s4QuizAnswerEl=null,s4NextTopicBtn=null;
 function s4WaitIdleThenPlay412(){
   if(typeof cur!=='undefined'&&cur!==3)return;
   if(!s4DialogAudio||s4DialogAudio.ended||s4DialogAudio.paused){
@@ -3934,7 +3934,7 @@ function s4JumpToFamilias(){s4SkipToFamilies();}
 function s4JumpToQuiz(){stopS4Audio();setS4Interactive(false);s4EnterRevealMode();s4StartQuiz();}
 function buildPage4(){
   stopS4Audio();
-  a4.innerHTML='';p4Els=[];p4FamEls={};p4Labels={};p4Raised=null;p4Strips={};
+  a4.innerHTML='';p4Els=[];p4FamEls={};p4Labels={};p4Raised=null;p4Strips={};s4NextTopicBtn=null;
   FAM_GROUPS.forEach(function(g){p4FamEls[g]=[];});
   L4=cLay4(a4);P4_MAX=L4.cH*1.3;
   var fs4=txtSizes(L4);
@@ -4308,8 +4308,7 @@ function s4QuizEnd(){
   s4QuizLowerAllFams();
   setS4Interactive(true);
   playS4Dialog('audio/dialogo4.12.mp3',null);
-  var t5=document.querySelector('#topnav .tcard[data-i="4"]');
-  if(t5){t5.classList.remove('s2-pulse');setTimeout(function(){t5.classList.add('s2-pulse');},60);}
+  s4ShowNextTopicBtn();
   var high=s4QuizScore>=5;
   var hiMsgs=['Incrível! Você domina as famílias!','Excelente trabalho! Continue assim!','Arrasou! Você conhece bem a tabela!'];
   var loMsgs=['Continue praticando, você vai lá!','Cada tentativa te deixa mais forte!','Revise as famílias e tente na próxima!'];
@@ -4328,6 +4327,20 @@ function s4QuizEnd(){
   } else {
     try{new Audio('audio/lowscore.mp3').play().catch(function(){});}catch(_){}
   }
+}
+function s4ShowNextTopicBtn(){
+  if(s4NextTopicBtn){s4NextTopicBtn.classList.add('show');return;}
+  var btn=document.createElement('button');btn.className='s1-topic2-btn show';
+  btn.textContent='Próximo tópico';
+  btn.addEventListener('pointerdown',function(e){e.stopPropagation();});
+  btn.addEventListener('click',function(){
+    btn.style.animation='none';btn.classList.remove('show');
+    var i=4,da=areaForSlide(i),wasSc=navIsScattered(da);
+    goTo(i);
+    var b=document.getElementById('topnavBar');if(b)b.classList.remove('open');
+    if(!wasSc)navEntrance(da);
+  });
+  a4.appendChild(btn);s4NextTopicBtn=btn;
 }
 function s4StopQuiz(){
   s4QuizActive=false;s4QuizStep=0;s4QuizShaking=false;s4QuizScore=10;s4QuizErrors=0;s4QuizConsecErrors=0;
