@@ -500,7 +500,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v89</div>
+<div id="app-version">v90</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -1254,6 +1254,14 @@ function s1RestoreSlideBtns(){
     if(b&&b._s1WasShown){b.classList.add('show');b._s1WasShown=false;}
   });
 }
+// posição do botão de play dos overlays de dialogo (em viewport-fixed), igual à do #startbtn (right:1.4vw;bottom:0.6vh relativo à .awrap)
+function s1OvBtnPos(){
+  var awrap=document.getElementById('a1').parentNode;
+  var ar=awrap.getBoundingClientRect();
+  var right=Math.round((window.innerWidth-ar.right)+window.innerWidth*0.014);
+  var bottom=Math.round((window.innerHeight-ar.bottom)+window.innerHeight*0.006);
+  return 'right:'+right+'px;bottom:'+bottom+'px;';
+}
 function s1ShowD1Pause(){
   if(introD1Ov)return;
   var ov=document.createElement('div');ov.id='introD1Ov';
@@ -1264,7 +1272,7 @@ function s1ShowD1Pause(){
   var t2=document.createElement('div');t2.style.cssText=base;t2.textContent='Não precisa ser memorizada.';
   // botão play em 1o plano dentro do overlay
   var playOv=document.createElement('button');playOv.className='startbtn show';
-  playOv.style.cssText='position:absolute;left:auto;right:1.4vw;bottom:0.6vh;top:auto;transform:none;z-index:2;pointer-events:auto;';
+  playOv.style.cssText='position:absolute;left:auto;top:auto;'+s1OvBtnPos()+'transform:none;z-index:2;pointer-events:auto;';
   applyBtnSystem(playOv,function(){s1HideD1Pause();introNext();});
   ov.appendChild(t1);ov.appendChild(t2);ov.appendChild(playOv);
   document.body.appendChild(ov);introD1Ov=ov;
@@ -1286,7 +1294,7 @@ function s1ShowD11Text(){
   var base='color:#fff;font-family:Fredoka,sans-serif;font-weight:600;'+fs+'text-align:center;opacity:0;transition:opacity .6s ease .5s;padding:0 4vw;max-width:80%;line-height:1.45;text-shadow:0 2px 10px rgba(0,0,0,.8);';
   var t1=document.createElement('div');t1.id='introD11Txt';t1.style.cssText=base;t1.textContent='O que você precisa saber exatamente sobre a tabela?';
   var playOv=document.createElement('button');playOv.id='introD11Btn';playOv.className='startbtn';
-  playOv.style.cssText='position:absolute;left:auto;right:1.4vw;bottom:0.6vh;top:auto;transform:none;z-index:2;pointer-events:none;opacity:0;transition:opacity .4s ease;display:flex;';
+  playOv.style.cssText='position:absolute;left:auto;top:auto;'+s1OvBtnPos()+'transform:none;z-index:2;pointer-events:none;opacity:0;transition:opacity .4s ease;display:flex;';
   applyBtnSystem(playOv,function(){s1HideD11Ov(function(){introNext();});});
   ov.appendChild(t1);ov.appendChild(playOv);
   document.body.appendChild(ov);introD11Ov=ov;
