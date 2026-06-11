@@ -498,7 +498,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v84</div>
+<div id="app-version">v85</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -5411,10 +5411,22 @@ function s5MemEnd(){
   recordQuizResult(5,score10,s5MemPairs,s5MemErrors);
   var card=buildQuizResultCard(a5,{score:score10,correct:s5MemPairs,errors:s5MemErrors,msg:msg5,high:score10>=5,cx:Math.round(a5.offsetWidth/2),cy:Math.round(a5.offsetHeight/2),zIndex:200});
   card.className=(card.className?card.className+' ':'')+'s5-mem-scorecard';
+  var t6=document.querySelector('#topnav .tcard[data-i="5"]');
+  if(t6)t6.classList.remove('s2-pulse');
   var retryBtn=document.createElement('button');retryBtn.className='startbtn show';retryBtn.textContent='Tentar de novo';
-  retryBtn.style.cssText='position:static;transform:none;margin-top:.4vh;font-size:clamp(12px,1.8vh,16px);';
+  retryBtn.style.cssText='position:static;transform:none;font-size:clamp(12px,1.8vh,16px);';
   retryBtn.addEventListener('click',function(){s5MemCleanup();s5StartMemGame();});
-  card.appendChild(retryBtn);
+  var nextTopicBtn=document.createElement('button');nextTopicBtn.className='startbtn show';nextTopicBtn.textContent='Próximo tópico';
+  nextTopicBtn.style.cssText='position:static;transform:none;font-size:clamp(12px,1.8vh,16px);';
+  nextTopicBtn.addEventListener('click',function(){
+    var i=5,da=areaForSlide(i),wasSc=navIsScattered(da);
+    goTo(i);
+    var b=document.getElementById('topnavBar');if(b)b.classList.remove('open');
+    if(!wasSc)navEntrance(da);
+  });
+  var btnRow=document.createElement('div');btnRow.style.cssText='display:flex;gap:.8vw;margin-top:.4vh;';
+  btnRow.appendChild(retryBtn);btnRow.appendChild(nextTopicBtn);
+  card.appendChild(btnRow);
   vib([50,30,50,30,50]);
 }
 function s5MemCleanup(){
