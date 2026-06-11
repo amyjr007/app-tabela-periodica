@@ -498,7 +498,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v85</div>
+<div id="app-version">v86</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -4388,8 +4388,8 @@ function spawnA4ConfettiAt(px,py){
   })(i);}
 }
 /* ══ REGISTRO GLOBAL DE PONTUAÇÃO DOS QUIZZES ══ */
-var QUIZ_SLIDES=[1,2,4,5,7,8,9];
-var QUIZ_LABELS={1:'Os critérios de organização',2:'As coordenadas periódicas',4:'As principais famílias',5:'Os grupos A e B',7:'A natureza dos elementos',8:'Os elétrons de valência',9:'O diagrama de Pauling'};
+var QUIZ_SLIDES=[1,2,4,5,6,7,8,9];
+var QUIZ_LABELS={1:'Os critérios de organização',2:'As coordenadas periódicas',4:'As principais famílias',5:'Os grupos A e B',6:'Os lantanídeos e actinídeos',7:'A natureza dos elementos',8:'Os elétrons de valência',9:'O diagrama de Pauling'};
 var QUIZ_RESULTS={};
 function recordQuizResult(slide,score,correct,errors){
   QUIZ_RESULTS[slide]={score:score,correct:correct,errors:errors,done:true};
@@ -5744,6 +5744,7 @@ var L6,s6LanthPH=null,s6ActPH=null,s6Dealing={lanth:false,act:false},s6OxOy={ox:
 var s6Audio=null,s6NextBtn=null,s6StartBtn=null,s6Timers=[],s6Col3=null,s6NextHandler=null,s6Arrow1=null,s6Arrow2=null;
 var s6EverDealt={lanth:false,act:false},s6Dialog62Played=false;
 var s6Events=[],s6PressTimer=null,s6PressedLong=false,s6RingRAF=null;
+var s6QuizActive=false,s6QuizStep=0,s6QuizScore=10,s6QuizErrors=0,s6QuizBusy=false,s6QuizQuestionEl=null,s6QuizScoreCard=null,s6QuizBtn=null,s6NextTopicBtn=null,s6QuizClickEls=[];
 var S6_RING_R=46,S6_RING_C=2*Math.PI*46;
 var s6Timeline=null;
 function s6BindTimeline(audio){
@@ -6135,6 +6136,172 @@ function s6ApplyLayout(type){
 }
 function s6ToggleForm(){
   s6ApplyLayout(s6IsLongForm?'short':'long');
+}
+/* ── S6 QUIZ ── */
+function s6BlockTargets(check){
+  var arr=[];
+  MAIN.forEach(function(d){if(check(d))arr.push(d[0]);});
+  LANTH.forEach(function(d){if(check(d))arr.push(d[0]);});
+  ACT.forEach(function(d){if(check(d))arr.push(d[0]);});
+  return arr;
+}
+var S6_QUIZ=[
+  {q:'Toque em um elemento de transição interna.',targets:s6BlockTargets(function(d){return d[5]==='f';}),hint:'Os elementos de transição interna são os lantanídeos e os actinídeos, nas duas linhas abaixo da tabela.'},
+  {q:'Toque no primeiro elemento da série dos lantanídeos.',targets:[57],hint:'É o Lantânio (La), número atômico 57 — o primeiro elemento da série dos lantanídeos.'},
+  {q:'Toque no primeiro elemento da série dos actinídeos.',targets:[89],hint:'É o Actínio (Ac), número atômico 89 — o primeiro elemento da série dos actinídeos.'},
+  {q:'Toque em um elemento de transição externa.',targets:s6BlockTargets(function(d){return d[5]==='d';}),hint:'Os elementos de transição externa formam o bloco d, no centro da tabela (grupos 3 a 12).'},
+  {q:'Toque em um elemento representativo (não é de transição).',targets:s6BlockTargets(function(d){return d[5]==='s'||d[5]==='p';}),hint:'Os elementos representativos formam os blocos s e p, nas extremidades da tabela.'}
+];
+function s6ShowQuizButton(){
+  var a6=document.getElementById('a6');if(!a6)return;
+  if(s6QuizBtn&&s6QuizBtn.parentNode)return;
+  var btn=document.createElement('button');btn.className='startbtn show';btn.textContent='Quiz';
+  btn.style.cssText='left:auto;right:1.4vw;bottom:0.6vh;top:auto;transform:none;';
+  btn.addEventListener('click',function(){btn.remove();s6QuizBtn=null;s6StartQuiz();});
+  a6.appendChild(btn);s6QuizBtn=btn;
+}
+function s6StartQuiz(){
+  var a6=document.getElementById('a6');if(!a6||!L6)return;
+  s6QuizActive=true;s6QuizStep=0;s6QuizScore=10;s6QuizErrors=0;s6QuizBusy=false;
+  if(s6Audio){try{s6Audio.pause();}catch(_){}s6Audio.onended=null;s6Audio=null;}
+  s6ClearTimers();s6Events=[];
+  s6StopRing();
+  s6CleanupVisuals();
+  s6FreeToggle=false;s6NextHandler=null;
+  if(s6NextBtn)s6NextBtn.classList.remove('show');
+  if(s6IsLongForm)s6ApplyLayout('short');
+  s6DealAllAtOnce('lanth');
+  s6DealAllAtOnce('act');
+  [s6LanthPH,s6ActPH].forEach(function(ph){if(ph){ph.style.transition='opacity .4s ease';ph.style.opacity='0';ph.style.pointerEvents='none';}});
+  s6EnableQuizClicks();
+  setTimeout(function(){s6QuizShowStep(0);},500);
+}
+function s6EnableQuizClicks(){
+  var a6=document.getElementById('a6');if(!a6)return;
+  s6QuizClickEls=[];
+  a6.querySelectorAll('[data-z]').forEach(function(el){
+    var z=parseInt(el.getAttribute('data-z'));
+    var d=s6FindElementData(z);if(!d)return;
+    el.style.pointerEvents='auto';
+    el.classList.add('qz-el');
+    var fn=function(){s6QuizElClick(d,el);};
+    el.addEventListener('click',fn);
+    s6QuizClickEls.push({el:el,fn:fn});
+  });
+}
+function s6DisableQuizClicks(){
+  s6QuizClickEls.forEach(function(o){
+    try{o.el.removeEventListener('click',o.fn);}catch(_){}
+    o.el.style.pointerEvents='none';
+    o.el.classList.remove('qz-el','qz-right','qz-wrong');
+  });
+  s6QuizClickEls=[];
+}
+function s6QuizShowStep(step){
+  if(step>=S6_QUIZ.length){s6QuizEnd();return;}
+  s6QuizStep=step;s6QuizBusy=false;
+  var q=S6_QUIZ[step];
+  var a6=document.getElementById('a6');if(!a6)return;
+  if(s6QuizQuestionEl&&s6QuizQuestionEl.parentNode)s6QuizQuestionEl.parentNode.removeChild(s6QuizQuestionEl);
+  var qEl=document.createElement('div');qEl.className='s6-quiz-q';
+  qEl.textContent=(step+1)+'. '+q.q;
+  qEl.style.cssText='position:absolute;top:1.5vh;left:50%;transform:translateX(-50%);font-family:Fredoka,sans-serif;font-weight:700;font-size:clamp(14px,2.2vh,20px);color:#2d1e0e;background:rgba(255,250,240,.97);border:2px solid rgba(140,80,20,.32);padding:.5vh 1.8vw;border-radius:12px;z-index:60;pointer-events:none;opacity:0;transition:opacity .35s;text-align:center;white-space:nowrap;box-shadow:0 3px 12px rgba(80,40,0,.18);';
+  a6.appendChild(qEl);s6QuizQuestionEl=qEl;
+  requestAnimationFrame(function(){requestAnimationFrame(function(){if(s6QuizQuestionEl===qEl)qEl.style.opacity='1';});});
+}
+function s6QuizElClick(d,el){
+  if(!s6QuizActive||s6QuizBusy)return;
+  var q=S6_QUIZ[s6QuizStep];
+  s6QuizBusy=true;
+  if(q.targets.indexOf(d[0])>=0)s6QuizCorrect(el);
+  else s6QuizWrong(el,q);
+}
+function s6SpawnConfettiAt(px,py){
+  var a6=document.getElementById('a6');if(!a6)return;
+  var colors=['#fbbf24','#22d3ee','#a78bfa','#f472b6','#4ade80','#fb923c'];
+  for(var i=0;i<28;i++){(function(idx){
+    var c=document.createElement('div');
+    c.style.cssText='position:absolute;left:'+px+'px;top:'+py+'px;width:8px;height:11px;background:'+colors[idx%colors.length]+';border-radius:2px;pointer-events:none;z-index:160;';
+    a6.appendChild(c);
+    var dx=(Math.random()-.5)*300,dy=-(Math.random()*200+60),rot=Math.random()*720+360;
+    c.animate([{transform:'translate(-50%,-50%) rotate(0deg)',opacity:1},{transform:'translate(calc(-50% + '+dx+'px),calc(-50% + '+dy+'px)) rotate('+rot+'deg)',opacity:0}],{duration:1400,easing:'cubic-bezier(.3,.7,.3,1)',fill:'forwards'});
+    setTimeout(function(){if(c.parentNode)c.remove();},1500);
+  })(i);}
+}
+function s6QuizCorrect(el){
+  el.classList.add('qz-right');
+  try{new Audio('audio/funfare.mp3').play().catch(function(){});}catch(_){}
+  setTimeout(function(){try{new Audio('audio/applause.mp3').play().catch(function(){});}catch(_){}},300);
+  vib(40);
+  var a6=document.getElementById('a6');
+  var er=el.getBoundingClientRect(),ar=a6.getBoundingClientRect();
+  s6SpawnConfettiAt(er.left-ar.left+er.width/2,er.top-ar.top+er.height/2);
+  setTimeout(function(){
+    el.classList.remove('qz-right');
+    s6QuizShowStep(s6QuizStep+1);
+  },1400);
+}
+function s6QuizWrong(el,q){
+  el.classList.add('qz-wrong');
+  try{new Audio('audio/error.mp3').play().catch(function(){});}catch(_){}
+  vib([60,30,60]);
+  var a6=document.getElementById('a6');
+  a6.classList.add('s3-area-shake');
+  setTimeout(function(){a6.classList.remove('s3-area-shake');},560);
+  s6QuizScore=Math.max(0,s6QuizScore-2);
+  s6QuizErrors++;
+  q.targets.forEach(function(z){
+    var corrEl=a6.querySelector('.el[data-z="'+z+'"]');
+    if(corrEl){corrEl.classList.add('s4-answer-glow');corrEl.style.animation='s4AnswerGlow 1s ease-in-out infinite';corrEl.style.zIndex='75';}
+  });
+  setTimeout(function(){
+    el.classList.remove('qz-wrong');
+    a6.querySelectorAll('.s4-answer-glow').forEach(function(e){e.classList.remove('s4-answer-glow');e.style.animation='';e.style.zIndex='';});
+    s6QuizShowStep(s6QuizStep+1);
+  },1800);
+}
+function s6QuizEnd(){
+  s6QuizActive=false;
+  s6DisableQuizClicks();
+  if(s6QuizQuestionEl&&s6QuizQuestionEl.parentNode)s6QuizQuestionEl.parentNode.removeChild(s6QuizQuestionEl);
+  s6QuizQuestionEl=null;
+  var a6=document.getElementById('a6');if(!a6)return;
+  var t7=document.querySelector('#topnav .tcard[data-i="6"]');
+  if(t7)t7.classList.remove('s2-pulse');
+  var high=s6QuizScore>=5;
+  var hiMsgs=['Muito bem! Você entendeu as transições internas e externas!','Excelente trabalho! Continue assim!','Mandou bem nessa!'];
+  var loMsgs=['Continue praticando, você vai conseguir!','Revise os lantanídeos e actinídeos e tente de novo!','Cada tentativa te deixa mais forte!'];
+  var msgs=high?hiMsgs:loMsgs;
+  var msg=msgs[Math.floor(Math.random()*msgs.length)];
+  var correct=S6_QUIZ.length-s6QuizErrors;
+  recordQuizResult(6,s6QuizScore,Math.max(0,correct),s6QuizErrors);
+  var card=buildQuizResultCard(a6,{score:s6QuizScore,correct:Math.max(0,correct),errors:s6QuizErrors,msg:msg,high:high,cx:Math.round(a6.offsetWidth/2),cy:Math.round(a6.offsetHeight/2),zIndex:150});
+  s6QuizScoreCard=card;
+  vib([50,30,50,30,50]);
+  try{new Audio('audio/statistics.mp3').play().catch(function(){});}catch(_){}
+  if(high){
+    try{new Audio('audio/right.mp3').play().catch(function(){});}catch(_){}
+    setTimeout(function(){try{new Audio('audio/applause.mp3').play().catch(function(){});}catch(_){}},350);
+    setTimeout(function(){s6SpawnConfettiAt(a6.offsetWidth/2,a6.offsetHeight*0.4);},250);
+  } else {
+    try{new Audio('audio/lowscore.mp3').play().catch(function(){});}catch(_){}
+  }
+  s6ShowNextTopicBtn();
+}
+function s6ShowNextTopicBtn(){
+  var a6=document.getElementById('a6');if(!a6)return;
+  if(s6NextTopicBtn){s6NextTopicBtn.classList.add('show');return;}
+  var btn=document.createElement('button');btn.className='s1-topic2-btn show';
+  btn.textContent='Próximo tópico';
+  btn.addEventListener('pointerdown',function(e){e.stopPropagation();});
+  btn.addEventListener('click',function(){
+    btn.style.animation='none';btn.classList.remove('show');
+    var i=6,da=areaForSlide(i),wasSc=navIsScattered(da);
+    goTo(i);
+    var b=document.getElementById('topnavBar');if(b)b.classList.remove('open');
+    if(!wasSc)navEntrance(da);
+  });
+  a6.appendChild(btn);s6NextTopicBtn=btn;
 }
 function s6EnableBlockClicks(){
   s6BlockMode=true;
@@ -6685,8 +6852,9 @@ function playS6_7(){
     ad.addEventListener('ended',function(){
       if(s6Audio!==ad)return;
       s6StopRing();
-      s6NextHandler=s6ToggleForm;
-      s6FreeToggle=true;
+      s6NextHandler=null;
+      if(s6NextBtn)s6NextBtn.classList.remove('show');
+      s6ShowQuizButton();
     });
     ad.play().catch(function(){});
     if(s6NextBtn)s6NextBtn.classList.add('show');
@@ -6853,6 +7021,8 @@ function buildPage6(){
   a6.innerHTML='';
   s6LanthPH=null;s6ActPH=null;s6Dealing={lanth:false,act:false};
   s6EverDealt={lanth:false,act:false};s6Dialog62Played=false;
+  s6QuizActive=false;s6QuizStep=0;s6QuizScore=10;s6QuizErrors=0;s6QuizBusy=false;
+  s6QuizQuestionEl=null;s6QuizScoreCard=null;s6QuizBtn=null;s6NextTopicBtn=null;s6QuizClickEls=[];
   L6=cLay(a6);
   L6.cW*=0.9;L6.cH*=0.9;
   L6.pX=(L6.aW-L6.cW*18)/2;
