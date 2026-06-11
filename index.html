@@ -502,7 +502,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v112</div>
+<div id="app-version">v113</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -2751,6 +2751,10 @@ function s2FinalSequence(){
   });
 }
 function s2ShowNextTopicBtn(){
+  // no estado final deixa só o "Próximo tópico": esconde qualquer botão de play remanescente
+  if(quizTriggerBtn)quizTriggerBtn.classList.remove('show');
+  if(s2NextBtn)s2NextBtn.classList.remove('show');
+  if(typeof s1SlideDocks!=='undefined'&&s1SlideDocks[1])s1SlideDocks[1].querySelectorAll('.startbtn').forEach(function(b){b.classList.remove('show');});
   if(s2NextTopicBtn){s2NextTopicBtn.classList.add('show');return;}
   var btn=document.createElement('button');btn.className='s1-topic2-btn show';
   btn.textContent='Próximo tópico';
@@ -3321,12 +3325,12 @@ function playS3Step(idx){
       p3Fph.forEach(function(ph){ph.classList.remove('tp-dim','tp-bright');});
       p3Els.forEach(function(it){var en=it.el.querySelector('.en');if(en&&en.textContent==='1')it.el.classList.add('tp-dim');});
       var ET='transform .45s cubic-bezier(.4,0,.2,1)';
-      var dy=0.5*L3.cH;
+      var dy=0;  // tabela já fica na altura do minigame desde o início (sem descer de novo)
       p3Els.forEach(function(it){
-        var dx=it.type==='metal'?-1.5*L3.cW:it.type==='ametal'?0.5*L3.cW:it.type==='noble'?1.5*L3.cW:0;
+        var dx=it.type==='metal'?-1.0*L3.cW:it.type==='ametal'?0.33*L3.cW:it.type==='noble'?1.0*L3.cW:0;
         it.el.style.transition=ET;it.el.style.transform='translate('+dx+'px,'+dy+'px)';
       });
-      p3Fph.forEach(function(ph){ph.style.transition=ET;ph.style.transform='translate('+(-1.5*L3.cW)+'px,'+dy+'px)';});
+      p3Fph.forEach(function(ph){ph.style.transition=ET;ph.style.transform='translate('+(-1.0*L3.cW)+'px,'+dy+'px)';});
     },14000));
     s3Timers.push(setTimeout(function(){if(s3Audio===ad)s3ShowGameButton();},14800));
   } else if(idx===3){
@@ -3339,7 +3343,7 @@ function buildPage3(){
   clearTypeP3();s3ClearTypeLabels();a3.innerHTML='';p3Els=[];p3Fph=[];
   stopS3Audio();
   L3=cLay(a3,1.21);
-  L3.pY+=1.0*L3.cH;
+  L3.pY+=1.5*L3.cH;
   var mGrad=TINFO.metal.grad;
   [['lanth',6],['act',7]].forEach(function(pair){
     var tp=tPos(3,pair[1],L3),w=L3.cW*.92,h=L3.cH*.92,ox=(L3.cW-w)/2,oy=(L3.cH-h)/2;
@@ -3636,7 +3640,7 @@ function s3LaunchGameDirect(){
   var ET='transform .45s cubic-bezier(.4,0,.2,1)';
   p3Els.forEach(function(it){
     it.el.classList.remove('tp-dim','tp-bright');
-    var dx=it.type==='metal'?-1.5*L3.cW:it.type==='ametal'?0.5*L3.cW:it.type==='noble'?1.5*L3.cW:0;
+    var dx=it.type==='metal'?-1.0*L3.cW:it.type==='ametal'?0.33*L3.cW:it.type==='noble'?1.0*L3.cW:0;
     it.el.style.transition=ET;it.el.style.transform='translateX('+dx+'px)';
   });
   p3Fph.forEach(function(ph){ph.classList.remove('tp-dim','tp-bright');ph.style.transition='';ph.style.transform='';});
@@ -3655,11 +3659,11 @@ function s3JumpToJogo(){
   var ET='transform .45s cubic-bezier(.4,0,.2,1)';
   p3Els.forEach(function(it){
     it.el.classList.remove('tp-dim','tp-bright');
-    var dx=it.type==='metal'?-1.5*L3.cW:it.type==='ametal'?0.5*L3.cW:it.type==='noble'?1.5*L3.cW:0;
+    var dx=it.type==='metal'?-1.0*L3.cW:it.type==='ametal'?0.33*L3.cW:it.type==='noble'?1.0*L3.cW:0;
     it.el.style.transition=ET;it.el.style.transform='translateX('+dx+'px)';
   });
   p3Els.forEach(function(it){var en=it.el.querySelector('.en');if(en&&en.textContent==='1')it.el.classList.add('tp-dim');});
-  p3Fph.forEach(function(ph){ph.classList.remove('tp-dim','tp-bright');ph.style.transition=ET;ph.style.transform='translateX('+(-1.5*L3.cW)+'px)';});
+  p3Fph.forEach(function(ph){ph.classList.remove('tp-dim','tp-bright');ph.style.transition=ET;ph.style.transform='translateX('+(-1.0*L3.cW)+'px)';});
   s3ShowGameButton();
 }
 function openCards(type){
