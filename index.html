@@ -266,13 +266,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 .s2-picker::-webkit-scrollbar{display:none}
 @keyframes s2TcardPulse{0%,100%{transform:scale(1);box-shadow:0 3px 10px rgba(80,40,0,.25)}50%{transform:scale(1.18);box-shadow:0 0 28px 10px rgba(255,180,60,.85)}}
 .tcard.s2-pulse{animation:s2TcardPulse .9s ease-in-out infinite}
-.tcard{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6vh;width:min(76vw,300px);min-height:clamp(120px,26vh,200px);padding:3vh 5vw;box-sizing:border-box;background:rgba(255,250,240,.97);border:2px solid rgba(120,70,20,.22);border-radius:24px;color:#5c2a00;font-family:'Fredoka',sans-serif;cursor:pointer;scroll-snap-align:center;flex-shrink:0;text-align:center;box-shadow:0 6px 20px rgba(80,40,0,.18);opacity:.45;transform:scale(.8);transition:opacity .3s,transform .35s cubic-bezier(.3,1.4,.5,1),background .3s,color .3s,border-color .3s,box-shadow .3s;touch-action:manipulation}
-.tcard.tcard-center{opacity:1;transform:scale(1);border-color:rgba(180,120,40,.55);box-shadow:0 12px 34px rgba(80,40,0,.30)}
+.tcard{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4vh;width:min(76vw,300px);min-height:clamp(120px,26vh,200px);padding:3vh 5vw;box-sizing:border-box;position:relative;overflow:hidden;background:#2c1d0c;border:2px solid rgba(255,235,200,.25);border-radius:24px;font-family:'Fredoka',sans-serif;cursor:pointer;scroll-snap-align:center;flex-shrink:0;text-align:center;box-shadow:0 6px 20px rgba(80,40,0,.28);opacity:.45;transform:scale(.8);transition:opacity .3s,transform .35s cubic-bezier(.3,1.4,.5,1),border-color .3s,box-shadow .3s;touch-action:manipulation}
+.tcard::before{content:'';position:absolute;inset:0;background-image:var(--tbl);background-size:cover;background-position:center;background-repeat:no-repeat;z-index:0}
+.tcard::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 56%,rgba(10,6,2,.34),rgba(10,6,2,.60)),linear-gradient(180deg,rgba(10,6,2,.18),transparent 42%,rgba(10,6,2,.62));z-index:1}
+.tcard>*{position:relative;z-index:2}
+.tcard.tcard-center{opacity:1;transform:scale(1);border-color:rgba(255,205,110,.85);box-shadow:0 12px 36px rgba(0,0,0,.5),0 0 0 1px rgba(255,205,110,.45)}
 .tcard:active{transform:scale(.96)}
-.tcard.active{background:#7c4010;color:#fff;border-color:#7c4010}
-.tnum{display:inline-flex;align-items:center;justify-content:center;width:clamp(36px,6.5vh,56px);height:clamp(36px,6.5vh,56px);border-radius:50%;background:rgba(120,70,20,.16);font-size:clamp(17px,3.2vh,28px);font-weight:700;flex-shrink:0}
-.tcard.active .tnum{background:rgba(255,255,255,.22)}
-.ttxt{font-size:clamp(16px,3.2vh,28px);font-weight:600;letter-spacing:.01em;line-height:1.18;white-space:normal}
+.tcard.active{border-color:#ffcf66;box-shadow:0 12px 36px rgba(0,0,0,.5),0 0 0 3px #ffcf66}
+.tnum{display:inline-flex;align-items:center;justify-content:center;width:clamp(36px,6.5vh,56px);height:clamp(36px,6.5vh,56px);border-radius:50%;background:rgba(255,250,240,.95);color:#3a2410;font-size:clamp(17px,3.2vh,28px);font-weight:700;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.45)}
+.tcard.active .tnum{background:#ffcf66;color:#3a2410}
+.ttxt{font-size:clamp(16px,3.2vh,28px);font-weight:700;letter-spacing:.01em;line-height:1.18;white-space:normal;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.9),0 1px 3px rgba(0,0,0,.85)}
 .nav{display:flex;align-items:center;gap:clamp(6px,1.0vw,14px)}
 .nbtn{background:rgba(120,70,20,.08);border:1px solid rgba(120,70,20,.22);color:#2d1e0e;width:clamp(24px,3.2vh,34px);height:clamp(24px,3.2vh,34px);border-radius:0;cursor:pointer;font-size:clamp(14px,2.2vh,22px);display:flex;align-items:center;justify-content:center;transition:background .2s}
 .nbtn:hover{background:rgba(120,70,20,.16)}
@@ -507,7 +510,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v116</div>
+<div id="app-version">v117</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -1084,6 +1087,35 @@ tcardEls.forEach(function(d){d.addEventListener('click',function(){var i=+d.data
   }
   watchTopnavScroll('topnav');
   watchTopnavScroll('topnav2');
+})();
+
+/* ═══ fundo dos cards do menu: mini tabela periódica colorida conforme cada capítulo ═══ */
+(function(){
+  function miniTableSVG(colorFn){
+    var cell=10,gap=1.1,cols=18,pad=2;
+    function rowOf(p){return p<=7?p:(p===9?8.5:9.5);}
+    var W=pad*2+cols*cell,H=pad*2+10.5*cell,r='';
+    ALL.forEach(function(d){
+      var x=pad+(d[3]-1)*cell,y=pad+(rowOf(d[4])-1)*cell;
+      r+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+(cell-gap).toFixed(1)+'" height="'+(cell-gap).toFixed(1)+'" rx="1.4" fill="'+colorFn(d)+'"/>';
+    });
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+W+' '+H+'">'+r+'</svg>';
+    return 'url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';
+  }
+  function gray(d){var l=(54-(d[0]/118)*20).toFixed(0);return 'hsl(34,16%,'+l+'%)';}
+  function byGroupAB(d){if(d[5]==='f')return '#a855f7';var g=d[3];if(g<=2)return '#eab308';if(g>=13)return '#3b82f6';return '#ef4444';}
+  function grupoAB5(d){if(d[5]==='f')return '#7c3aed';var g=d[3];return (g>=3&&g<=12)?'#ef4444':'#2563eb';}
+  function byType(d){var t=(typeof getType==='function')?getType(d[0]):'metal';return t==='noble'?'#a855f7':t==='ametal'?'#f97316':'#5b8def';}
+  function byBlock(d){var b=d[5];return b==='s'?'#ec4899':b==='p'?'#22c55e':b==='d'?'#3b82f6':'#a855f7';}
+  var schemes=[gray,byGroupAB,byType,gray,grupoAB5,byGroupAB,byType,byBlock,byBlock,byGroupAB,byBlock];
+  function apply(navId,fn){
+    var nav=document.getElementById(navId);if(!nav)return;
+    nav.querySelectorAll('.tcard').forEach(function(c){
+      var i=+c.dataset.i;c.style.setProperty('--tbl',miniTableSVG(fn(i)));
+    });
+  }
+  function run(){if(typeof ALL==='undefined'||!ALL)return;apply('topnav',function(i){return schemes[i]||byBlock;});apply('topnav2',function(){return byBlock;});}
+  requestAnimationFrame(function(){requestAnimationFrame(run);});
 })();
 
 /* ═══ DESMONTA/MONTA A TABELA E OS TEXTOS AO NAVEGAR + TÍTULO DO SLIDE ═══ */
