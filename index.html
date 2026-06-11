@@ -500,7 +500,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v88</div>
+<div id="app-version">v89</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -1088,6 +1088,9 @@ function navScatterCore(area,animate,skipParent){
   var texts=navTextBlocks(area,skipParent);
   var all=els.concat(texts);
   if(!all.length)return;
+  // não deixa nada espalhar por cima da faixa onde fica a barra de número/título do slide
+  var tbEl=document.getElementById('slideTitlebar'),tbBottom=0;
+  if(tbEl){var tbR=tbEl.getBoundingClientRect();if(tbR.width&&tbR.height)tbBottom=tbR.bottom;}
   all.forEach(function(el,idx){
     var er=el.getBoundingClientRect();
     var ex=er.left-r.left+er.width/2-cx;
@@ -1095,6 +1098,7 @@ function navScatterCore(area,animate,skipParent){
     var ang=(ex===0&&ey===0)?(Math.random()*6.2832):Math.atan2(ey,ex);
     var oct=Math.round(ang/(Math.PI/4))*(Math.PI/4); // trava em 8 direções
     var dx=Math.round(Math.cos(oct)*dist),dy=Math.round(Math.sin(oct)*dist);
+    if(tbBottom&&(er.top+dy)<tbBottom)dy=Math.round(tbBottom-er.top)+4;
     if(!el.hasAttribute('data-navtf'))el.setAttribute('data-navtf',el.style.transform||'');
     var isText=idx>=els.length;
     el.style.transition=animate?('transform .28s cubic-bezier(.55,0,.85,.2)'+(isText?',opacity .22s ease':'')):'none';
