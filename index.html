@@ -500,7 +500,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v90</div>
+<div id="app-version">v91</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -1211,13 +1211,14 @@ function mkEl(d,L,gray,enExtra){
 function destForEl(d,L){var p=d[4];if(p===9)return tPos(3,6,L);if(p===10)return tPos(3,7,L);return tPos(d[3],p,L);}
 
 /* SCATTER / FLY */
-function scatter(aW,aH,items,elW,elH){
+function scatter(aW,aH,items,elW,elH,minY){
+  minY=minY||0;
   var n=items.length,cols=Math.ceil(Math.sqrt(n*aW/aH)),rows=Math.ceil(n/cols);
-  var cW=aW/cols,cH=aH/rows,cells=[],i,j,t;
+  var cW=aW/cols,cH=(aH-minY)/rows,cells=[],i,j,t;
   for(var r=0;r<rows;r++)for(var c=0;c<cols;c++)cells.push({c:c,r:r});
   for(i=cells.length-1;i>0;i--){j=Math.floor(Math.random()*(i+1));t=cells[i];cells[i]=cells[j];cells[j]=t;}
   var res={};
-  items.forEach(function(d,k){var cell=cells[k%cells.length],mg=4;res[d[0]]={x:Math.max(0,Math.min(aW-elW,cell.c*cW+mg+Math.random()*Math.max(0,cW-elW-mg*2))),y:Math.max(0,Math.min(aH-elH,cell.r*cH+mg+Math.random()*Math.max(0,cH-elH-mg*2)))};});
+  items.forEach(function(d,k){var cell=cells[k%cells.length],mg=4;res[d[0]]={x:Math.max(0,Math.min(aW-elW,cell.c*cW+mg+Math.random()*Math.max(0,cW-elW-mg*2))),y:Math.max(minY,Math.min(aH-elH,minY+cell.r*cH+mg+Math.random()*Math.max(0,cH-elH-mg*2)))};});
   return res;
 }
 function flyTo(el,tx,ty,dur,cb){
@@ -1602,16 +1603,24 @@ function buildGame(){
   instr1.textContent='Toque nos elementos em ordem crescente de número atômico';
   L1=cLay(a1,1.21);
   L1.pY+=1.5*L1.cH;
-  var sp=scatter(L1.aW,L1.aH,ALL,L1.cW*.92,L1.cH*.92);
+  var scatterMinY=0;
+  (function(){
+    var tbEl=document.getElementById('slideTitlebar');
+    if(tbEl){
+      var tbR=tbEl.getBoundingClientRect(),a1R=a1.getBoundingClientRect();
+      if(tbR.width&&tbR.height)scatterMinY=Math.max(0,tbR.bottom-a1R.top);
+    }
+  })();
+  var sp=scatter(L1.aW,L1.aH,ALL,L1.cW*.92,L1.cH*.92,scatterMinY);
   stashedScatter=sp;
   (function(){
     var elW=L1.cW*.92,elH=L1.cH*.92;
     var fz=[{x:L1.pX,y:L1.pY,w:L1.cW,h:L1.cH},{x:L1.pX+17*L1.cW,y:L1.pY,w:L1.cW,h:L1.cH},{x:L1.pX,y:L1.pY+L1.cH,w:L1.cW,h:L1.cH}];
-    var hits=function(p){return fz.some(function(f){return p.x<f.x+f.w&&p.x+elW>f.x&&p.y<f.y+f.h&&p.y+elH>f.y;});};
+    var hits=function(p){return fz.some(function(f){return p.x<f.x+f.w&&p.x+elW>f.x&&p.y<f.y+f.h&&p.y+elH>f.y;})||p.y<scatterMinY;};
     ALL.forEach(function(d){
       if(!hits(stashedScatter[d[0]]))return;
       var nx,ny,att=0;
-      do{nx=Math.random()*(L1.aW-elW);ny=Math.random()*(L1.aH-elH);att++;}while(att<80&&hits({x:nx,y:ny}));
+      do{nx=Math.random()*(L1.aW-elW);ny=scatterMinY+Math.random()*Math.max(0,L1.aH-elH-scatterMinY);att++;}while(att<80&&hits({x:nx,y:ny}));
       stashedScatter[d[0]]={x:nx,y:ny};
     });
   })();
