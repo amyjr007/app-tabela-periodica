@@ -507,7 +507,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v101</div>
+<div id="app-version">v102</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -6208,9 +6208,9 @@ function s6BlockTargets(check){
 var S6_QUIZ=[
   {q:'Toque em um elemento de transição interna.',targets:s6BlockTargets(function(d){return d[5]==='f';}),hint:'Os elementos de transição interna são os lantanídeos e os actinídeos, nas duas linhas abaixo da tabela.'},
   {q:'Toque no primeiro elemento da série dos lantanídeos.',targets:[57],hint:'É o Lantânio (La), número atômico 57 — o primeiro elemento da série dos lantanídeos.'},
-  {q:'Toque no primeiro elemento da série dos actinídeos.',targets:[89],hint:'É o Actínio (Ac), número atômico 89 — o primeiro elemento da série dos actinídeos.'},
-  {q:'Toque em um elemento de transição externa.',targets:s6BlockTargets(function(d){return d[5]==='d';}),hint:'Os elementos de transição externa formam o bloco d, no centro da tabela (grupos 3 a 12).'},
-  {q:'Toque em um elemento representativo (não é de transição).',targets:s6BlockTargets(function(d){return d[5]==='s'||d[5]==='p';}),hint:'Os elementos representativos formam os blocos s e p, nas extremidades da tabela.'}
+  {q:'Toque no último elemento da série dos actinídeos.',targets:[103],hint:'É o Laurêncio (Lr), número atômico 103 — o último elemento da série dos actinídeos.'},
+  {q:'Toque no último elemento da série dos lantanídeos.',targets:[71],hint:'É o Lutécio (Lu), número atômico 71 — o último elemento da série dos lantanídeos.'},
+  {q:'Toque em qualquer elemento representativo na tabela.',targets:s6BlockTargets(function(d){return d[5]==='s'||d[5]==='p';}),hint:'Os elementos representativos formam os blocos s e p, nas extremidades da tabela.'}
 ];
 function s6ShowQuizButton(){
   var a6=document.getElementById('a6');if(!a6)return;
@@ -6684,6 +6684,7 @@ function s6JumpToClassification(){
 }
 function s6JumpToQuiz(){
   stopS6Audio();
+  buildPage6();                       // zera tudo (tabela, cartas, cartão de resultado e botões) como se fosse a 1a vez
   s6EverDealt={lanth:true,act:true};
   s6StartQuiz();
 }
@@ -7089,9 +7090,9 @@ function buildPage6(){
   s6QuizActive=false;s6QuizStep=0;s6QuizScore=10;s6QuizErrors=0;s6QuizBusy=false;
   s6QuizQuestionEl=null;s6QuizScoreCard=null;s6QuizBtn=null;s6NextTopicBtn=null;s6QuizClickEls=[];
   L6=cLay(a6);
-  L6.cW*=0.9;L6.cH*=0.9;
+  L6.cW*=0.963;L6.cH*=0.963;
   L6.pX=(L6.aW-L6.cW*18)/2;
-  L6.pY=(L6.aH-L6.cH*9.45)/2;
+  L6.pY=(L6.aH-L6.cH*9.45)/2+L6.cH*0.15;
   var lW=Math.max(18,L6.cW*.85),lH=Math.max(14,L6.cH*.68);
   var w=L6.cW*.92,h=L6.cH*.92,ox=(L6.cW-w)/2,oy=(L6.cH-h)/2,fs=txtSizes(L6);
   s6OxOy.ox=ox;s6OxOy.oy=oy;
