@@ -243,8 +243,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 .el.grp-ab-2{background:linear-gradient(145deg,#f87171,#dc2626)}
 .el.grp-ab-3{background:linear-gradient(145deg,#60a5fa,#1d4ed8)}
 #a5 .el.grp-ab-1{background:linear-gradient(145deg,#60a5fa,#1d4ed8)}
-/* Footer */
-.foot{display:flex;align-items:center;justify-content:space-between;padding:1.25vh 1.8vw;flex-shrink:0;border-top:1px solid rgba(120,70,20,.14)}
+/* Footer (removido) — o botão REORGANIZAR é legado e fica sempre oculto */
+.foot{display:none}
 .topnav-bar{position:relative;flex-shrink:0;z-index:210;order:1}
 /* escurece toda a tela (exceto a própria barra/aba de navegação) enquanto o menu de tópicos está aberto */
 .nav-darken{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s ease}
@@ -507,7 +507,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v102</div>
+<div id="app-version">v103</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
