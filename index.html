@@ -498,7 +498,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v80</div>
+<div id="app-version">v81</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -3241,11 +3241,12 @@ function playS3Step(idx){
       p3Fph.forEach(function(ph){ph.classList.remove('tp-dim','tp-bright');});
       p3Els.forEach(function(it){var en=it.el.querySelector('.en');if(en&&en.textContent==='1')it.el.classList.add('tp-dim');});
       var ET='transform .45s cubic-bezier(.4,0,.2,1)';
+      var dy=0.5*L3.cH;
       p3Els.forEach(function(it){
         var dx=it.type==='metal'?-1.5*L3.cW:it.type==='ametal'?0.5*L3.cW:it.type==='noble'?1.5*L3.cW:0;
-        it.el.style.transition=ET;it.el.style.transform='translateX('+dx+'px)';
+        it.el.style.transition=ET;it.el.style.transform='translate('+dx+'px,'+dy+'px)';
       });
-      p3Fph.forEach(function(ph){ph.style.transition=ET;ph.style.transform='translateX('+(-1.5*L3.cW)+'px)';});
+      p3Fph.forEach(function(ph){ph.style.transition=ET;ph.style.transform='translate('+(-1.5*L3.cW)+'px,'+dy+'px)';});
     },14000));
     s3Timers.push(setTimeout(function(){if(s3Audio===ad)s3ShowGameButton();},14800));
   } else if(idx===3){
