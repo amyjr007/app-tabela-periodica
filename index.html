@@ -247,7 +247,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 /* escurece toda a tela (exceto a própria barra/aba de navegação) enquanto o menu de tópicos está aberto */
 .nav-darken{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s ease}
 .topnav-bar.open ~ .nav-darken{opacity:1;pointer-events:auto}
-.topnav-toggle{display:flex;align-items:center;justify-content:center;gap:.4em;width:max-content;margin:0 auto;padding:.95vh 5vw;background:rgba(120,70,20,.07);border:none;border-radius:12px 12px 0 0;color:rgba(92,42,0,.65);font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(13px,2.1vh,18px);letter-spacing:.05em;cursor:pointer;touch-action:manipulation}
+.topnav-toggle{display:flex;align-items:center;justify-content:center;gap:.4em;width:max-content;margin:0 auto;padding:.95vh 5vw;background:rgba(120,70,20,.22);border:none;border-radius:12px 12px 0 0;color:rgba(92,42,0,.9);font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(13px,2.1vh,18px);letter-spacing:.05em;cursor:pointer;touch-action:manipulation}
 .topnav-toggle:active{background:rgba(120,70,20,.12)}
 .topnav-toggle .tnav-arr{display:inline-block;font-size:.9em;transition:transform .25s ease}
 .topnav-bar.open .topnav-toggle .tnav-arr{transform:rotate(180deg)}
@@ -502,7 +502,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v105</div>
+<div id="app-version">v106</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -2934,7 +2934,8 @@ function buildTable(){
   var lW=Math.max(18,L2.cW*.85),lH=Math.max(14,L2.cH*.68);
   L2.pY+=1.5*L2.cH;
   for(var p=1;p<=7;p++){var lb=document.createElement('div');lb.className='axlbl';lb.textContent=ordinal(p);lb.dataset.type='p';lb.dataset.val=p;var tp=tPos(1,p,L2);lb.style.cssText='left:'+(L2.pX-lW-4)+'px;top:'+(tp.y+L2.cH/2-lH/2)+'px;width:'+lW+'px;height:'+lH+'px;';lb.addEventListener('click',function(){onAxisClick(this);});a2.appendChild(lb);}
-  for(var g=1;g<=18;g++){var lb2=document.createElement('div');lb2.className='axlbl';lb2.textContent=g;lb2.dataset.type='g';lb2.dataset.val=g;var tp2=tPos(g,1,L2);lb2.style.cssText='left:'+(tp2.x+L2.cW/2-lW/2)+'px;top:'+(L2.pY-lH-3)+'px;width:'+lW+'px;height:'+lH+'px;';lb2.addEventListener('click',function(){onAxisClick(this);});a2.appendChild(lb2);}
+  var s2TopP={};MAIN.forEach(function(d){var g=d[3],p=d[4];if(!(g in s2TopP)||p<s2TopP[g])s2TopP[g]=p;});
+  for(var g=1;g<=18;g++){var lb2=document.createElement('div');lb2.className='axlbl';lb2.textContent=g;lb2.dataset.type='g';lb2.dataset.val=g;var fp2=s2TopP[g]||1;var tp2=tPos(g,fp2,L2);lb2.style.cssText='left:'+(tp2.x+L2.cW/2-lW/2)+'px;top:'+(tp2.y-lH-3)+'px;width:'+lW+'px;height:'+lH+'px;';lb2.addEventListener('click',function(){onAxisClick(this);});a2.appendChild(lb2);}
   MAIN.forEach(function(d){var it=mkEl(d,L2,false,2),tp=tPos(d[3],d[4],L2);it.el.style.left=(tp.x+it.ox)+'px';it.el.style.top=(tp.y+it.oy)+'px';a2.appendChild(it.el);mNodes2.push(it);});
   ph1=mkPH2('lanth');a2.appendChild(ph1);
   ph2=mkPH2('act');a2.appendChild(ph2);
@@ -5738,7 +5739,7 @@ function buildPage5(){
   var a5=document.getElementById('a5');
   if(!a5)return;
   a5.innerHTML='';
-  L5=cLay(a5);
+  L5=cLay(a5,1.08);
   L5.pY+=1.5*L5.cH;
   var lW=Math.max(18,L5.cW*.85),lH=Math.max(14,L5.cH*.68);
   for(var p=1;p<=7;p++){
@@ -7082,7 +7083,7 @@ function buildPage6(){
   L6=cLay(a6);
   L6.cW*=0.963;L6.cH*=0.963;
   L6.pX=(L6.aW-L6.cW*18)/2;
-  L6.pY=(L6.aH-L6.cH*9.45)/2+L6.cH*0.15;
+  L6.pY=(L6.aH-L6.cH*9.45)/2+L6.cH*0.30;
   var lW=Math.max(18,L6.cW*.85),lH=Math.max(14,L6.cH*.68);
   var w=L6.cW*.92,h=L6.cH*.92,ox=(L6.cW-w)/2,oy=(L6.cH-h)/2,fs=txtSizes(L6);
   s6OxOy.ox=ox;s6OxOy.oy=oy;
@@ -9511,7 +9512,7 @@ function buildPage9(){
   if(!a9)return;
   a9.innerHTML='';
   var L=cLay(a9);
-  L.cW*=0.72;L.cH*=0.72;
+  L.cW*=0.756;L.cH*=0.756;
   L.pX=(L.aW-L.cW*18)/2;
   L.pY=(L.aH-L.cH*9.45)/2+L.cH*0.5;
   s9L=L;
@@ -12233,7 +12234,7 @@ function s10ElClick(d,el){
 function buildPage10(){
   var a10=document.getElementById('a10');if(!a10)return;
   a10.innerHTML='';s10Els=[];s10CurrentEl=null;s10Dealing={lanth:false,act:false};s10LanthPH=null;s10ActPH=null;
-  L10=cLay(a10,0.9);
+  L10=cLay(a10,0.972);
   // header
   var hdr=document.createElement('div');
   hdr.style.cssText='position:absolute;top:0;left:0;right:0;text-align:center;font-family:Fredoka,sans-serif;font-weight:700;font-size:clamp(16px,2.6vh,26px);color:#2d1e0e;padding:.5vh 0;z-index:10;pointer-events:none;';
@@ -12241,6 +12242,8 @@ function buildPage10(){
   a10.appendChild(hdr);
   var L=L10;
   L.pY+=0.25*L.cH;
+  // desce o título para logo acima da primeira linha (junto com o número do período)
+  hdr.style.top=Math.max(0,L.pY-L.cH*1.15)+'px';
   var w=L.cW*.92,h=L.cH*.92,ox=(L.cW-w)/2,oy=(L.cH-h)/2,fs=txtSizes(L);
   function colorClass10(grp){return(grp===1||grp===2)?'grp-ab-1':(grp>=13?'grp-ab-3':'grp-ab-2');}
   function mkEl10(d,cls){
