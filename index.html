@@ -498,7 +498,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v81</div>
+<div id="app-version">v82</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -1157,7 +1157,7 @@ function cLay(area,sc){
 }
 function tPos(g,p,L){return{x:L.pX+(g-1)*L.cW,y:p<=7?L.pY+(p-1)*L.cH:L.pY+(MR+FG+(p-9))*L.cH};}
 function cLay4(area){
-  var L=cLay(area);
+  var L=cLay(area,1.21);
   return{cW:L.cW,cH:L.cH,pX:L.pX,pY:(L.aH-L.cH*7)/2+L.cH*.75,aW:L.aW,aH:L.aH};
 }
 function tPos4(g,p,L){return{x:L.pX+(g-1)*L.cW,y:L.pY+(p-1)*L.cH};}
@@ -3938,6 +3938,7 @@ function buildPage4(){
   FAM_GROUPS.forEach(function(g){p4FamEls[g]=[];});
   L4=cLay4(a4);P4_MAX=L4.cH*1.3;
   var fs4=txtSizes(L4);
+  fs4.en=(L4.cH*0.16+2).toFixed(2)+'px';
   MAIN.forEach(function(d){
     var g=d[3],isRaisable=FAM_GROUPS.indexOf(g)>=0,isNamed=NAMED_GROUPS.indexOf(g)>=0,fi=FAM_INFO[g];
     var w=L4.cW*.92,h=L4.cH*.92,ox=(L4.cW-w)/2,oy=(L4.cH-h)/2;
