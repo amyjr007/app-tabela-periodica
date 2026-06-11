@@ -502,7 +502,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v104</div>
+<div id="app-version">v105</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -2930,7 +2930,7 @@ function s2StartQuiz(z,p,g,txt){
   s2UpdateBtns();
 }
 function buildTable(){
-  clearQuiz();a2.innerHTML='';mNodes2=[];lNodes2=[];aNodes2=[];lExp=false;aExp=false;L2=cLay(a2,1.21);s2WheelExamples=null;s2QuizCorrectCount=0;s2QuizResultCard=null;s2NextTopicBtn=null;
+  clearQuiz();a2.innerHTML='';mNodes2=[];lNodes2=[];aNodes2=[];lExp=false;aExp=false;L2=cLay(a2,1.1737);s2WheelExamples=null;s2QuizCorrectCount=0;s2QuizResultCard=null;s2NextTopicBtn=null;
   var lW=Math.max(18,L2.cW*.85),lH=Math.max(14,L2.cH*.68);
   L2.pY+=1.5*L2.cH;
   for(var p=1;p<=7;p++){var lb=document.createElement('div');lb.className='axlbl';lb.textContent=ordinal(p);lb.dataset.type='p';lb.dataset.val=p;var tp=tPos(1,p,L2);lb.style.cssText='left:'+(L2.pX-lW-4)+'px;top:'+(tp.y+L2.cH/2-lH/2)+'px;width:'+lW+'px;height:'+lH+'px;';lb.addEventListener('click',function(){onAxisClick(this);});a2.appendChild(lb);}
