@@ -502,7 +502,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v108</div>
+<div id="app-version">v109</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -1029,7 +1029,7 @@ function s1GetDock(idx){
   if(s1SlideDocks[idx])return s1SlideDocks[idx];
   var app=document.querySelector('#ssection1 .app');if(!app)return null;
   var d=document.createElement('div');d.className='slide-btn-dock';d.dataset.slide=idx;
-  d.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:200;display:none;';
+  d.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:150;display:none;';
   app.appendChild(d);s1SlideDocks[idx]=d;return d;
 }
 function s1ClearDock(idx){var d=s1SlideDocks[idx];if(d){while(d.firstChild)d.removeChild(d.firstChild);}}
