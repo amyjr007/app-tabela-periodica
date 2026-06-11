@@ -249,22 +249,25 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 /* escurece toda a tela (exceto a própria barra/aba de navegação) enquanto o menu de tópicos está aberto */
 .nav-darken{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s ease}
 .topnav-bar.open ~ .nav-darken{opacity:1;pointer-events:auto}
-.topnav-toggle{display:flex;align-items:center;justify-content:center;gap:.4em;width:max-content;margin:0 auto;padding:.63vh 4.2vw;background:rgba(120,70,20,.07);border:none;border-radius:10px 10px 0 0;color:rgba(92,42,0,.65);font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(12.6px,1.89vh,16.8px);letter-spacing:.05em;cursor:pointer}
+.topnav-toggle{display:flex;align-items:center;justify-content:center;gap:.4em;width:max-content;margin:0 auto;padding:.6vh 4vw;background:rgba(120,70,20,.07);border:none;border-radius:10px 10px 0 0;color:rgba(92,42,0,.65);font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(12px,1.8vh,16px);letter-spacing:.05em;cursor:pointer}
 .topnav-toggle:active{background:rgba(120,70,20,.12)}
 .topnav-toggle .tnav-arr{display:inline-block;font-size:.9em;transition:transform .25s ease}
 .topnav-bar.open .topnav-toggle .tnav-arr{transform:rotate(180deg)}
-.topnav{display:flex;justify-content:flex-start;align-items:center;gap:.735vw;padding:.84vh 1.47vw .42vh;box-sizing:border-box;flex-shrink:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-behavior:smooth;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;touch-action:pan-x;mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);position:absolute;left:0;right:0;bottom:100%;transform-origin:center bottom;transform:scale(.04);opacity:0;pointer-events:none;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .25s ease}
+.topnav{display:flex;justify-content:flex-start;align-items:center;gap:.7vw;padding:.8vh 1.4vw .4vh;box-sizing:border-box;flex-shrink:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-behavior:smooth;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;touch-action:pan-x;mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);position:absolute;left:0;right:0;bottom:100%;transform-origin:center bottom;transform:scale(.04);opacity:0;pointer-events:none;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .25s ease}
 .topnav-bar.open .topnav{transform:scale(1);opacity:1;pointer-events:auto}
 .topnav>.tcard{scroll-snap-align:center;flex-shrink:0}
 .topnav::-webkit-scrollbar{display:none}
 .s2-picker::-webkit-scrollbar{display:none}
 @keyframes s2TcardPulse{0%,100%{transform:scale(1);box-shadow:0 3px 10px rgba(80,40,0,.25)}50%{transform:scale(1.18);box-shadow:0 0 28px 10px rgba(255,180,60,.85)}}
 .tcard.s2-pulse{animation:s2TcardPulse .9s ease-in-out infinite}
-.tcard{display:flex;align-items:center;gap:.5775vw;padding:.5775vh 1.155vw;background:rgba(120,70,20,.06);border:1px solid rgba(120,70,20,.22);border-radius:999px;color:#5c2a00;font-family:'Fredoka',sans-serif;cursor:pointer;transition:background .3s cubic-bezier(.4,0,.2,1),color .3s,transform .3s cubic-bezier(.3,1.4,.5,1),border-color .3s,box-shadow .3s;flex-shrink:0}
+.tcard{display:flex;align-items:center;gap:.55vw;padding:.55vh 1.1vw;background:rgba(120,70,20,.06);border:1px solid rgba(120,70,20,.22);border-radius:999px;color:#5c2a00;font-family:'Fredoka',sans-serif;cursor:pointer;transition:background .3s cubic-bezier(.4,0,.2,1),color .3s,transform .3s cubic-bezier(.3,1.4,.5,1),border-color .3s,box-shadow .3s;flex-shrink:0}
 .tcard:hover{background:rgba(120,70,20,.14)}
 .tcard:active{transform:scale(.94)}
 .tcard.active{background:#7c4010;color:#fff;border-color:#7c4010;transform:scale(1.06);box-shadow:0 3px 10px rgba(80,40,0,.25)}
-.tnum{display:inline-flex;align-items:center;justify-content:center;width:clamp(21px,2.625vh,29.4px);height:clamp(21px,2.625vh,29.4px);border-radius:50%;background:rgba(120,70,20,.18);font-size:clamp(10.5px,1.47vh,14.7px);font-weight:600;flex-shrink:0}
+/* quando o menu de tópicos está aberto (tela escurecida), os chips arrastáveis ficam iluminados em 1º plano */
+.topnav-bar.open .tcard{background:rgba(255,250,240,.95);box-shadow:0 0 12px 2px rgba(255,205,110,.6),0 3px 10px rgba(80,40,0,.25)}
+.topnav-bar.open .tcard.active{background:#7c4010;color:#fff;box-shadow:0 0 16px 3px rgba(255,210,110,.85),0 3px 10px rgba(80,40,0,.3)}
+.tnum{display:inline-flex;align-items:center;justify-content:center;width:clamp(20px,2.5vh,28px);height:clamp(20px,2.5vh,28px);border-radius:50%;background:rgba(120,70,20,.18);font-size:clamp(10px,1.4vh,14px);font-weight:600;flex-shrink:0}
 .tcard.active .tnum{background:rgba(255,255,255,.22)}
 .ttxt{font-size:clamp(9.45px,1.4175vh,14.7px);font-weight:500;letter-spacing:.02em;white-space:nowrap}
 .rbtn{padding:.7vh 1.2vw;background:rgba(120,70,20,.08);border:1px solid rgba(120,70,20,.22);color:#2d1e0e;border-radius:0;font-family:'Fredoka',sans-serif;font-size:clamp(9px,1.4vh,14px);letter-spacing:.08em;cursor:pointer;transition:background .2s,transform .15s}
@@ -503,7 +506,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v94</div>
+<div id="app-version">v95</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
