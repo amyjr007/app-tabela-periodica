@@ -258,23 +258,21 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 .topnav-toggle:active{background:rgba(120,70,20,.12)}
 .topnav-toggle .tnav-arr{display:inline-block;font-size:.9em;transition:transform .25s ease}
 .topnav-bar.open .topnav-toggle .tnav-arr{transform:rotate(180deg)}
-.topnav{display:flex;justify-content:flex-start;align-items:center;gap:.7vw;padding:.8vh 1.4vw .4vh;box-sizing:border-box;flex-shrink:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-behavior:smooth;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;touch-action:pan-x;mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);position:absolute;left:0;right:0;bottom:100%;transform-origin:center bottom;transform:scale(.04);opacity:0;pointer-events:none;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .25s ease}
-.topnav-bar.open .topnav{transform:scale(1);opacity:1;pointer-events:auto}
+/* menu de tópicos: carrossel grande centralizado no meio da tela (arraste para passar) */
+.topnav{display:flex;align-items:center;gap:3vw;box-sizing:border-box;padding:0 calc(50vw - min(38vw,150px));overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-behavior:smooth;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;touch-action:pan-x;mask-image:linear-gradient(to right,transparent 0,#000 20%,#000 80%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 20%,#000 80%,transparent 100%);position:fixed;left:0;right:0;top:50%;height:max-content;transform:translateY(-30%) scale(.85);opacity:0;pointer-events:none;z-index:206;transition:transform .42s cubic-bezier(.34,1.56,.64,1),opacity .3s ease}
+.topnav-bar.open .topnav{transform:translateY(-50%) scale(1);opacity:1;pointer-events:auto}
 .topnav>.tcard{scroll-snap-align:center;flex-shrink:0}
 .topnav::-webkit-scrollbar{display:none}
 .s2-picker::-webkit-scrollbar{display:none}
 @keyframes s2TcardPulse{0%,100%{transform:scale(1);box-shadow:0 3px 10px rgba(80,40,0,.25)}50%{transform:scale(1.18);box-shadow:0 0 28px 10px rgba(255,180,60,.85)}}
 .tcard.s2-pulse{animation:s2TcardPulse .9s ease-in-out infinite}
-.tcard{display:flex;align-items:center;gap:.55vw;padding:.55vh 1.1vw;background:rgba(120,70,20,.06);border:1px solid rgba(120,70,20,.22);border-radius:999px;color:#5c2a00;font-family:'Fredoka',sans-serif;cursor:pointer;transition:background .3s cubic-bezier(.4,0,.2,1),color .3s,transform .3s cubic-bezier(.3,1.4,.5,1),border-color .3s,box-shadow .3s;flex-shrink:0;touch-action:manipulation}
-.tcard:hover{background:rgba(120,70,20,.14)}
-.tcard:active{transform:scale(.94)}
-.tcard.active{background:#7c4010;color:#fff;border-color:#7c4010;transform:scale(1.06);box-shadow:0 3px 10px rgba(80,40,0,.25)}
-/* quando o menu de tópicos está aberto (tela escurecida), os chips arrastáveis ficam iluminados em 1º plano */
-.topnav-bar.open .tcard{background:rgba(255,250,240,.95);box-shadow:0 0 12px 2px rgba(255,205,110,.6),0 3px 10px rgba(80,40,0,.25)}
-.topnav-bar.open .tcard.active{background:#7c4010;color:#fff;box-shadow:0 0 16px 3px rgba(255,210,110,.85),0 3px 10px rgba(80,40,0,.3)}
-.tnum{display:inline-flex;align-items:center;justify-content:center;width:clamp(20px,2.5vh,28px);height:clamp(20px,2.5vh,28px);border-radius:50%;background:rgba(120,70,20,.18);font-size:clamp(10px,1.4vh,14px);font-weight:600;flex-shrink:0}
+.tcard{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6vh;width:min(76vw,300px);min-height:clamp(120px,26vh,200px);padding:3vh 5vw;box-sizing:border-box;background:rgba(255,250,240,.97);border:2px solid rgba(120,70,20,.22);border-radius:24px;color:#5c2a00;font-family:'Fredoka',sans-serif;cursor:pointer;scroll-snap-align:center;flex-shrink:0;text-align:center;box-shadow:0 6px 20px rgba(80,40,0,.18);opacity:.45;transform:scale(.8);transition:opacity .3s,transform .35s cubic-bezier(.3,1.4,.5,1),background .3s,color .3s,border-color .3s,box-shadow .3s;touch-action:manipulation}
+.tcard.tcard-center{opacity:1;transform:scale(1);border-color:rgba(180,120,40,.55);box-shadow:0 12px 34px rgba(80,40,0,.30)}
+.tcard:active{transform:scale(.96)}
+.tcard.active{background:#7c4010;color:#fff;border-color:#7c4010}
+.tnum{display:inline-flex;align-items:center;justify-content:center;width:clamp(36px,6.5vh,56px);height:clamp(36px,6.5vh,56px);border-radius:50%;background:rgba(120,70,20,.16);font-size:clamp(17px,3.2vh,28px);font-weight:700;flex-shrink:0}
 .tcard.active .tnum{background:rgba(255,255,255,.22)}
-.ttxt{font-size:clamp(9.45px,1.4175vh,14.7px);font-weight:500;letter-spacing:.02em;white-space:nowrap}
+.ttxt{font-size:clamp(16px,3.2vh,28px);font-weight:600;letter-spacing:.01em;line-height:1.18;white-space:normal}
 .nav{display:flex;align-items:center;gap:clamp(6px,1.0vw,14px)}
 .nbtn{background:rgba(120,70,20,.08);border:1px solid rgba(120,70,20,.22);color:#2d1e0e;width:clamp(24px,3.2vh,34px);height:clamp(24px,3.2vh,34px);border-radius:0;cursor:pointer;font-size:clamp(14px,2.2vh,22px);display:flex;align-items:center;justify-content:center;transition:background .2s}
 .nbtn:hover{background:rgba(120,70,20,.16)}
@@ -509,7 +507,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v115</div>
+<div id="app-version">v116</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -1053,7 +1051,7 @@ function s1UpdateDocks(i){Object.keys(s1SlideDocks).forEach(function(k){s1SlideD
 function goTo(i){if(cur===0&&i!==0&&typeof s1QuizPhase!=='undefined'&&s1QuizPhase>=0)return;var prev=cur;if(cur!==i){document.querySelectorAll('.tcard.s2-pulse').forEach(function(c){c.classList.remove('s2-pulse');});if(cur===0&&typeof s1SaveResume==='function')s1SaveResume();if(cur===0&&typeof s0StopAbertura==='function')s0StopAbertura();if(typeof stopIntroAudio==='function')stopIntroAudio();if(typeof s1StopCritLoop==='function')s1StopCritLoop();if(typeof stopS2Audio==='function')stopS2Audio();if(typeof stopS3Audio==='function')stopS3Audio();if(typeof s3ClearTypeLabels==='function')s3ClearTypeLabels();if(typeof stopS4Audio==='function')stopS4Audio();if(typeof stopS5Audio==='function')stopS5Audio();if(typeof stopS6Audio==='function')stopS6Audio();if(typeof stopS7nAudio==='function')stopS7nAudio();if(typeof stopS8Audio==='function')stopS8Audio();if(typeof stopS9Audio==='function')stopS9Audio();if(typeof qzStopResultAudios==='function')qzStopResultAudios();if(navigator.vibrate)navigator.vibrate(20);}cur=i;if(typeof s0Ov!=='undefined'&&s0Ov){s0Ov.style.display=(i===0?'':'none');}var _s0Hr=(i===0&&prev!==0)?(typeof s1PendingResume!=='undefined'&&!!s1PendingResume):false;if(i===0&&prev!==0&&typeof s1TryResume==='function')s1TryResume();if(i===0&&prev!==0&&!_s0Hr&&(typeof s0Ov==='undefined'||!s0Ov)&&!(typeof s0AberturaDone!=='undefined'&&s0AberturaDone)&&typeof s0Init==='function')setTimeout(s0Init,200);strack.style.transform='translateX(-'+(i*100/11).toFixed(4)+'%)';tcardEls.forEach(function(d,j){d.classList.toggle('active',j===i);});var actTc=tcardEls[i];if(actTc&&actTc.scrollIntoView){try{actTc.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}catch(_){actTc.scrollIntoView();}}if(i===5&&prev!==5&&typeof startS6Sequence==='function')startS6Sequence();if(i===6&&typeof s7nStartRandomHighlights==='function'){setTimeout(function(){if(cur===6&&!s7nHlInterval)s7nStartRandomHighlights();},1000);}if(i===9&&typeof buildPage10==='function')buildPage10();
 if(i===10&&typeof startP7Quiz==='function'){var a7el=document.getElementById('a7');if(!qzState||(a7el&&!a7el.children.length))startP7Quiz();}if(i===8&&typeof s9StartDemo==='function')setTimeout(s9StartDemo,300);if(typeof qnavSetMode==='function')qnavSetMode(i===0?'s1':i===1?'s2':i===2?'s3':i===3?'s4':i===4?'s5':i===5?'s6':i===6?'s7':i===7?'s8':i===8?'s9':'none');var _s1b=document.getElementById('section1Back');if(_s1b)_s1b.style.display=(i===7)?'none':'';if(typeof updateBackBtnVis==='function')updateBackBtnVis();if(typeof navTitlebarUpdate==='function')navTitlebarUpdate(i);if(typeof navRestore==='function')navRestore(areaForSlide(i));if(typeof s1UpdateDocks==='function')s1UpdateDocks(i);}
 tcardEls.forEach(function(d){d.addEventListener('click',function(){var i=+d.dataset.i,da=areaForSlide(i),wasSc=navIsScattered(da);goTo(i);var b=document.getElementById('topnavBar');if(b)b.classList.remove('open');if(!wasSc)navEntrance(da);});});
-(function(){var b=document.getElementById('topnavBar'),t=document.getElementById('topnavToggle'),nav=document.getElementById('topnav');if(t)t.addEventListener('click',function(){var wasOpen=b.classList.contains('open');b.classList.toggle('open');if(!wasOpen){navScatter(areaForSlide(cur));if(cur===8&&typeof s9StopDemo==='function')s9StopDemo();}else{navRestore(areaForSlide(cur));if(cur===8&&typeof s9StartDemo==='function')s9StartDemo();}});
+(function(){var b=document.getElementById('topnavBar'),t=document.getElementById('topnavToggle'),nav=document.getElementById('topnav');if(t)t.addEventListener('click',function(){var wasOpen=b.classList.contains('open');b.classList.toggle('open');if(!wasOpen){navScatter(areaForSlide(cur));if(cur===8&&typeof s9StopDemo==='function')s9StopDemo();var ac=tcardEls[cur];if(ac&&ac.scrollIntoView){try{ac.scrollIntoView({block:'nearest',inline:'center'});}catch(_){ac.scrollIntoView();}}if(nav&&nav._centerUpdate)setTimeout(nav._centerUpdate,40);}else{navRestore(areaForSlide(cur));if(cur===8&&typeof s9StartDemo==='function')s9StartDemo();}});
   function s1CloseNav(){if(b.classList.contains('open')){b.classList.remove('open');navRestore(areaForSlide(cur));if(cur===8&&typeof s9StartDemo==='function')s9StartDemo();}}
   var dk=document.getElementById('navDarken1');if(dk)dk.addEventListener('click',s1CloseNav);
   if(nav)nav.addEventListener('click',function(e){if(e.target===nav)s1CloseNav();}); // tocar no fundo do menu (fora dos chips) tambem fecha
@@ -1069,7 +1067,7 @@ tcardEls.forEach(function(d){d.addEventListener('click',function(){var i=+d.data
   function watchTopnavScroll(navId){
     var nav=document.getElementById(navId);if(!nav)return;
     var lastIdx=null;
-    nav.addEventListener('scroll',function(){
+    function update(){
       var cards=nav.querySelectorAll('.tcard');if(!cards.length)return;
       var navR=nav.getBoundingClientRect(),center=navR.left+navR.width/2;
       var closest=0,closestDist=Infinity;
@@ -1077,9 +1075,12 @@ tcardEls.forEach(function(d){d.addEventListener('click',function(){var i=+d.data
         var r=c.getBoundingClientRect(),d=Math.abs((r.left+r.width/2)-center);
         if(d<closestDist){closestDist=d;closest=i;}
       });
+      cards.forEach(function(c,i){c.classList.toggle('tcard-center',i===closest);});
       if(lastIdx===null){lastIdx=closest;return;}
       if(closest!==lastIdx){lastIdx=closest;if(navigator.vibrate)try{navigator.vibrate(8);}catch(_){}}
-    },{passive:true});
+    }
+    nav.addEventListener('scroll',update,{passive:true});
+    nav._centerUpdate=update;
   }
   watchTopnavScroll('topnav');
   watchTopnavScroll('topnav2');
@@ -1203,7 +1204,7 @@ function goTo2(i){
   navTitlebarUpdate2(i);navRestore(areaForSlide2(i),true);
 }
 tcardEls2.forEach(function(d){d.addEventListener('click',function(){var i=+d.dataset.i,da=areaForSlide2(i),wasSc=navIsScattered(da,true);goTo2(i);var b=document.getElementById('topnavBar2');if(b)b.classList.remove('open');if(!wasSc)navEntrance(da,true);});});
-(function(){var b=document.getElementById('topnavBar2'),t=document.getElementById('topnavToggle2');if(t)t.addEventListener('click',function(){var wasOpen=b.classList.contains('open');b.classList.toggle('open');if(!wasOpen)navScatter(areaForSlide2(cur2),true);else navRestore(areaForSlide2(cur2),true);});
+(function(){var b=document.getElementById('topnavBar2'),t=document.getElementById('topnavToggle2'),nav2t=document.getElementById('topnav2');if(t)t.addEventListener('click',function(){var wasOpen=b.classList.contains('open');b.classList.toggle('open');if(!wasOpen){navScatter(areaForSlide2(cur2),true);var ac2=tcardEls2[cur2];if(ac2&&ac2.scrollIntoView){try{ac2.scrollIntoView({block:'nearest',inline:'center'});}catch(_){ac2.scrollIntoView();}}if(nav2t&&nav2t._centerUpdate)setTimeout(nav2t._centerUpdate,40);}else navRestore(areaForSlide2(cur2),true);});
   function s2CloseNav(){if(b.classList.contains('open')){b.classList.remove('open');navRestore(areaForSlide2(cur2),true);}}
   var dk=document.getElementById('navDarken2');if(dk)dk.addEventListener('click',s2CloseNav);
   var nav2=document.getElementById('topnav2');if(nav2)nav2.addEventListener('click',function(e){if(e.target===nav2)s2CloseNav();}); // tocar no fundo do menu (fora dos chips) tambem fecha
