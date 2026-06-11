@@ -246,6 +246,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 /* Footer */
 .foot{display:flex;align-items:center;justify-content:space-between;padding:.5vh 1.8vw .8vh;flex-shrink:0;border-top:1px solid rgba(120,70,20,.14)}
 .topnav-bar{position:relative;flex-shrink:0;z-index:210;order:1}
+/* escurece toda a tela (exceto a própria barra/aba de navegação) enquanto o menu de tópicos está aberto */
+.nav-darken{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s ease}
+.topnav-bar.open ~ .nav-darken{opacity:1;pointer-events:auto}
 .topnav-toggle{display:flex;align-items:center;justify-content:center;gap:.4em;width:max-content;margin:0 auto;padding:.63vh 4.2vw;background:rgba(120,70,20,.07);border:none;border-radius:10px 10px 0 0;color:rgba(92,42,0,.65);font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(12.6px,1.89vh,16.8px);letter-spacing:.05em;cursor:pointer}
 .topnav-toggle:active{background:rgba(120,70,20,.12)}
 .topnav-toggle .tnav-arr{display:inline-block;font-size:.9em;transition:transform .25s ease}
@@ -500,7 +503,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v93</div>
+<div id="app-version">v94</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -611,6 +614,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
       <button class="tcard" data-i="10"><span class="tnum">11</span><span class="ttxt">Quiz Interativo</span></button>
     </nav>
   </div>
+  <div class="nav-darken" id="navDarken1"></div>
   <div class="slide-titlebar" id="slideTitlebar"><span class="stb-num" id="stbNum">1</span><span class="stb-name" id="stbName"></span></div>
   <div class="swrap">
     <div class="strack" id="strack">
@@ -716,6 +720,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
       <button class="tcard" data-i="3"><span class="tnum">4</span><span class="ttxt">Eletronegatividade</span></button>
     </nav>
   </div>
+  <div class="nav-darken" id="navDarken2"></div>
   <div class="slide-titlebar" id="slideTitlebar2"><span class="stb-num" id="stbNum2">1</span><span class="stb-name" id="stbName2"></span></div>
   <div class="swrap">
     <div class="strack" id="strack2">
@@ -1025,6 +1030,7 @@ function goTo(i){if(cur===0&&i!==0&&typeof s1QuizPhase!=='undefined'&&s1QuizPhas
 if(i===10&&typeof startP7Quiz==='function'){var a7el=document.getElementById('a7');if(!qzState||(a7el&&!a7el.children.length))startP7Quiz();}if(i===8&&typeof s9StartDemo==='function')setTimeout(s9StartDemo,300);if(typeof qnavSetMode==='function')qnavSetMode(i===0?'s1':i===1?'s2':i===2?'s3':i===3?'s4':i===4?'s5':i===5?'s6':i===6?'s7':i===7?'s8':i===8?'s9':'none');var _s1b=document.getElementById('section1Back');if(_s1b)_s1b.style.display=(i===7)?'none':'';if(typeof updateBackBtnVis==='function')updateBackBtnVis();if(typeof navTitlebarUpdate==='function')navTitlebarUpdate(i);if(typeof navRestore==='function')navRestore(areaForSlide(i));}
 tcardEls.forEach(function(d){d.addEventListener('click',function(){var i=+d.dataset.i,da=areaForSlide(i),wasSc=navIsScattered(da);goTo(i);var b=document.getElementById('topnavBar');if(b)b.classList.remove('open');if(!wasSc)navEntrance(da);});});
 (function(){var b=document.getElementById('topnavBar'),t=document.getElementById('topnavToggle'),nav=document.getElementById('topnav');if(t)t.addEventListener('click',function(){var wasOpen=b.classList.contains('open');b.classList.toggle('open');if(!wasOpen)navScatter(areaForSlide(cur));else navRestore(areaForSlide(cur));});
+  var dk=document.getElementById('navDarken1');if(dk)dk.addEventListener('click',function(){if(b.classList.contains('open')){b.classList.remove('open');navRestore(areaForSlide(cur));}});
   if(b&&nav&&typeof MutationObserver!=='undefined'){
     new MutationObserver(function(muts){
       muts.forEach(function(m){if(m.target.classList.contains('s2-pulse'))b.classList.add('open');});
@@ -1171,7 +1177,9 @@ function goTo2(i){
   navTitlebarUpdate2(i);navRestore(areaForSlide2(i),true);
 }
 tcardEls2.forEach(function(d){d.addEventListener('click',function(){var i=+d.dataset.i,da=areaForSlide2(i),wasSc=navIsScattered(da,true);goTo2(i);var b=document.getElementById('topnavBar2');if(b)b.classList.remove('open');if(!wasSc)navEntrance(da,true);});});
-(function(){var b=document.getElementById('topnavBar2'),t=document.getElementById('topnavToggle2');if(t)t.addEventListener('click',function(){var wasOpen=b.classList.contains('open');b.classList.toggle('open');if(!wasOpen)navScatter(areaForSlide2(cur2),true);else navRestore(areaForSlide2(cur2),true);});})();
+(function(){var b=document.getElementById('topnavBar2'),t=document.getElementById('topnavToggle2');if(t)t.addEventListener('click',function(){var wasOpen=b.classList.contains('open');b.classList.toggle('open');if(!wasOpen)navScatter(areaForSlide2(cur2),true);else navRestore(areaForSlide2(cur2),true);});
+  var dk=document.getElementById('navDarken2');if(dk)dk.addEventListener('click',function(){if(b.classList.contains('open')){b.classList.remove('open');navRestore(areaForSlide2(cur2),true);}});
+})();
 
 /* LAYOUT */
 var COLS=18,MR=7,FR=2,FG=.45;
