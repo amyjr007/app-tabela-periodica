@@ -500,7 +500,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v92</div>
+<div id="app-version">v93</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -6665,6 +6665,11 @@ function s6JumpToClassification(){
   if(s6LanthPH){s6LanthPH.style.transition='none';s6LanthPH.style.opacity='0';}
   if(s6ActPH){s6ActPH.style.transition='none';s6ActPH.style.opacity='0';}
   playS6_5();
+}
+function s6JumpToQuiz(){
+  stopS6Audio();
+  s6EverDealt={lanth:true,act:true};
+  s6StartQuiz();
 }
 function s6StartIntro(){
   if(s6StartBtn)s6StartBtn.classList.remove('show');
@@ -12997,7 +13002,8 @@ var QNAV_S5=[
 var QNAV_S6=[
   {n:1,label:'Começo',                   fn:'s6JumpToStart'},
   {n:2,label:'Os lantanídeos e actinídeos',fn:'s6JumpToLanth'},
-  {n:3,label:'A classificação dos blocos',fn:'s6JumpToClassification'}
+  {n:3,label:'A classificação dos blocos',fn:'s6JumpToClassification'},
+  {n:4,label:'Quiz',                     fn:'s6JumpToQuiz'}
 ];
 var QNAV_S7=[
   {n:1,label:'Começo',                 fn:'s7nJumpToStart'},
@@ -13228,6 +13234,24 @@ function qnavGoto(pt){
   },300);
 }
 qnavRebuild();
+
+// para qualquer áudio de narração imediatamente se o app for para segundo plano (tela bloqueada/app trocado)
+function stopAllAudio(){
+  if(typeof stopIntroAudio==='function')stopIntroAudio();
+  if(typeof s0StopAbertura==='function')s0StopAbertura();
+  if(typeof s1StopCritLoop==='function')s1StopCritLoop();
+  if(typeof stopS2Audio==='function')stopS2Audio();
+  if(typeof stopS3Audio==='function')stopS3Audio();
+  if(typeof stopS4Audio==='function')stopS4Audio();
+  if(typeof stopS5Audio==='function')stopS5Audio();
+  if(typeof stopS6Audio==='function')stopS6Audio();
+  if(typeof stopS7nAudio==='function')stopS7nAudio();
+  if(typeof stopS8Audio==='function')stopS8Audio();
+  if(typeof stopS9Audio==='function')stopS9Audio();
+  if(typeof qzStopResultAudios==='function')qzStopResultAudios();
+}
+document.addEventListener('visibilitychange',function(){if(document.hidden)stopAllAudio();});
+window.addEventListener('pagehide',stopAllAudio);
 </script>
 
 </body>
