@@ -244,12 +244,12 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 .el.grp-ab-3{background:linear-gradient(145deg,#60a5fa,#1d4ed8)}
 #a5 .el.grp-ab-1{background:linear-gradient(145deg,#60a5fa,#1d4ed8)}
 /* Footer */
-.foot{display:flex;align-items:center;justify-content:space-between;padding:.5vh 1.8vw .8vh;flex-shrink:0;border-top:1px solid rgba(120,70,20,.14)}
+.foot{display:flex;align-items:center;justify-content:space-between;padding:.05vh 1.8vw .1vh;flex-shrink:0;border-top:1px solid rgba(120,70,20,.14)}
 .topnav-bar{position:relative;flex-shrink:0;z-index:210;order:1}
 /* escurece toda a tela (exceto a própria barra/aba de navegação) enquanto o menu de tópicos está aberto */
 .nav-darken{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s ease}
 .topnav-bar.open ~ .nav-darken{opacity:1;pointer-events:auto}
-.topnav-toggle{display:flex;align-items:center;justify-content:center;gap:.4em;width:max-content;margin:0 auto;padding:0 4vw;background:rgba(120,70,20,.07);border:none;border-radius:6px 6px 0 0;color:rgba(92,42,0,.65);font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(10px,1.5vh,14px);line-height:1;letter-spacing:.05em;cursor:pointer;touch-action:manipulation}
+.topnav-toggle{display:flex;align-items:center;justify-content:center;gap:.4em;width:max-content;margin:0 auto;padding:.95vh 5vw;background:rgba(120,70,20,.07);border:none;border-radius:12px 12px 0 0;color:rgba(92,42,0,.65);font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(13px,2.1vh,18px);letter-spacing:.05em;cursor:pointer;touch-action:manipulation}
 .topnav-toggle:active{background:rgba(120,70,20,.12)}
 .topnav-toggle .tnav-arr{display:inline-block;font-size:.9em;transition:transform .25s ease}
 .topnav-bar.open .topnav-toggle .tnav-arr{transform:rotate(180deg)}
@@ -270,7 +270,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 .tnum{display:inline-flex;align-items:center;justify-content:center;width:clamp(20px,2.5vh,28px);height:clamp(20px,2.5vh,28px);border-radius:50%;background:rgba(120,70,20,.18);font-size:clamp(10px,1.4vh,14px);font-weight:600;flex-shrink:0}
 .tcard.active .tnum{background:rgba(255,255,255,.22)}
 .ttxt{font-size:clamp(9.45px,1.4175vh,14.7px);font-weight:500;letter-spacing:.02em;white-space:nowrap}
-.rbtn{padding:.7vh 1.2vw;background:rgba(120,70,20,.08);border:1px solid rgba(120,70,20,.22);color:#2d1e0e;border-radius:0;font-family:'Fredoka',sans-serif;font-size:clamp(9px,1.4vh,14px);letter-spacing:.08em;cursor:pointer;transition:background .2s,transform .15s}
+.rbtn{padding:.1vh 1.2vw;background:rgba(120,70,20,.08);border:1px solid rgba(120,70,20,.22);color:#2d1e0e;border-radius:0;font-family:'Fredoka',sans-serif;font-size:clamp(8px,1.1vh,11px);letter-spacing:.08em;cursor:pointer;transition:background .2s,transform .15s}
 .rbtn:hover{background:rgba(120,70,20,.16)}
 .rbtn:active{transform:scale(.96)}
 .nav{display:flex;align-items:center;gap:clamp(6px,1.0vw,14px)}
@@ -507,7 +507,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v98</div>
+<div id="app-version">v99</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
