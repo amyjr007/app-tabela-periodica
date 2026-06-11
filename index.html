@@ -502,7 +502,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v107</div>
+<div id="app-version">v108</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -1043,7 +1043,7 @@ function s1DockBtn(btn){
 function s1UpdateDocks(i){Object.keys(s1SlideDocks).forEach(function(k){s1SlideDocks[k].style.display=(+k===i?'':'none');});}
 
 /* NAV */
-function goTo(i){if(cur===0&&i!==0&&typeof s1QuizPhase!=='undefined'&&s1QuizPhase>=0)return;var prev=cur;if(cur!==i){document.querySelectorAll('.tcard.s2-pulse').forEach(function(c){c.classList.remove('s2-pulse');});if(cur===0&&typeof s1SaveResume==='function')s1SaveResume();if(cur===0&&typeof s0StopAbertura==='function')s0StopAbertura();if(typeof stopIntroAudio==='function')stopIntroAudio();if(typeof s1StopCritLoop==='function')s1StopCritLoop();if(typeof stopS2Audio==='function')stopS2Audio();if(typeof stopS3Audio==='function')stopS3Audio();if(typeof s3ClearTypeLabels==='function')s3ClearTypeLabels();if(typeof stopS4Audio==='function')stopS4Audio();if(typeof stopS5Audio==='function')stopS5Audio();if(typeof stopS6Audio==='function')stopS6Audio();if(typeof stopS7nAudio==='function')stopS7nAudio();if(typeof stopS8Audio==='function')stopS8Audio();if(typeof stopS9Audio==='function')stopS9Audio();if(typeof qzStopResultAudios==='function')qzStopResultAudios();if(navigator.vibrate)navigator.vibrate(20);}cur=i;if(typeof s0Ov!=='undefined'&&s0Ov){s0Ov.style.display=(i===0?'':'none');}var _s0Hr=(i===0&&prev!==0)?(typeof s1PendingResume!=='undefined'&&!!s1PendingResume):false;if(i===0&&prev!==0&&typeof s1TryResume==='function')s1TryResume();if(i===0&&prev!==0&&!_s0Hr&&(typeof s0Ov==='undefined'||!s0Ov)&&typeof s0Init==='function')setTimeout(s0Init,200);strack.style.transform='translateX(-'+(i*100/11).toFixed(4)+'%)';tcardEls.forEach(function(d,j){d.classList.toggle('active',j===i);});var actTc=tcardEls[i];if(actTc&&actTc.scrollIntoView){try{actTc.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}catch(_){actTc.scrollIntoView();}}if(i===5&&prev!==5&&typeof startS6Sequence==='function')startS6Sequence();if(i===6&&typeof s7nStartRandomHighlights==='function'){setTimeout(function(){if(cur===6&&!s7nHlInterval)s7nStartRandomHighlights();},1000);}if(i===9&&typeof buildPage10==='function')buildPage10();
+function goTo(i){if(cur===0&&i!==0&&typeof s1QuizPhase!=='undefined'&&s1QuizPhase>=0)return;var prev=cur;if(cur!==i){document.querySelectorAll('.tcard.s2-pulse').forEach(function(c){c.classList.remove('s2-pulse');});if(cur===0&&typeof s1SaveResume==='function')s1SaveResume();if(cur===0&&typeof s0StopAbertura==='function')s0StopAbertura();if(typeof stopIntroAudio==='function')stopIntroAudio();if(typeof s1StopCritLoop==='function')s1StopCritLoop();if(typeof stopS2Audio==='function')stopS2Audio();if(typeof stopS3Audio==='function')stopS3Audio();if(typeof s3ClearTypeLabels==='function')s3ClearTypeLabels();if(typeof stopS4Audio==='function')stopS4Audio();if(typeof stopS5Audio==='function')stopS5Audio();if(typeof stopS6Audio==='function')stopS6Audio();if(typeof stopS7nAudio==='function')stopS7nAudio();if(typeof stopS8Audio==='function')stopS8Audio();if(typeof stopS9Audio==='function')stopS9Audio();if(typeof qzStopResultAudios==='function')qzStopResultAudios();if(navigator.vibrate)navigator.vibrate(20);}cur=i;if(typeof s0Ov!=='undefined'&&s0Ov){s0Ov.style.display=(i===0?'':'none');}var _s0Hr=(i===0&&prev!==0)?(typeof s1PendingResume!=='undefined'&&!!s1PendingResume):false;if(i===0&&prev!==0&&typeof s1TryResume==='function')s1TryResume();if(i===0&&prev!==0&&!_s0Hr&&(typeof s0Ov==='undefined'||!s0Ov)&&!(typeof s0AberturaDone!=='undefined'&&s0AberturaDone)&&typeof s0Init==='function')setTimeout(s0Init,200);strack.style.transform='translateX(-'+(i*100/11).toFixed(4)+'%)';tcardEls.forEach(function(d,j){d.classList.toggle('active',j===i);});var actTc=tcardEls[i];if(actTc&&actTc.scrollIntoView){try{actTc.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}catch(_){actTc.scrollIntoView();}}if(i===5&&prev!==5&&typeof startS6Sequence==='function')startS6Sequence();if(i===6&&typeof s7nStartRandomHighlights==='function'){setTimeout(function(){if(cur===6&&!s7nHlInterval)s7nStartRandomHighlights();},1000);}if(i===9&&typeof buildPage10==='function')buildPage10();
 if(i===10&&typeof startP7Quiz==='function'){var a7el=document.getElementById('a7');if(!qzState||(a7el&&!a7el.children.length))startP7Quiz();}if(i===8&&typeof s9StartDemo==='function')setTimeout(s9StartDemo,300);if(typeof qnavSetMode==='function')qnavSetMode(i===0?'s1':i===1?'s2':i===2?'s3':i===3?'s4':i===4?'s5':i===5?'s6':i===6?'s7':i===7?'s8':i===8?'s9':'none');var _s1b=document.getElementById('section1Back');if(_s1b)_s1b.style.display=(i===7)?'none':'';if(typeof updateBackBtnVis==='function')updateBackBtnVis();if(typeof navTitlebarUpdate==='function')navTitlebarUpdate(i);if(typeof navRestore==='function')navRestore(areaForSlide(i));if(typeof s1UpdateDocks==='function')s1UpdateDocks(i);}
 tcardEls.forEach(function(d){d.addEventListener('click',function(){var i=+d.dataset.i,da=areaForSlide(i),wasSc=navIsScattered(da);goTo(i);var b=document.getElementById('topnavBar');if(b)b.classList.remove('open');if(!wasSc)navEntrance(da);});});
 (function(){var b=document.getElementById('topnavBar'),t=document.getElementById('topnavToggle'),nav=document.getElementById('topnav');if(t)t.addEventListener('click',function(){var wasOpen=b.classList.contains('open');b.classList.toggle('open');if(!wasOpen){navScatter(areaForSlide(cur));if(cur===8&&typeof s9StopDemo==='function')s9StopDemo();}else{navRestore(areaForSlide(cur));if(cur===8&&typeof s9StartDemo==='function')s9StartDemo();}});
@@ -12326,7 +12326,7 @@ function buildPage10(){
 }
 
 /* ══ S0 INTRO ══ */
-var s0Audio=null,s0Phase=0,s0Ov=null,s0Timers=[],s0HlTimer=null,s0HlActive=false;
+var s0Audio=null,s0Phase=0,s0Ov=null,s0Timers=[],s0HlTimer=null,s0HlActive=false,s0AberturaDone=false;
 var s0Paused=false,s0EventDefs=[],s0ScrollIv=null;
 var s0HlWasActive=false,s0TnScroll=0,s0TnDir=1,s0TnDemo=false,s0HandFlipped=false;
 /* ids das maozinhas/elementos com animacao CSS contínua criados durante a abertura */
@@ -12672,6 +12672,7 @@ function s0HandlePlay(){
   }
   // FIM do intro
   if(s0Phase>=4){
+    s0AberturaDone=true;
     s0StopHl();
     s0Teardown(true);
     beginIntro();return;
@@ -12688,6 +12689,7 @@ function s0HandlePlay(){
     if(s0Phase>=4){
       // fim da abertura: encerra o overlay e devolve o botao 'comecar' do proprio slide
       // (sem deixar o botao do overlay s0 em 1o plano)
+      s0AberturaDone=true;
       s0StopHl();
       s0Teardown(true);
       var sb=s0GetBtn();if(sb)sb.classList.add('show');
@@ -12742,7 +12744,7 @@ function s0StopAbertura(){
 }
 function s0Init(){
   if(s0Ov)return;
-  s0Phase=0;s0HlActive=false;s0HlWasActive=false;s0TnDemo=false;s0Paused=false;
+  s0Phase=0;s0AberturaDone=false;s0HlActive=false;s0HlWasActive=false;s0TnDemo=false;s0Paused=false;
   var ov=document.createElement('div');ov.id='s0Overlay';
   ov.style.cssText='position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0);pointer-events:auto;transition:background .9s ease;';
   (document.getElementById('ssection1')||document.body).appendChild(ov);
