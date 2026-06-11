@@ -500,7 +500,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v91</div>
+<div id="app-version">v92</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -13134,6 +13134,8 @@ function s1JumpToOrganizing(){
     if(typeof coverLanth!=='undefined'&&coverLanth)coverLanth.style.opacity='0';
     if(typeof coverAct!=='undefined'&&coverAct)coverAct.style.opacity='0';
     if(typeof s1Hdr!=='undefined'&&s1Hdr)s1Hdr.style.opacity='0';
+    var _tb=document.getElementById('slideTitlebar');
+    if(_tb){_tb.classList.remove('stb-hidden','stb-fadein');void _tb.offsetWidth;_tb.classList.add('stb-fadein');}
     if(typeof ALL!=='undefined'&&ALL&&typeof stashedScatter!=='undefined'&&stashedScatter&&typeof L1!=='undefined'&&L1){
       ALL.forEach(function(d){
         var it=gItems[d[0]];var sp=stashedScatter[d[0]];if(!it||!sp)return;
