@@ -246,24 +246,24 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 /* Footer */
 .foot{display:flex;align-items:center;justify-content:space-between;padding:.5vh 1.8vw .8vh;flex-shrink:0;border-top:1px solid rgba(120,70,20,.14)}
 .topnav-bar{position:relative;flex-shrink:0;z-index:210;order:1}
-.topnav-toggle{display:flex;align-items:center;justify-content:center;gap:.4em;width:max-content;margin:0 auto;padding:.63vh 4.2vw;background:rgba(120,70,20,.07);border:none;border-radius:10px 10px 0 0;color:rgba(92,42,0,.65);font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(12.6px,1.89vh,16.8px);letter-spacing:.05em;cursor:pointer}
+.topnav-toggle{display:flex;align-items:center;justify-content:center;gap:.4em;width:max-content;margin:0 auto;padding:.6vh 4vw;background:rgba(120,70,20,.07);border:none;border-radius:10px 10px 0 0;color:rgba(92,42,0,.65);font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(12px,1.8vh,16px);letter-spacing:.05em;cursor:pointer}
 .topnav-toggle:active{background:rgba(120,70,20,.12)}
 .topnav-toggle .tnav-arr{display:inline-block;font-size:.9em;transition:transform .25s ease}
 .topnav-bar.open .topnav-toggle .tnav-arr{transform:rotate(180deg)}
-.topnav{display:flex;justify-content:flex-start;align-items:center;gap:.735vw;padding:.84vh 1.47vw .42vh;box-sizing:border-box;flex-shrink:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-behavior:smooth;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;touch-action:pan-x;mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);position:absolute;left:0;right:0;bottom:100%;transform-origin:center bottom;transform:scale(.04);opacity:0;pointer-events:none;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .25s ease}
+.topnav{display:flex;justify-content:flex-start;align-items:center;gap:.7vw;padding:.8vh 1.4vw .4vh;box-sizing:border-box;flex-shrink:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-behavior:smooth;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;touch-action:pan-x;mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);position:absolute;left:0;right:0;bottom:100%;transform-origin:center bottom;transform:scale(.04);opacity:0;pointer-events:none;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .25s ease}
 .topnav-bar.open .topnav{transform:scale(1);opacity:1;pointer-events:auto}
 .topnav>.tcard{scroll-snap-align:center;flex-shrink:0}
 .topnav::-webkit-scrollbar{display:none}
 .s2-picker::-webkit-scrollbar{display:none}
 @keyframes s2TcardPulse{0%,100%{transform:scale(1);box-shadow:0 3px 10px rgba(80,40,0,.25)}50%{transform:scale(1.18);box-shadow:0 0 28px 10px rgba(255,180,60,.85)}}
 .tcard.s2-pulse{animation:s2TcardPulse .9s ease-in-out infinite}
-.tcard{display:flex;align-items:center;gap:.5775vw;padding:.5775vh 1.155vw;background:rgba(120,70,20,.06);border:1px solid rgba(120,70,20,.22);border-radius:999px;color:#5c2a00;font-family:'Fredoka',sans-serif;cursor:pointer;transition:background .3s cubic-bezier(.4,0,.2,1),color .3s,transform .3s cubic-bezier(.3,1.4,.5,1),border-color .3s,box-shadow .3s;flex-shrink:0}
+.tcard{display:flex;align-items:center;gap:.55vw;padding:.55vh 1.1vw;background:rgba(120,70,20,.06);border:1px solid rgba(120,70,20,.22);border-radius:999px;color:#5c2a00;font-family:'Fredoka',sans-serif;cursor:pointer;transition:background .3s cubic-bezier(.4,0,.2,1),color .3s,transform .3s cubic-bezier(.3,1.4,.5,1),border-color .3s,box-shadow .3s;flex-shrink:0}
 .tcard:hover{background:rgba(120,70,20,.14)}
 .tcard:active{transform:scale(.94)}
 .tcard.active{background:#7c4010;color:#fff;border-color:#7c4010;transform:scale(1.06);box-shadow:0 3px 10px rgba(80,40,0,.25)}
-.tnum{display:inline-flex;align-items:center;justify-content:center;width:clamp(21px,2.625vh,29.4px);height:clamp(21px,2.625vh,29.4px);border-radius:50%;background:rgba(120,70,20,.18);font-size:clamp(10.5px,1.47vh,14.7px);font-weight:600;flex-shrink:0}
+.tnum{display:inline-flex;align-items:center;justify-content:center;width:clamp(20px,2.5vh,28px);height:clamp(20px,2.5vh,28px);border-radius:50%;background:rgba(120,70,20,.18);font-size:clamp(10px,1.4vh,14px);font-weight:600;flex-shrink:0}
 .tcard.active .tnum{background:rgba(255,255,255,.22)}
-.ttxt{font-size:clamp(9.45px,1.4175vh,14.7px);font-weight:500;letter-spacing:.02em;white-space:nowrap}
+.ttxt{font-size:clamp(9px,1.35vh,14px);font-weight:500;letter-spacing:.02em;white-space:nowrap}
 .rbtn{padding:.7vh 1.2vw;background:rgba(120,70,20,.08);border:1px solid rgba(120,70,20,.22);color:#2d1e0e;border-radius:0;font-family:'Fredoka',sans-serif;font-size:clamp(9px,1.4vh,14px);letter-spacing:.08em;cursor:pointer;transition:background .2s,transform .15s}
 .rbtn:hover{background:rgba(120,70,20,.16)}
 .rbtn:active{transform:scale(.96)}
@@ -308,11 +308,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 .cv-title{display:flex;flex-direction:column;align-items:center;gap:1.4vh;line-height:1;margin-bottom:2.8vh;animation:fadeUp .7s ease .15s backwards}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 @keyframes s0HandPoint{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-@keyframes s0HandPointFlip{0%,100%{transform:rotate(180deg) translateY(0)}50%{transform:rotate(180deg) translateY(-6px)}}
 @keyframes s0ClickTapDown{0%,100%{transform:rotate(180deg) translateY(0)}50%{transform:rotate(180deg) translateY(-7px)}}
 @keyframes s0TrophyBounce{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-14px) rotate(6deg)}}
 @keyframes s0HandSwipe{0%{transform:translateX(0)}25%{transform:translateX(60px)}50%{transform:translateX(-20px)}75%{transform:translateX(80px)}100%{transform:translateX(10px)}}
-@keyframes s0HandSwipeFlip{0%{transform:rotate(180deg) translateX(0)}25%{transform:rotate(180deg) translateX(60px)}50%{transform:rotate(180deg) translateX(-20px)}75%{transform:rotate(180deg) translateX(80px)}100%{transform:rotate(180deg) translateX(10px)}}
 @keyframes s0BtnProminent{0%,100%{transform:scale(1);box-shadow:0 4px 18px rgba(0,0,0,.55),0 0 0 rgba(255,200,60,0)}50%{transform:scale(1.18);box-shadow:0 0 28px 10px rgba(255,200,60,.7),0 4px 18px rgba(0,0,0,.4)}}
 @keyframes s0BtnPulse{0%,100%{transform:scale(1.3);box-shadow:0 0 16px 4px rgba(34,197,94,.5)}50%{transform:scale(1.42);box-shadow:0 0 30px 12px rgba(34,197,94,.85)}}
 #startbtn.s0-btn-green{background:#16a34a!important;border-color:rgba(134,239,172,.6)!important;transform:scale(1.3);box-shadow:0 0 22px 6px rgba(34,197,94,.6)!important}
@@ -500,7 +498,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 </head>
 <body>
 
-<div id="app-version">v89</div>
+<div id="app-version">v88</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -1031,27 +1029,25 @@ tcardEls.forEach(function(d){d.addEventListener('click',function(){var i=+d.data
     }).observe(nav,{attributes:true,attributeFilter:['class'],subtree:true});
   }
 })();
-
-// vibra ao passar de um tópico para outro arrastando a barra de navegação
-(function(){
-  function watchTopnavScroll(navId){
-    var nav=document.getElementById(navId);if(!nav)return;
-    var lastIdx=null;
-    nav.addEventListener('scroll',function(){
-      var cards=nav.querySelectorAll('.tcard');if(!cards.length)return;
-      var navR=nav.getBoundingClientRect(),center=navR.left+navR.width/2;
-      var closest=0,closestDist=Infinity;
-      cards.forEach(function(c,i){
-        var r=c.getBoundingClientRect(),d=Math.abs((r.left+r.width/2)-center);
-        if(d<closestDist){closestDist=d;closest=i;}
-      });
-      if(lastIdx===null){lastIdx=closest;return;}
-      if(closest!==lastIdx){lastIdx=closest;if(navigator.vibrate)try{navigator.vibrate(8);}catch(_){}}
-    },{passive:true});
-  }
-  watchTopnavScroll('topnav');
-  watchTopnavScroll('topnav2');
-})();
+// vibra a cada tópico que passa pelo centro ao arrastar a barra de navegação
+function setupTopnavScrollVibrate(navId){
+  var tn=document.getElementById(navId);if(!tn)return;
+  var lastIdx=-1;
+  tn.addEventListener('scroll',function(){
+    var r=tn.getBoundingClientRect();if(!r.width)return;
+    var cx=r.left+r.width/2,cards=tn.querySelectorAll('.tcard'),best=-1,bestD=Infinity;
+    for(var i=0;i<cards.length;i++){
+      var cr=cards[i].getBoundingClientRect();
+      var d=Math.abs((cr.left+cr.width/2)-cx);
+      if(d<bestD){bestD=d;best=i;}
+    }
+    if(best!==-1&&best!==lastIdx){
+      if(lastIdx!==-1&&navigator.vibrate)try{navigator.vibrate(15);}catch(_){}
+      lastIdx=best;
+    }
+  },{passive:true});
+}
+setupTopnavScrollVibrate('topnav');
 
 /* ═══ DESMONTA/MONTA A TABELA E OS TEXTOS AO NAVEGAR + TÍTULO DO SLIDE ═══ */
 var NAV_AREA_IDS=['a1','a2','a3','a4','a5','a6','a7n','a8','a9','a10','a7'];
@@ -1088,9 +1084,6 @@ function navScatterCore(area,animate,skipParent){
   var texts=navTextBlocks(area,skipParent);
   var all=els.concat(texts);
   if(!all.length)return;
-  // não deixa nada espalhar por cima da faixa onde fica a barra de número/título do slide
-  var tbEl=document.getElementById('slideTitlebar'),tbBottom=0;
-  if(tbEl){var tbR=tbEl.getBoundingClientRect();if(tbR.width&&tbR.height)tbBottom=tbR.bottom;}
   all.forEach(function(el,idx){
     var er=el.getBoundingClientRect();
     var ex=er.left-r.left+er.width/2-cx;
@@ -1098,7 +1091,6 @@ function navScatterCore(area,animate,skipParent){
     var ang=(ex===0&&ey===0)?(Math.random()*6.2832):Math.atan2(ey,ex);
     var oct=Math.round(ang/(Math.PI/4))*(Math.PI/4); // trava em 8 direções
     var dx=Math.round(Math.cos(oct)*dist),dy=Math.round(Math.sin(oct)*dist);
-    if(tbBottom&&(er.top+dy)<tbBottom)dy=Math.round(tbBottom-er.top)+4;
     if(!el.hasAttribute('data-navtf'))el.setAttribute('data-navtf',el.style.transform||'');
     var isText=idx>=els.length;
     el.style.transition=animate?('transform .28s cubic-bezier(.55,0,.85,.2)'+(isText?',opacity .22s ease':'')):'none';
@@ -1172,6 +1164,7 @@ function goTo2(i){
 }
 tcardEls2.forEach(function(d){d.addEventListener('click',function(){var i=+d.dataset.i,da=areaForSlide2(i),wasSc=navIsScattered(da,true);goTo2(i);var b=document.getElementById('topnavBar2');if(b)b.classList.remove('open');if(!wasSc)navEntrance(da,true);});});
 (function(){var b=document.getElementById('topnavBar2'),t=document.getElementById('topnavToggle2');if(t)t.addEventListener('click',function(){var wasOpen=b.classList.contains('open');b.classList.toggle('open');if(!wasOpen)navScatter(areaForSlide2(cur2),true);else navRestore(areaForSlide2(cur2),true);});})();
+setupTopnavScrollVibrate('topnav2');
 
 /* LAYOUT */
 var COLS=18,MR=7,FR=2,FG=.45;
@@ -12280,7 +12273,7 @@ function buildPage10(){
 /* ══ S0 INTRO ══ */
 var s0Audio=null,s0Phase=0,s0Ov=null,s0Timers=[],s0HlTimer=null,s0HlActive=false;
 var s0Paused=false,s0EventDefs=[],s0ScrollIv=null;
-var s0HlWasActive=false,s0TnScroll=0,s0TnDir=1,s0TnDemo=false,s0HandFlipped=false;
+var s0HlWasActive=false,s0TnScroll=0,s0TnDir=1,s0TnDemo=false;
 /* ids das maozinhas/elementos com animacao CSS contínua criados durante a abertura */
 var S0_ANIM_IDS=['s0ClickHand','s0GuideHand','s0D01Hand'];
 function s0SetAnimState(st){S0_ANIM_IDS.forEach(function(id){var e=document.getElementById(id);if(e)e.style.animationPlayState=st;});}
@@ -12433,8 +12426,8 @@ function s0StartTnScroll(){
 function s0SetGuideHandAnim(mode){
   var hand=document.getElementById('s0GuideHand');if(!hand)return;
   hand.style.animation=(mode==='swipe')
-    ?(s0HandFlipped?'s0HandSwipeFlip 1.4s ease-in-out infinite':'s0HandSwipe 1.4s ease-in-out infinite')
-    :(s0HandFlipped?'s0HandPointFlip .9s ease-in-out infinite':'s0HandPoint .9s ease-in-out infinite');
+    ?'s0HandSwipe 1.4s ease-in-out infinite'
+    :'s0HandPoint .9s ease-in-out infinite';
 }
 // move a mãozinha-guia até o topnav e simula o gesto de arrastar os tópicos
 function s0GuideHandToTopnavDemo(){
@@ -12456,8 +12449,10 @@ function s0GuideHandFromTopnavDemo(targetId){
   var hand=document.getElementById('s0GuideHand');if(!hand)return;
   var btn=document.getElementById(targetId);if(!btn)return;
   var r=btn.getBoundingClientRect();
+  var above=(r.bottom+48>window.innerHeight);
   hand.style.left=Math.round(r.left+r.width/2-16)+'px';
-  hand.style.top=((r.bottom+48<=window.innerHeight)?Math.round(r.bottom+3):Math.round(r.top-45))+'px';
+  hand.style.top=(above?Math.round(r.top-45):Math.round(r.bottom+3))+'px';
+  hand.innerHTML=above?'<span style="display:inline-block;transform:rotate(180deg)">👆</span>':'👆';
 }
 function s0DBlockCenter(){
   var a1el=document.getElementById('a1');
@@ -12517,8 +12512,7 @@ function s0Dialogo02(ad){
   s0BtnState('playing');
   s0EventDefs=[
     {t:100,  fn:function(){
-      // mãozinha aparece de cabeça para baixo, apontando para a barra de navegação (que fica embaixo)
-      s0HandFlipped=true;
+      // mãozinha aparece já fazendo o gesto de "se aproximar" (frente/trás/frente)
       s0ShowGuideHand('topnavToggle');
       s0SetGuideHandAnim('swipe');
     }},
@@ -12537,7 +12531,7 @@ function s0Dialogo02(ad){
     {t:5500, fn:function(){
       var b=document.getElementById('topnavBar');if(b)b.classList.remove('open');
     }},
-    {t:6100, fn:function(){s0HideGuideHand();s0HandFlipped=false;}},
+    {t:6100, fn:function(){s0HideGuideHand();}},
     {t:7000, fn:function(){s0ShowQuizPromo();try{new Audio('audio/funfare.mp3').play().catch(function(){});}catch(_){}}},
     {t:12000,fn:function(){s0ShowSampleCard();try{new Audio('audio/statistics.mp3').play().catch(function(){});}catch(_){}}},
     {t:20000,fn:function(){s0ClearPromo();}}
@@ -12567,15 +12561,17 @@ function s0ShowGuideHand(targetId){
   var btn=document.getElementById(targetId);if(!btn)return;
   var r=btn.getBoundingClientRect();
   var hand=document.createElement('div');hand.id='s0GuideHand';
-  hand.textContent='👆';
   // Posiciona abaixo do botão (ou acima, se não houver espaço), apontando para ele
   var hl=Math.round(r.left+r.width/2-16);
-  var ht=(r.bottom+48<=window.innerHeight)?Math.round(r.bottom+3):Math.round(r.top-45);
+  var above=(r.bottom+48>window.innerHeight);
+  var ht=above?Math.round(r.top-45):Math.round(r.bottom+3);
+  // se a mão ficar acima do alvo, vira de cabeça pra baixo pra apontar pra ele
+  hand.innerHTML=above?'<span style="display:inline-block;transform:rotate(180deg)">👆</span>':'👆';
   hand.style.cssText='position:fixed;z-index:500;pointer-events:none;'
     +'font-size:clamp(26px,4.8vh,42px);'
     +'filter:drop-shadow(0 2px 6px rgba(0,0,0,.55)) sepia(.6) saturate(4) hue-rotate(5deg) brightness(1.3);'
     +'opacity:0;transition:opacity .4s ease,left .6s cubic-bezier(.4,0,.2,1),top .6s cubic-bezier(.4,0,.2,1);'
-    +'animation:'+(s0HandFlipped?'s0HandPointFlip':'s0HandPoint')+' .9s ease-in-out infinite;'
+    +'animation:s0HandPoint .9s ease-in-out infinite;'
     +'left:'+hl+'px;top:'+ht+'px;';
   document.body.appendChild(hand);
   requestAnimationFrame(function(){requestAnimationFrame(function(){hand.style.opacity='1';});});
