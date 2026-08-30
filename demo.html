@@ -6,9 +6,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#8b5e1a">
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest-demo.json">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<title>Tabela Periódica</title>
+<title>Tabela Periódica — Demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -507,10 +507,26 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
 .s1-confetti{position:absolute;pointer-events:none}
 #app-version{position:fixed;left:6px;bottom:4px;z-index:10001;font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(0,0,0,.35);pointer-events:none;user-select:none;-webkit-user-select:none;}
 </style>
+<style>
+/* ══════ MODO DEMO ══════ */
+/* menu de topicos: so "As coordenadas Periodicas" + "Quiz Interativo" */
+#topnav>.tcard{display:none!important}
+#topnav>.tcard[data-i="1"],#topnav>.tcard[data-i="10"]{display:flex!important}
+/* capa: selo de demo */
+.cv-demo{font-family:'Share Tech Mono',monospace;font-size:clamp(9px,1.3vh,12px);letter-spacing:.24em;text-transform:uppercase;color:#7c4010;background:rgba(253,224,71,.38);border:1px solid rgba(168,95,16,.45);border-radius:999px;padding:.55vh 2.6vw;margin-bottom:1.6vh;white-space:nowrap;animation:fadeUp .7s ease .05s backwards}
+.scover .cv-deco{margin-bottom:1.6vh}
+.scover .cv-sub{margin-bottom:4.2vh}
+.scover .cv-author{margin-top:3.2vh}
+.scover{padding-bottom:12vh}
+/* capa: faixa com os logos institucionais */
+.cv-logos{position:absolute;left:50%;bottom:2.2vh;transform:translateX(-50%);z-index:3;display:flex;align-items:center;gap:clamp(12px,2vw,26px);padding:.9vh clamp(12px,1.8vw,20px);background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(80,40,0,.16);animation:fadeUp .7s ease .75s backwards}
+.cv-logos img{height:clamp(26px,5.6vh,48px);width:auto;object-fit:contain;display:block}
+.cv-logos.empty{display:none}
+</style>
 </head>
 <body>
 
-<div id="app-version">v118</div>
+<div id="app-version">v118 demo</div>
 
 <div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:#2d1e0e;flex-direction:column;align-items:center;justify-content:center;gap:2vh;font-family:'Fredoka',sans-serif;color:#f2e4c4;text-align:center;padding:4vw;">
   <div style="font-size:clamp(48px,12vw,96px);animation:rotateHint 2s ease-in-out infinite;">📱</div>
@@ -544,11 +560,12 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
       <div class="dtile dtd"><div class="dt-z">39</div><div class="dt-s">Y</div><div class="dt-m">89</div></div>
       <div class="dtile dtf"><div class="dt-z">57</div><div class="dt-s">La</div><div class="dt-m">139</div></div>
     </div>
+    <div class="cv-demo">Versão demonstração</div>
     <h1 class="cv-title">
       <span class="cv-t1"><b>Tabela Periódica</b></span>
       <span class="cv-t2">Moderna</span>
     </h1>
-    <p class="cv-sub">Um app intuitivo pra aprender de forma lúdica e guiada</p>
+    <p class="cv-sub">Demonstração: 1 tópico liberado — <b>As Coordenadas Periódicas</b> + Quiz Interativo</p>
     <button class="cv-cta" id="cvStart">
       <span>Começar</span>
     </button>
@@ -558,6 +575,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
     </div>
     <button class="cv-install" id="cvInstall"><span>⬇</span><span>Instalar app</span></button>
   </div>
+  <div class="cv-logos" id="cvLogos">
+    <img src="images/logo-ppgeeca.png" alt="PPG EECA UEPA — Programa de Pós-Graduação em Educação e Ensino de Ciências na Amazônia">
+    <img src="images/logo-uepa.png" alt="UEPA — Universidade do Estado do Pará">
+  </div>
+  <script>
+  /* se um logo nao estiver em images/, some com ele; faltando os dois, some com a faixa */
+  (function(){var s=document.getElementById('cvLogos');if(!s)return;
+    var imgs=[].slice.call(s.querySelectorAll('img')),bad=0;
+    imgs.forEach(function(im){im.addEventListener('error',function(){im.style.display='none';if(++bad===imgs.length)s.classList.add('empty');});});})();
+  </script>
 </div>
 
 <div class="install-tip" id="installTip">
@@ -608,8 +635,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
   <div class="topnav-bar" id="topnavBar">
     <button class="topnav-toggle" id="topnavToggle"><span>Navegue nos tópicos</span><span class="tnav-arr">▾</span></button>
     <nav class="topnav" id="topnav">
-      <button class="tcard active" data-i="0"><span class="tnum">1</span><span class="ttxt">Os critérios de organização</span></button>
-      <button class="tcard" data-i="1"><span class="tnum">2</span><span class="ttxt">As coordenadas Periódicas</span></button>
+      <button class="tcard" data-i="0"><span class="tnum">1</span><span class="ttxt">Os critérios de organização</span></button>
+      <button class="tcard active" data-i="1"><span class="tnum">1</span><span class="ttxt">As coordenadas Periódicas</span></button>
       <button class="tcard" data-i="2"><span class="tnum">3</span><span class="ttxt">Os tipos de elementos</span></button>
       <button class="tcard" data-i="3"><span class="tnum">4</span><span class="ttxt">As principais famílias</span></button>
       <button class="tcard" data-i="4"><span class="tnum">5</span><span class="ttxt">Os grupos A e B</span></button>
@@ -618,7 +645,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#f2e4c4;background-i
       <button class="tcard" data-i="7"><span class="tnum">8</span><span class="ttxt">A tabela e os elétrons de valência</span></button>
       <button class="tcard" data-i="8"><span class="tnum">9</span><span class="ttxt">A tabela e o diagrama de Pauling</span></button>
       <button class="tcard" data-i="9"><span class="tnum">10</span><span class="ttxt">A tabela e a distribuição eletrônica</span></button>
-      <button class="tcard" data-i="10"><span class="tnum">11</span><span class="ttxt">Quiz Interativo</span></button>
+      <button class="tcard" data-i="10"><span class="tnum">2</span><span class="ttxt">Quiz Interativo</span></button>
     </nav>
   </div>
   <div class="nav-darken" id="navDarken1"></div>
@@ -2797,11 +2824,11 @@ function s2ShowNextTopicBtn(){
   if(typeof s1SlideDocks!=='undefined'&&s1SlideDocks[1])s1SlideDocks[1].querySelectorAll('.startbtn').forEach(function(b){b.classList.remove('show');});
   if(s2NextTopicBtn){s2NextTopicBtn.classList.add('show');return;}
   var btn=document.createElement('button');btn.className='s1-topic2-btn show';
-  btn.textContent='Próximo tópico';
+  btn.textContent='Ir para o Quiz';
   btn.addEventListener('pointerdown',function(e){e.stopPropagation();});
   btn.addEventListener('click',function(){
     btn.style.animation='none';btn.classList.remove('show');
-    var i=2,da=areaForSlide(i),wasSc=navIsScattered(da);
+    var i=10,da=areaForSlide(i),wasSc=navIsScattered(da);
     goTo(i);
     var b=document.getElementById('topnavBar');if(b)b.classList.remove('open');
     if(!wasSc)navEntrance(da);
@@ -12912,10 +12939,15 @@ function cardFlipToScreen(cardEl,id,cb){
   },320);
 }
 function gotoSection1(cardEl){
-  (cardEl?cardFlipToScreen:dramaticShowScreen)(cardEl||'ssection1','ssection1',function(){
-    if(!appBuilt){appBuilt=true;setTimeout(function(){requestAnimationFrame(function(){init();requestAnimationFrame(s0Init);});},600);}
-    else{requestAnimationFrame(s0Init);}
-  });
+  /* DEMO: entra direto no topico "As coordenadas Periodicas" (slide 1) */
+  var after=function(){
+    cur=1;
+    if(!appBuilt){appBuilt=true;setTimeout(function(){requestAnimationFrame(function(){init();requestAnimationFrame(function(){goTo(1);});});},600);}
+    else{requestAnimationFrame(function(){goTo(1);});}
+  };
+  /* dramaticShowScreen so aceita (id,cb) - chamar com 3 args quebrava o callback */
+  if(cardEl)cardFlipToScreen(cardEl,'ssection1',after);
+  else dramaticShowScreen('ssection1',after);
 }
 function gotoSection2(cardEl){
   (cardEl?cardFlipToScreen:dramaticShowScreen)(cardEl||'ssection2','ssection2',function(){goTo2(cur2);});
@@ -12927,7 +12959,7 @@ function gotoConstruction(num,title,cardEl){
   else dramaticShowScreen('scons');
 }
 document.getElementById('cvStart').addEventListener('click',function(){
-  showScreen('smenu');
+  gotoSection1();
   // em celulares, pede tela cheia pra remover a barra de status (funciona mesmo sem reinstalar o app)
   if(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches){
     var el=document.documentElement;
@@ -12974,7 +13006,7 @@ document.getElementById('cvStart').addEventListener('click',function(){
   tipClose.addEventListener('click',function(){tip.classList.remove('show');});
 })();
 document.getElementById('menuBack').addEventListener('click',function(){showScreen('scover');});
-document.getElementById('section1Back').addEventListener('click',function(){stopIntroAudio();showScreen('smenu');});
+document.getElementById('section1Back').addEventListener('click',function(){stopIntroAudio();showScreen('scover');});
 document.getElementById('section1Home').addEventListener('click',function(){stopIntroAudio();showScreen('scover');});
 document.getElementById('section1Restart').addEventListener('click',function(){
   if(cur===0)buildGame();
