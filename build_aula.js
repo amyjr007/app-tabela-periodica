@@ -507,9 +507,13 @@ function main() {
   html = troca(html, '<title>Tabela Periódica</title>',
                      '<title>Tabela Periódica — Modo Aula</title>', 'titulo');
 
-  // -- sem manifest: a versao de aula nao e um PWA separado
+  // -- sem manifest: a versao de aula nao e um PWA separado.
+  //    No lugar dele vai o icone de aba, que o app nao declara (o PWA usava o
+  //    manifest pra isso) e que sem isso vira um 404 de favicon.ico.
   html = troca(html, '<link rel="manifest" href="manifest.json">',
-                     '<!-- modo aula: sem manifest -->', 'manifest');
+                     '<!-- modo aula: sem manifest -->\n'
+                     + '<link rel="icon" type="image/png" href="icons/icon-192.png">',
+                     'manifest');
 
   // -- etiqueta de versao (o numero muda a cada release; por isso regex)
   html = trocaRe(html, /<div id="app-version">[^<]*<\/div>/,
