@@ -13,6 +13,12 @@
  * index.html NUNCA e modificado. Rode de novo sempre que o app mudar:
  *     node build_aula.js            (usa o cache de duracoes, se existir)
  *     node build_aula.js --duracoes (re-le os mp3 com ffprobe)
+ *     node build_aula.js --repo     (escreve tambem no repo do professor,
+ *                                    como index.html, pronto pra commitar)
+ *
+ * O repo do professor (amyjr007/tabela_periodica_professor) e GERADO por
+ * aqui: nao edite o index.html de la a mao, o trabalho se perde na proxima
+ * geracao.
  */
 'use strict';
 
@@ -26,6 +32,9 @@ const DST    = path.join(RAIZ, 'aula.html');
 const AUDIO  = path.join(RAIZ, 'audio');
 const CACHE  = path.join(RAIZ, 'aula-duracoes.json');
 const VERSAO = 'aula v1';
+/* repo separado do professor: pasta irma, publicada em
+   https://amyjr007.github.io/tabela_periodica_professor/ */
+const REPO   = path.join(RAIZ, '..', 'tabela_periodica_professor');
 
 /* ── duracao real de cada mp3 ─────────────────────────────────────────────── */
 function durations(forcar) {
@@ -521,6 +530,17 @@ function main() {
   fs.writeFileSync(DST, html, 'utf8');
   console.log(`OK: aula.html gerado (${Math.round(Buffer.byteLength(html, 'utf8') / 1024)} KB)`);
   console.log('    index.html: intacto');
+
+  // -- copia pro repo do professor, onde ele se chama index.html
+  if (process.argv.includes('--repo')) {
+    if (!fs.existsSync(REPO)) {
+      console.error(`ERRO: repo do professor nao encontrado em ${REPO}`);
+      process.exit(1);
+    }
+    fs.writeFileSync(path.join(REPO, 'index.html'), html, 'utf8');
+    console.log(`OK: ${path.join(REPO, 'index.html')}`);
+    console.log('    falta so: git add -A && git commit && git push');
+  }
 }
 
 main();
